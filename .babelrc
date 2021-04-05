@@ -1,0 +1,28 @@
+{
+    "presets": [
+      "@babel/env"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-transform-runtime",
+      "@babel/plugin-syntax-dynamic-import",
+      [
+        "module-resolver",
+        {
+          "root": ["./script/"],
+          "alias": {
+            "@/bin": "./script/bin",
+            "@/controllers": "./script/controllers",
+            "@/middlewares": "./script/middlewares",
+            "@/models": "./script/models",
+            "@/public": "./script/public",
+            "@/routes": "./script/routes",
+            "@/services": "./script/services",
+            "@/socket": "./script/socket",
+            "@/views": "./script/views"
+          }
+        }
+      ]
+    ]
+  }

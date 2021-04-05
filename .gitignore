@@ -1,0 +1,15 @@
+
+
+build
+dist
+script/public/upload/*
+node_modules
+sslcert
+
+.env
+.DS_Store
+*/.DS_Store
+
+package-lock.json
+yarn.lock
+yarn-error.log
