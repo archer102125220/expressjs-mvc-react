@@ -1,6 +1,7 @@
 {
     "presets": [
-      "@babel/env"
+      "@babel/env",
+      "@babel/preset-react"
     ],
     "plugins": [
       "@babel/plugin-proposal-class-properties",
@@ -20,7 +21,8 @@
             "@server/routes": "./script/routes",
             "@server/services": "./script/services",
             "@server/socket": "./script/socket",
-            "@server/views": "./script/views"
+            "@server/views": "./script/views",
+            "@/utils": "./script/utils"
           }
         }
       ]

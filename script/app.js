@@ -4,6 +4,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import renderReact from '@/utils/server/render-react';
 import indexRouter from '@server/routes/index';
 import usersRouter from '@server/routes/users';
 import JWTMiddleware from '@server/middlewares/JWT';
@@ -12,7 +13,8 @@ import JWTMiddleware from '@server/middlewares/JWT';
 class App extends Express {
   constructor(porps) {
     super(porps);
-    this.engine('react',(filePath, options, callback, a) => console.log(filePath, options, callback, a));
+    this.renderReact = renderReact.bind(this);
+    this.engine('js', this.renderReact);
     this.init();
   }
 
@@ -23,14 +25,16 @@ class App extends Express {
     cookieParser(),//將cookie塞進controller的req物件裡面  http://expressjs.com/en/resources/middleware/cookie-parser.html
     Express.static(path.join(__dirname, 'public')),//https://expressjs.com/zh-tw/starter/static-files.html
     cors(),
-    JWTMiddleware.unless({ path: [
-      '/',
-      /^\/api\/users\/account\/.*/,
-      '/api/users/registered',
-      '/api/users/img_upload_test',
-      '/api/users/video_upload_test',
-      '/api/users/login'
-    ]}),
+    JWTMiddleware.unless({
+      path: [
+        '/',
+        /^\/api\/users\/account\/.*/,
+        '/api/users/registered',
+        '/api/users/img_upload_test',
+        '/api/users/video_upload_test',
+        '/api/users/login'
+      ]
+    }),
     //uploader.video(),
     //uploader.avater()
   ]
@@ -47,7 +51,7 @@ class App extends Express {
 
   setting = {
     'views': path.join(__dirname, 'views'),
-    'view engine': 'ejs',
+    'view engine': 'js',
     'trust proxy': true
   }
 
@@ -73,10 +77,10 @@ class App extends Express {
     });
 
     this.routesApi.forEach(element => {
-      element.route.stack.forEach(({ route }) => {
-        const path = '/api' + ((route.path === element.prefix || route.path === '/') ? (element.prefix || '') : (element.prefix || '') + route.path);
-        this.routeList.push(path);
-      });
+      // element.route.stack.forEach(({ route }) => {
+      //   const path = '/api' + ((route.path === element.prefix || route.path === '/') ? (element.prefix || '') : (element.prefix || '') + route.path);
+      //   this.routeList.push(path);
+      // });
       this.use('/api' + (element.prefix || ''), element.route);
     });
 
@@ -87,21 +91,29 @@ class App extends Express {
 
     // error handler
     this.use(function (err, req, res, next) {
-      if(err.name === 'UnauthorizedError'){
-        console.error('invalid token');
-        res.status(401).send('invalid token');
-        return;
-      }
-      // set locals, only providing error in development
-        res.locals.message = err.message;
-        console.log(err.message);
-        //res.locals.error = req.app.get('env') === 'development' ? err : {};
+      let message = err.message;
+      let payload = {};
+      let status = err.status || 500;
+      if(err.name === 'UnauthorizedError') {
+        status = 401;
+        message = 'invalid token';
+      } else {
         console.log(err.status);
         console.log(err.stack);
+      }
 
-      // render the error page
-      res.status(err.status || 500);
-      res.render('error');
+      if (req.originalUrl.includes('/api')) {
+        res.status(status).send(message);
+      } else {
+        // set locals, only providing error in development
+        if (process.env.NODE_ENV === 'development') {
+          payload = { message, error: err };
+        } else {
+          payload = { message };
+        }
+        res.status(status);
+        res.render('error', payload);
+      }
     });
   }
 
