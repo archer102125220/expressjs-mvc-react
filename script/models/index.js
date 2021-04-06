@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 // import _ from 'lodash';
 import _Sequelize from 'sequelize';
-import databaseConfig from '@/models/config/database';
+import databaseConfig from '@server/models/config/database';
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';

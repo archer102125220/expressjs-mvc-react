@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import * as Models from '@/models';
+import * as Models from '@server/models';
 const { userList, sequelize } = Models
 const { Op } = sequelize;
 

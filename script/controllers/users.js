@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 // import fs from 'fs';
-import UserService from '@/services/userService';
-import JWTMiddleware from '@/middlewares/JWT';
+import UserService from '@server/services/userService';
+import JWTMiddleware from '@server/middlewares/JWT';
 
 class Users {
     usersList = async (req, res, next) => {

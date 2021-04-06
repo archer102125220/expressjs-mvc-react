@@ -1,5 +1,5 @@
 import Express from 'express';
-import Index from '@/controllers/index';
+import Index from '@server/controllers/index';
 
 class router extends Express.Router {
   constructor(props) {

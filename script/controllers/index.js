@@ -1,5 +1,5 @@
-//import Socket from '../socketIo';
-//import userService from '@/services/userService';
+//import Socket from '@server/socketIo';
+//import userService from '@server/services/userService';
 
 class Index {
     homePage = async (req, res, next) => {

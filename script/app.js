@@ -4,10 +4,10 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import indexRouter from '@/routes/index';
-import usersRouter from '@/routes/users';
-import JWTMiddleware from '@/middlewares/JWT';
-//import uploader from '@/middlewares/uploader';
+import indexRouter from '@server/routes/index';
+import usersRouter from '@server/routes/users';
+import JWTMiddleware from '@server/middlewares/JWT';
+//import uploader from '@server/middlewares/uploader';
 
 class App extends Express {
   constructor(porps) {

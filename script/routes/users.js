@@ -1,6 +1,6 @@
 import Express from 'express';
-import Users from '@/controllers/users';
-import uploader from '@/middlewares/uploader';
+import Users from '@server/controllers/users';
+import uploader from '@server/middlewares/uploader';
 
 class router extends Express.Router {
   constructor(props) {
