@@ -126,7 +126,7 @@ function onListening(services) {
   console.log(`${outPut} server is listen on ${bind}`); // eslint-disable-line no-console
 }
 
-function ipLog(request, response){
+function ipLog(request) {
   console.log('-------------ip log---------------');
   console.log('a user from :');
   console.log(`${request.connection.remoteAddress}:${request.connection.remotePort}`);

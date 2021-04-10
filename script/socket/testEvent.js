@@ -1,7 +1,7 @@
 import userService from '@server/services/userService';
 
 class testEvent {
-  testEvent = async (socket, name) => {
+  testEvent = async () => {
     return await userService.AllUsers();
   }
   clickEvent = async (socket, name, payload) => {

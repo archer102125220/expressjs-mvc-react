@@ -39,7 +39,7 @@ export default {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return queryInterface.dropTable('userLists');
   }
 };

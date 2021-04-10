@@ -1,3 +1,4 @@
+import '@babel/register';
 'use strict';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -37,3 +38,6 @@ export default {
   [nodeEnv]: envConfig,
 };
 
+export const development = envConfig;
+
+export const production = envConfig;

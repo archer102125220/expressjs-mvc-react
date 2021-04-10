@@ -5,51 +5,55 @@ import path from 'path';
 //const dest = process.env.UPLOAD_IMG || 'script/public/upload';
 const { diskStorage, memoryStorage } = multer;
 function filename(req, file, cb) {
-    cb(null, file.fieldname + '-' + path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname))
+  cb(null, file.fieldname + '-' + path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname));
 }
 
 class uploader {
-    constructor(props){
-        this.imgUploader= this.creater(process.env.UPLOAD_IMG);
-        if(!process.env.BUFFER_IMAGE){
-            this.avaterUploader= new multer({ storage: diskStorage({
-                destination: function (req, file, cb) {
-                    cb(null, __dirname + '/../public' + process.env.AVATER_DIR || 'script/public/images/upload')
-                },
-                filename
-            }) });
-        }
-        this.videoUploader = this.creater(process.env.UPLOAD_VIDEO);
+  constructor() {
+    this.imgUploader = this.creater(process.env.UPLOAD_IMG);
+    if (!process.env.BUFFER_IMAGE) {
+      this.avaterUploader = new multer({
+        storage: diskStorage({
+          destination: function (req, file, cb) {
+            cb(null, __dirname + '/../public' + process.env.AVATER_DIR || 'script/public/images/upload');
+          },
+          filename
+        })
+      });
     }
+    this.videoUploader = this.creater(process.env.UPLOAD_VIDEO);
+  }
 
-    creater = (dir) => {
-        return new multer({ storage: process.env.BUFFER_IMAGE ? memoryStorage() : diskStorage({
-            destination: function (req, file, cb) {
-                cb(null, dir || 'script/public/upload')
-            },
-            filename
-        })});
-    }
+  creater = (dir) => {
+    return new multer({
+      storage: process.env.BUFFER_IMAGE ? memoryStorage() : diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, dir || 'script/public/upload');
+        },
+        filename
+      })
+    });
+  }
 
-    arrayImg =  () => {
-        return this.imgUploader.array('images',10);
-    }
+  arrayImg = () => {
+    return this.imgUploader.array('images', 10);
+  }
 
-    img =  () => {
-        return this.imgUploader.single('image');
-    }
+  img = () => {
+    return this.imgUploader.single('image');
+  }
 
-    avater = () => {
-        return !process.env.BUFFER_IMAGE ? this.avaterUploader.single('avater') : this.imgUploader.single('avater');
-    }
+  avater = () => {
+    return !process.env.BUFFER_IMAGE ? this.avaterUploader.single('avater') : this.imgUploader.single('avater');
+  }
 
-    video = () => {
-        return this.videoUploader.single('video');
-    }
+  video = () => {
+    return this.videoUploader.single('video');
+  }
 
-    arrayVideo = () => {
-        return this.videoUploader.array('video',10);
-    }
+  arrayVideo = () => {
+    return this.videoUploader.array('video', 10);
+  }
 }
 
 export default new uploader();

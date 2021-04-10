@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-extra-semi": 2,
+    "semi": [
+      2,
+      "always"
+    ],
+    "quotes": [
+      1,
+      "single"
+    ],
+    "no-var": 0, // 禁用 var 宣告
+    "no-console": 0, //不禁用console
+    "no-const-assign": 2, //禁止修改const宣告的變數
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "args": "after-used"
+      }
+    ], //不能有宣告後未被使用的變數或引數
+    "no-irregular-whitespace": 0, //不規則的空白不允許
+    "no-trailing-spaces": 1, //一行結束後面有空格就發出警告
+    "no-undef": 2, //不能有未定義的變數
+  }
+}

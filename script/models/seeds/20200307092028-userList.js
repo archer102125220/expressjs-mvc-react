@@ -6,7 +6,7 @@ import fs from 'fs';
 const sha = crypto.createHash('sha1');
 
 export default {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -30,13 +30,13 @@ export default {
     }]);
   },
 
-  down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
+  // down: (queryInterface, Sequelize) => {
+  //   /*
+  //     Add reverting commands here.
+  //     Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
-  }
+  //     Example:
+  //     return queryInterface.bulkDelete('Person', null, {});
+  //   */
+  // }
 };

@@ -4,16 +4,19 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import renderReact from '@/utils/server/render-react';
+import page_render from '@/utils/server/page-render';
 import indexRouter from '@server/routes/index';
 import usersRouter from '@server/routes/users';
 import JWTMiddleware from '@server/middlewares/JWT';
+import IndexPage from '@server/views';
+import ErrorPage from '@server/views/error';
 //import uploader from '@server/middlewares/uploader';
 
 class App extends Express {
   constructor(porps) {
     super(porps);
-    this.renderReact = renderReact.bind(this);
+    const pageRender = new page_render(this.pageList);
+    this.renderReact = pageRender.renderReact.bind(this);
     this.engine('js', this.renderReact);
     this.init();
   }
@@ -48,6 +51,11 @@ class App extends Express {
   ]
 
   routeList = []
+
+  pageList = {
+    [path.join(__dirname, 'views')]: IndexPage,
+    [path.join(__dirname, 'views/error')]: ErrorPage
+  }
 
   setting = {
     'views': path.join(__dirname, 'views'),
@@ -90,7 +98,7 @@ class App extends Express {
     });
 
     // error handler
-    this.use(function (err, req, res, next) {
+    this.use(function (err, req, res) {
       let message = err.message;
       let payload = {};
       let status = err.status || 500;

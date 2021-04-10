@@ -8,6 +8,7 @@
       "@babel/plugin-proposal-object-rest-spread",
       "@babel/plugin-transform-runtime",
       "@babel/plugin-syntax-dynamic-import",
+      "dynamic-import-node-babel-7",
       [
         "module-resolver",
         {

@@ -1,9 +1,10 @@
 import crypto from 'crypto';
-import * as Models from '@server/models';
-const { userList, sequelize } = Models
+import Models from '@server/models';
+const { userList, sequelize } = Models;
 const { Op } = sequelize;
 
 class userService {
+  // eslint-disable-next-line no-unused-vars
   AllUsers = async (payload = -1) => {
     return await userList.findAll({
       /*where: {

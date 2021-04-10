@@ -23,9 +23,9 @@ export default (sequelize, DataTypes) => {
   }, {
     // tableName: 'userList',
   });
-  userList.associate = function (models) {
-    // associations can be defined here
-  };
+  // userList.associate = function (models) {
+  //   // associations can be defined here
+  // };
 
   return userList;
 };

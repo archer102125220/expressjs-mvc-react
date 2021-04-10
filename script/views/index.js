@@ -6,24 +6,25 @@ export default class Index extends Component {
     super(props);
     this.state = {
       title: ''
-    }
+    };
   }
 
   static getServerData(serverData) {
-    const { defaultProps } = Index
-    Index.defaultProps = { ...defaultProps, ...serverData }
+    const { defaultProps } = Index;
+    Index.defaultProps = { ...defaultProps, ...serverData };
   }
 
   render() {
-    return <div>
+    return( <div>
       <h1>{this.props.title}</h1>
       <p>Welcome to {this.props.title}</p>
-    </div>
+    </div>);
   }
 
   static propTypes = {
     children: PropTypes.any,
-    history: PropTypes.any
+    history: PropTypes.any,
+    title: PropTypes.string,
   };
   static defaultProps = {
     title: '12345'
