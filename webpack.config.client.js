@@ -95,4 +95,9 @@ module.exports = {
       // defaults: false // load '.env.defaults' as the default values if empty.
     })
   ],
+  // devServer: {
+  //   inline: true,
+  //   hot: false,
+  //   // disableHostCheck: true,
+  // },
 };
