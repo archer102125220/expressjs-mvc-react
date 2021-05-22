@@ -15,7 +15,7 @@ class uploader {
       this.avaterUploader = new multer({
         storage: diskStorage({
           destination: function (req, file, cb) {
-            cb(null, __dirname + '/../public' + process.env.AVATER_DIR || 'script/public/images/upload');
+            cb(null, __dirname + '/../public' + process.env.AVATER_DIR || 'script/public/assets/upload');
           },
           filename
         })

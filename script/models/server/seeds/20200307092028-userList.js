@@ -17,7 +17,7 @@ export default {
         isBetaMember: false
       }], {});
     */
-    const avater = process.env.BUFFER_IMAGE ? fs.readFileSync(__dirname + '/../../public/images/damage.png') : '/images/damage.png';
+    const avater = process.env.BUFFER_IMAGE ? fs.readFileSync(__dirname + '/../../public/assets/damage.png') : '/assets/damage.png';
 
     return queryInterface.bulkInsert('userLists', [{
       account: 'admin',

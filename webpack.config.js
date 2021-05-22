@@ -1,19 +1,19 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyPlugin = require('copy-webpack-plugin');
-const CopyJavascript = require('./webpack/copy-javascript');
+// const CopyJavascript = require('./webpack/copy-javascript');
 
 module.exports = {
-  entry: [
-    './script/bin/wwwboot.js'
-  ],
+  entry: {
+    server: path.resolve(__dirname, 'script/bin/wwwboot.js'),
+  },
   target: 'node',
   externals: [
     nodeExternals(),
   ],
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'server.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
   },
   module: {
     rules: [{
@@ -48,9 +48,9 @@ module.exports = {
         // }
       ]
     }),
-    new CopyJavascript({
-      from: path.resolve(__dirname, './script/views'),
-      to: path.resolve(__dirname, './dist/views'),
-    })
+    // new CopyJavascript({
+    //   from: path.resolve(__dirname, './script/views'),
+    //   to: path.resolve(__dirname, './dist/views'),
+    // })
   ],
 };

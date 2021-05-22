@@ -4,21 +4,24 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import page_render from '@/utils/server/page-render';
+
+import page_render from '@utils/server/page-render';
 import indexRouter from '@server/routes/index';
 import usersRouter from '@server/routes/users';
 import JWTMiddleware from '@server/middlewares/JWT';
-import IndexPage from '@server/views';
-import ErrorPage from '@server/views/error';
+import IndexPage from '@views';
+import ErrorPage from '@views/error';
 //import uploader from '@server/middlewares/uploader';
 
 class App extends Express {
   constructor(porps) {
     super(porps);
-    const pageRender = new page_render(this.pageList);
-    this.renderReact = pageRender.renderReact.bind(this);
-    this.engine('js', this.renderReact);
-    this.init();
+
+    this.createRenderFunction();
+    this.setSetting();
+    this.setMiddlewares();
+    this.setRoutes();
+    this.setErrorHandler();
   }
 
   middlewares = [
@@ -26,7 +29,8 @@ class App extends Express {
     Express.json(),
     Express.urlencoded({ extended: false }),
     cookieParser(),//將cookie塞進controller的req物件裡面  http://expressjs.com/en/resources/middleware/cookie-parser.html
-    Express.static(path.join(__dirname, 'public')),//https://expressjs.com/zh-tw/starter/static-files.html
+    Express.static(path.join(__dirname, 'public')), // https://expressjs.com/zh-tw/starter/static-files.html
+    // Express.static(path.join(__dirname, 'public/javascripts')), // https://expressjs.com/zh-tw/starter/static-files.html
     cors(),
     JWTMiddleware.unless({
       path: [
@@ -35,7 +39,10 @@ class App extends Express {
         '/api/users/registered',
         '/api/users/img_upload_test',
         '/api/users/video_upload_test',
-        '/api/users/login'
+        '/api/users/login',
+        /^\/assets\/.*/,
+        /^.*\.js/,
+        /^\/stylesheets\/.*/
       ]
     }),
     //uploader.video(),
@@ -50,11 +57,11 @@ class App extends Express {
     { prefix: '/users', route: usersRouter }
   ]
 
-  routeList = []
+  reactRouteList = []
 
   pageList = {
-    [path.join(__dirname, 'views')]: IndexPage,
-    [path.join(__dirname, 'views/error')]: ErrorPage
+    'index': IndexPage,
+    'error': ErrorPage
   }
 
   setting = {
@@ -63,11 +70,18 @@ class App extends Express {
     'trust proxy': true
   }
 
-  init = () => {
+  createRenderFunction = () => {
+    const pageRender = new page_render(this.pageList, this);
+    this.engine('js', pageRender.renderReact);
+  }
+
+  setSetting = () => {
     for (const key in this.setting) {
       this.set(key, this.setting[key]);
     }
+  }
 
+  setMiddlewares = () => {
     this.middlewares.forEach(element => {
       if (Array.isArray(element)) {
         this.use(element[0], element[1]);
@@ -76,21 +90,36 @@ class App extends Express {
       }
     });
 
+    if (process.env.NODE_ENV === 'development') {
+      const webpack = require('webpack');
+      const webpackDevMiddleware = require('webpack-dev-middleware');
+      const webpackHotMiddleware = require('webpack-hot-middleware');
+      const webpackConfig = require('./../webpack.config.client');
+      const compilerWebpackConfig = webpack(webpackConfig);
+      this.use(webpackDevMiddleware(compilerWebpackConfig, {
+        stats: {
+          colors: true
+        }
+      }));
+      this.use(webpackHotMiddleware(compilerWebpackConfig));
+    }
+  }
+
+  setRoutes = () => {
     this.routesWeb.forEach(element => {
       element.route.stack.forEach(({ route }) => {
         const path = (route.path === element.prefix || route.path === '/') ? element.prefix : element.prefix + route.path;
-        this.routeList.push(path);
+        if (this.reactRouteList.includes(path) === false) this.reactRouteList.push(path);
       });
       this.use(element.prefix, element.route);
     });
 
     this.routesApi.forEach(element => {
-      // element.route.stack.forEach(({ route }) => {
-      //   const path = '/api' + ((route.path === element.prefix || route.path === '/') ? (element.prefix || '') : (element.prefix || '') + route.path);
-      //   this.routeList.push(path);
-      // });
       this.use('/api' + (element.prefix || ''), element.route);
     });
+  }
+
+  setErrorHandler = () => {
 
     // catch 404 and forward to error handler
     this.use(function (req, res, next) {
@@ -102,7 +131,7 @@ class App extends Express {
       let message = err.message;
       let payload = {};
       let status = err.status || 500;
-      if(err.name === 'UnauthorizedError') {
+      if (err.name === 'UnauthorizedError') {
         status = 401;
         message = 'invalid token';
       } else {

@@ -14,16 +14,17 @@
         {
           "root": ["./script/"],
           "alias": {
+            "@": "./script",
             "@server/bin": "./script/bin",
             "@server/controllers": "./script/controllers",
-            "@server/middlewares": "./script/middlewares",
-            "@server/models": "./script/models",
+            "@server/middlewares": "./script/middlewares/server",
+            "@server/models": "./script/models/server",
             "@server/public": "./script/public",
             "@server/routes": "./script/routes",
-            "@server/services": "./script/services",
-            "@server/socket": "./script/socket",
-            "@server/views": "./script/views",
-            "@/utils": "./script/utils"
+            "@server/services": "./script/services/server",
+            "@server/socket": "./script/socket/server",
+            "@views": "./script/views",
+            "@utils": "./script/utils"
           }
         }
       ]

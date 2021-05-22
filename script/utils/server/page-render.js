@@ -1,38 +1,48 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { MemoryRouter } from 'react-router-dom';
+import LayoutSwitch from '@utils/client/LayoutSwitch';
+
 
 class pageRender {
-  constructor(props) {
+  constructor(props, express) {
     this.pageList = props;
-    const $_this = this;
-    const _renderReact = this.renderReact;
-    this.renderReact = function(filePath, options, callback){
-      _renderReact($_this, filePath, options, callback);
+    const View = express.get('view');
+    View.prototype.resolve = function resolve(dir, file) {
+      return file;
     };
+    express.set('view', View);
   }
-  renderReact = function($_this, path, options, callback){
+
+  renderReact = (pageName, options, callback) => {
     try {
-      // console.log(this.routeList);
-      const filePath = path.replace('\\index.js', '');
-      const Page = $_this.pageList[filePath];
-      if (typeof(Page.getServerData) === 'function') {
-        if(!Page.defaultProps) {
-          Page.defaultProps = {};
-        }
+      const filePath = pageName.replace('.js', '');
+      const Page = this.pageList[filePath];
+      // const defaultProps = Page.defaultProps;
+      // if (!defaultProps) {
+      //   Page.defaultProps = { ...options };
+      // } else {
+      //   Page.defaultProps = { ...defaultProps, ...options };
+      // }
+      if (typeof (Page.getServerData) === 'function') {
         Page.getServerData(options);
-      } else if(!Page.defaultProps) {
-        Page.defaultProps = {...options};
       }
-      const content = renderToString(<Page />);
+      const content = renderToString(
+        <MemoryRouter initialEntries={[ { pathname: filePath } ]}>
+          <LayoutSwitch><Page /></LayoutSwitch>
+        </MemoryRouter>
+      );
+
+      const reactAppPath = process.env.NODE_ENV === 'development' ? 'index.js' : '/javascripts/index.js';
       callback(null, `
         <html>
           <title>${options.title}</title>
           <link rel='stylesheet' href='/stylesheets/style.css' />
-          <link rel='shortcut icon' href='/images/favicon.ico'>
+          <link rel='shortcut icon' href='/assets/favicon.ico'>
           <body>
             <div id="root">${content}</div>
-            <script src="/javascripts/client.js"></script>
           </body>
+          <script src="${reactAppPath}"></script>
         </html>
       `);
     } catch (error) {
