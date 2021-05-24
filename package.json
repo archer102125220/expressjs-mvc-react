@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./script/bin/wwwboot.js",
+    "start": "babel-node --inspect ./script/bin/wwwboot.js",
     "build": "yarn build:server && yarn build:client",
     "build:server": "webpack --mode production",
     "build:client": "webpack --config webpack.config.client.js --mode production",
