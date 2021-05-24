@@ -2,8 +2,8 @@
 // import path from 'path';
 // import _ from 'lodash';
 import _Sequelize from 'sequelize';
-import databaseConfig from '@server/models/config/database';
-import userList from '@server/models/userlist';
+import databaseConfig from '@models/server/config/database';
+import userList from '@models/server/userlist';
 
 // const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';

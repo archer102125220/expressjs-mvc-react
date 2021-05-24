@@ -1,7 +1,9 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import LayoutSwitch from '@utils/client/LayoutSwitch';
+import store from '@models/client/redux.config';
 
 
 class pageRender {
@@ -28,12 +30,14 @@ class pageRender {
         Page.getServerData(options);
       }
       const content = renderToString(
-        <MemoryRouter initialEntries={[ { pathname: filePath } ]}>
-          <LayoutSwitch><Page /></LayoutSwitch>
+        <MemoryRouter initialEntries={[{ pathname: filePath }]}>
+          <Provider store={store}>
+            <LayoutSwitch><Page /></LayoutSwitch>
+          </Provider>
         </MemoryRouter>
       );
 
-      const reactAppPath = process.env.NODE_ENV === 'development' ? 'index.js' : '/javascripts/index.js';
+      const reactAppPath = process.env.NODE_ENV !== 'production' ? 'index.js' : '/javascripts/index.js';
       callback(null, `
         <html>
           <title>${options.title}</title>

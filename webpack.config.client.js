@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 // const theme = require('./theme');
 require('dotenv').config({ path: __dirname + '/.env' });
@@ -9,7 +8,7 @@ module.exports = {
     path.resolve(__dirname, 'script/reactApp.js')
   ],
   output: {
-    path: path.resolve(__dirname, process.env.NODE_ENV === 'development' ? 'script/public/javascripts' : 'dist/public/javascripts'),
+    path: path.resolve(__dirname, process.env.NODE_ENV !== 'production' ? 'script/public/javascripts' : 'dist/public/javascripts'),
     filename: 'index.js'
   },
   resolve: {
@@ -85,8 +84,6 @@ module.exports = {
     }],
   },
   plugins: [
-    // 提供hot reload功能
-    new webpack.HotModuleReplacementPlugin(),
     new Dotenv({
       // path: './.env', // load this now instead of the ones in '.env'
       // safe: true, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
@@ -95,9 +92,4 @@ module.exports = {
       // defaults: false // load '.env.defaults' as the default values if empty.
     })
   ],
-  // devServer: {
-  //   inline: true,
-  //   hot: false,
-  //   // disableHostCheck: true,
-  // },
 };

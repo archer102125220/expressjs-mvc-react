@@ -18,13 +18,13 @@
             "@server/bin": "./script/bin",
             "@server/controllers": "./script/controllers",
             "@server/middlewares": "./script/middlewares/server",
-            "@server/models": "./script/models/server",
             "@server/public": "./script/public",
             "@server/routes": "./script/routes",
             "@server/services": "./script/services/server",
             "@server/socket": "./script/socket/server",
+            "@models": "./script/models",
             "@views": "./script/views",
-            "@utils": "./script/utils"
+            "@utils": "./script/utils",
           }
         }
       ]

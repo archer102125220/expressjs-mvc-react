@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // import { connect } from 'dva';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import _ from 'lodash';
 // import { routerRedux } from 'dva/router';
 // import Typography from '@material-ui/core/Typography';
 
-// const mapStateToProps = (state) => ({
-//   users: state.userList?.userList || [],
-//   // users: _.get(state, 'userList.userList', []),
-// });
+const mapStateToProps = (state) => ({
+  users: state.userList?.userList || [],
+  // users: _.get(state, 'userList.userList', []),
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   SOCKET_UserList: (payload, callback, loading) => {
-//     console.log({ dispatch, loading });
-//     // dispatch({ type: 'userList/SOCKET_UserList', payload, callback, loading });
-//   },
-//   goToRoute: (path, callback) => {
-//     // dispatch(routerRedux.push(path));
-//     if (callback) { callback(); }
-//   }
-// });
+const mapDispatchToProps = (dispatch) => ({
+  TEST_UserList: (payload, callback, loading) => {
+    dispatch({ type: 'userList/TEST_UserList', payload, callback, loading });
+  },
+  // goToRoute: (path, callback) => {
+  //   // dispatch(routerRedux.push(path));
+  //   if (callback) { callback(); }
+  // }
+});
 
-export default /*connect(mapStateToProps, mapDispatchToProps)(*/
+export default connect(mapStateToProps, mapDispatchToProps)(
   class GlobalLayout extends Component {
     state = {
+    }
+
+    componentDidMount() {
+      this.props.TEST_UserList([1]);
     }
 
     render() {
@@ -39,7 +42,8 @@ export default /*connect(mapStateToProps, mapDispatchToProps)(*/
     }
 
     static propTypes = {
-      children: PropTypes.any
+      children: PropTypes.any,
+      TEST_UserList: PropTypes.func
     }
   }
-/*);*/
+);

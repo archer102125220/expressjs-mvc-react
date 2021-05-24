@@ -4,7 +4,6 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-
 import page_render from '@utils/server/page-render';
 import indexRouter from '@server/routes/index';
 import usersRouter from '@server/routes/users';
@@ -90,7 +89,7 @@ class App extends Express {
       }
     });
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       const webpack = require('webpack');
       const webpackDevMiddleware = require('webpack-dev-middleware');
       const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -143,7 +142,7 @@ class App extends Express {
         res.status(status).send(message);
       } else {
         // set locals, only providing error in development
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV !== 'production') {
           payload = { message, error: err };
         } else {
           payload = { message };

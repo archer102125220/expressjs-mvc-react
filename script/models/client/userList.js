@@ -1,0 +1,35 @@
+
+// import { GET_userList, /*SOCKET_UserList*/ } from './../services/userList';
+
+export default {
+
+  namespace: 'userList',
+
+  state: {
+    userList: []
+  },
+
+  effects: {
+    // *GET_UserList({ payload }, { call, put }) {  // eslint-disable-line
+    //   const data = yield call(GET_userList);
+    //   yield put({ type: 'set_user_list', payload: data });
+    // },
+    *SOCKET_UserList({ payload, callback, loading, token }, { call, put }) {  // eslint-disable-line
+      // const data = yield call(GET_userList, 'testEvent', payload, token);
+      // console.log(call.toString());
+      // console.log(put.toString());
+      yield put({ type: 'set_user_list', payload: payload });
+    },
+
+    *TEST_UserList({ payload, callback, loading, token }, { call, put }) {  // eslint-disable-line
+      yield put({ type: 'set_user_list', payload });
+    },
+  },
+
+  reducers: {
+    set_user_list(state, { payload }) {
+      return { ...state, userList: payload };
+    },
+  },
+
+};
