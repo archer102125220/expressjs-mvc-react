@@ -2,7 +2,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import LayoutSwitch from '@utils/client/LayoutSwitch';
+import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import store from '@models/client/redux.config';
 
 

@@ -10,7 +10,7 @@
     "webpackStart": "node ./dist/server",
     "sequelize": "./node_modules/.bin/sequelize",
     "build:babel": "babel script -d ./build",
-    "start:build": "node ./build/bin/wwwboot.js",
+    "start:build:babel": "node ./build/bin/wwwboot.js",
     "initDB": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "createDB": "sequelize db:create",
     "dropDB": "sequelize db:drop",

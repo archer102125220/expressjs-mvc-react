@@ -1,33 +1,30 @@
 import React, { Component } from 'react';
-// import { Switch } from 'dva/router';
 import { Switch } from 'react-router-dom';
-// import { connect } from 'dva';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import _ from 'lodash';
 import PropTypes from 'prop-types';
 // import { enquireScreen } from 'enquire-js';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 // import themCofing from './../../theme';
-// import Socket from './../utils/socket';
-// import GlobalLayout from './../layouts/GlobalLayout';
+// import Socket from '@utils/client/socket';
 import GlobalLayout from '@views/layouts/GlobalLayout';
 
 // const theme = createMuiTheme(themCofing);
 
 
-// const mapStateToProps = (state) => ({
-//   users: state.userList?.userList || [],
-//   // users: _.get(state, 'userList.userList', []),
-// });
+const mapStateToProps = (state) => ({
+  users: state.userList?.userList || [],
+  // users: _.get(state, 'userList.userList', []),
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   SOCKET_UserList: (payload, callback, loading) => {
-//     console.log({ dispatch, loading });
-//     // dispatch({ type: 'userList/SOCKET_UserList', payload, callback, loading });
-//   },
-// });
+const mapDispatchToProps = (dispatch) => ({
+  SOCKET_UserList: (payload, callback, loading) => {
+    console.log({ dispatch, loading });
+    // dispatch({ type: 'userList/SOCKET_UserList', payload, callback, loading });
+  },
+});
 
-export default /*connect(mapStateToProps, mapDispatchToProps)(*/
+export default connect(mapStateToProps, mapDispatchToProps)(
   class LayoutSwitch extends Component {
 
     componentDidMount = () => {
@@ -70,4 +67,4 @@ export default /*connect(mapStateToProps, mapDispatchToProps)(*/
       SOCKET_UserList: PropTypes.func,
     };
   }
-/*);*/
+);

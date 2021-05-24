@@ -17,11 +17,6 @@ ReactDOM.render(
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
-  // <React.StrictMode>
-  //   <BrowserRouter>
-  //     <Router history={BrowserHistory} />
-  //   </BrowserRouter>
-  // </React.StrictMode>,
   document.getElementById('root')
 );
 

@@ -4,6 +4,7 @@ const Dotenv = require('dotenv-webpack');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 module.exports = {
+  mode:process.env.NODE_ENV || 'development',
   entry: [
     path.resolve(__dirname, 'script/reactApp.js')
   ],

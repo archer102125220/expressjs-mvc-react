@@ -4,7 +4,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 // import { ConnectedRouter } from 'react-router-redux';
 import PropTypes from 'prop-types';
-import LayoutSwitch from '@utils/client/LayoutSwitch';
+import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import IndexPage from '@views/index';
 // const { ConnectedRouter } = routerRedux;
 
