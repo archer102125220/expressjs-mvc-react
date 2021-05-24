@@ -1,4 +1,4 @@
-# expressjs_mvc
+# expressjs-mvc-react
 
 ## Available Scripts
 
