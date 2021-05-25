@@ -29,7 +29,6 @@ class App extends Express {
     Express.urlencoded({ extended: false }),
     cookieParser(),//將cookie塞進controller的req物件裡面  http://expressjs.com/en/resources/middleware/cookie-parser.html
     Express.static(path.join(__dirname, 'public')), // https://expressjs.com/zh-tw/starter/static-files.html
-    // Express.static(path.join(__dirname, 'public/javascripts')), // https://expressjs.com/zh-tw/starter/static-files.html
     cors(),
     JWTMiddleware.unless({
       path: [

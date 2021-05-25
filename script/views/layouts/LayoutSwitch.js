@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import { enquireScreen } from 'enquire-js';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-// import themCofing from './../../theme';
+// import themCofing from '@theme';
 // import Socket from '@utils/client/socket';
 import GlobalLayout from '@views/layouts/GlobalLayout';
 

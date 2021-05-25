@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import * as history from 'history';
 import { Provider } from 'react-redux';
 import Router from '@utils/client/router';
 import reportWebVitals from '@utils/client/reportWebVitals';
 import store from '@models/client/redux.config';
-
-const BrowserHistory = history.createBrowserHistory();
+import { BrowserHistory } from '@models/client/redux.config';
 
 ReactDOM.render(
   <React.StrictMode>

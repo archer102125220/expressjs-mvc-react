@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-// import { Route, Switch, routerRedux, withRouter, Redirect } from 'dva/router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
-// import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import IndexPage from '@views/index';
-// const { ConnectedRouter } = routerRedux;
 
 const routeComponent = [
   { key: 'root', path: '/', exact: true, component: IndexPage },
@@ -18,7 +16,6 @@ const redirectComponent = [
 class Root extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    // history: PropTypes.any,
     children: PropTypes.any
   };
 
@@ -58,32 +55,20 @@ const renderRedirects = (r, props) => {
 
 const Router = props => {
   return (
-    <RouterRoot {...props}>
-      <Switch  {...props}>
-        <LayoutSwitch  {...props}>
-          {
-            routeComponent.map(value => renderRoutes(value, props))
-          }
-          {
-            redirectComponent.map(value => renderRedirects(value, props))
-          }
-        </LayoutSwitch>
-      </Switch>
-    </RouterRoot>
-    // <ConnectedRouter {...props}>
-    //   <RouterRoot {...props}>
-    //     <Switch  {...props}>
-    //       <LayoutSwitch  {...props}>
-    //         {
-    //           routeComponent.map(value => renderRoutes(value, props))
-    //         }
-    //         {
-    //           redirectComponent.map(value => renderRedirects(value, props))
-    //         }
-    //       </LayoutSwitch>
-    //     </Switch>
-    //   </RouterRoot>
-    // </ConnectedRouter>
+    <ConnectedRouter {...props}>
+      <RouterRoot {...props}>
+        <Switch  {...props}>
+          <LayoutSwitch  {...props}>
+            {
+              routeComponent.map(value => renderRoutes(value, props))
+            }
+            {
+              redirectComponent.map(value => renderRedirects(value, props))
+            }
+          </LayoutSwitch>
+        </Switch>
+      </RouterRoot>
+    </ConnectedRouter>
   );
 };
 

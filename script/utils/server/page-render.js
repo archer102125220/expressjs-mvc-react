@@ -20,14 +20,14 @@ class pageRender {
     try {
       const filePath = pageName.replace('.js', '');
       const Page = this.pageList[filePath];
-      // const defaultProps = Page.defaultProps;
-      // if (!defaultProps) {
-      //   Page.defaultProps = { ...options };
-      // } else {
-      //   Page.defaultProps = { ...defaultProps, ...options };
-      // }
       if (typeof (Page.getServerData) === 'function') {
-        Page.getServerData(options);
+        const newDefaultProps = Page.getServerData(options);
+        const defaultProps = Page.defaultProps;
+        if (!defaultProps) {
+          Page.defaultProps = { ...newDefaultProps };
+        } else {
+          Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+        }
       }
       const content = renderToString(
         <MemoryRouter initialEntries={[{ pathname: filePath }]}>

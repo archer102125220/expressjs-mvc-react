@@ -26,6 +26,7 @@ export default class Index extends Component {
     history: PropTypes.any,
     title: PropTypes.string,
   };
+
   static defaultProps = {
     title: '12345'
   }
