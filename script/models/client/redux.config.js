@@ -4,10 +4,10 @@ import * as reduxSagaEffects from 'redux-saga/effects';
 import { connectRouter } from 'connected-react-router';
 import * as historyCreater from 'history';
 import { routerMiddleware as createRouterMiddleware } from 'connected-react-router';
+import userList from './userList';
 
 let history;
-
-if (typeof(window) === 'object') {
+if (typeof (window) === 'object') {
   history = historyCreater.createBrowserHistory();
 } else {
   history = historyCreater.createMemoryHistory();
@@ -15,9 +15,11 @@ if (typeof(window) === 'object') {
 
 export const BrowserHistory = history;
 
-const pluginModels = [require('./userList').default];
+const pluginModels = [userList];
 
-function reduxInit(pluginModels) {
+const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent) : {};
+
+function reduxInit(pluginModels, serverReduxStore = {}) {
   // https://github.com/explooosion/react-redux-i18n-boilerplate/blob/master/src/reducers/settings.js
   // https://github.com/ms314006/React-With-Redux-Saga/blob/master/Ch02/src/saga/data.js
 
@@ -25,6 +27,7 @@ function reduxInit(pluginModels) {
   let mySagaList = [];
   pluginModels.map(element => {
     const { namespace, reducers, effects } = element;
+    if (typeof (serverReduxStore[namespace]) === 'object') element.state = serverReduxStore[namespace];
     Object.keys(reducers).map(reducersKey => {
       reducers[`${namespace}/${reducersKey}`] = reducers[reducersKey];
     });
@@ -53,7 +56,7 @@ function reduxInit(pluginModels) {
     yield reduxSagaEffects.all(mySagaList);
   }
 
-  const composeEnhancers = typeof(window) === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+  const composeEnhancers = typeof (window) === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
   const sagaMiddleware = createSagaMiddleware();
   const routerMiddleware = createRouterMiddleware();
 
@@ -67,4 +70,4 @@ function reduxInit(pluginModels) {
   return store;
 }
 
-export default reduxInit(pluginModels);
+export default reduxInit(pluginModels, serverData.serverReduxStore);

@@ -7,11 +7,28 @@ import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import IndexPage from '@views/index';
 
 const routeComponent = [
-  { key: 'root', path: '/', exact: true, component: IndexPage },
+  { key: 'root', path: '/', exact: true, component: IndexPage, pageName: 'index' },
 ];
 const redirectComponent = [
   { key: 'root', exact: true, to: '/', From: '/index' },
 ];
+
+function setServerDate() {
+  if (typeof (window) !== 'object') return;
+  const serverData = JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent);
+  const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
+  const defaultProps = Page.defaultProps;
+  if (typeof (Page.getServerData) === 'function') {
+    const newDefaultProps = Page.getServerData(serverData.serverPageProps);
+    if (!defaultProps) {
+      Page.defaultProps = { ...newDefaultProps };
+    } else {
+      Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+    }
+  } else {
+    Page.defaultProps = { ...defaultProps, ...serverData.serverPageProps };
+  }
+}
 
 class Root extends Component {
   static propTypes = {
@@ -54,6 +71,7 @@ const renderRedirects = (r, props) => {
 };
 
 const Router = props => {
+  setServerDate();
   return (
     <ConnectedRouter {...props}>
       <RouterRoot {...props}>

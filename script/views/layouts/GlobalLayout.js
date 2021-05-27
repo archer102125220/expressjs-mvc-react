@@ -27,7 +27,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     componentDidMount() {
-      this.props.TEST_UserList([1]);
+      // this.props.TEST_UserList([1]);
     }
 
     render() {

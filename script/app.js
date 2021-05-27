@@ -55,7 +55,12 @@ class App extends Express {
     { prefix: '/users', route: usersRouter }
   ]
 
-  reactRouteList = []
+  clientLinkTagList = [
+    { rel: 'stylesheet', href: '/stylesheets/style.css' },
+    { rel: 'shortcut icon', href: '/assets/favicon.ico' },
+  ]
+  clientScriptTagList = []
+  defaultPageTitle = 'expressjs-mvc-react'
 
   pageList = {
     'index': IndexPage,
@@ -69,8 +74,9 @@ class App extends Express {
   }
 
   createRenderFunction = () => {
-    const pageRender = new page_render(this.pageList, this);
+    const pageRender = new page_render(this);
     this.engine('js', pageRender.renderReact);
+    this.response.render = pageRender.expandRender;
   }
 
   setSetting = () => {
@@ -105,10 +111,6 @@ class App extends Express {
 
   setRoutes = () => {
     this.routesWeb.forEach(element => {
-      element.route.stack.forEach(({ route }) => {
-        const path = (route.path === element.prefix || route.path === '/') ? element.prefix : element.prefix + route.path;
-        if (this.reactRouteList.includes(path) === false) this.reactRouteList.push(path);
-      });
       this.use(element.prefix, element.route);
     });
 

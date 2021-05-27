@@ -9,9 +9,10 @@ export default class Index extends Component {
     };
   }
 
-  static getServerData(serverData) {
+  static getServerData({ serverData, serverReduxStore, isServer }) {
     const defaultProps = this.defaultProps || {};
-    this.defaultProps = { ...defaultProps, ...serverData };
+    if (isServer) serverReduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
+    return { ...defaultProps, ...serverData };
   }
 
   render() {
