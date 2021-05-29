@@ -3,13 +3,14 @@ const Dotenv = require('dotenv-webpack');
 // const theme = require('./theme');
 require('dotenv').config({ path: __dirname + '/.env' });
 
+// https://andyyou.github.io/2016/05/30/webpack-dev-middleware-in-express/
 module.exports = {
-  mode:process.env.NODE_ENV || 'development',
+  mode: process.env.NODE_ENV || 'development',
   entry: [
     path.resolve(__dirname, 'script/reactApp.js')
   ],
   output: {
-    path: path.resolve(__dirname, process.env.NODE_ENV !== 'production' ? 'script/public/javascripts' : 'dist/public/javascripts'),
+    path: path.resolve(__dirname, 'dist/public/javascripts'),
     filename: 'index.js'
   },
   resolve: {

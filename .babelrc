@@ -20,11 +20,12 @@
             "@server/middlewares": "./script/middlewares/server",
             "@server/public": "./script/public",
             "@server/routes": "./script/routes",
-            "@server/services": "./script/services/server",
-            "@server/socket": "./script/socket/server",
+            "@services": "./script/services",
+            "@socket": "./script/socket",
             "@models": "./script/models",
             "@views": "./script/views",
             "@utils": "./script/utils",
+            "@config": "./script/config",
             "@theme": "./theme"
           }
         }

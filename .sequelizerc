@@ -3,9 +3,21 @@ require('@babel/register');
 require('dotenv').config();
 const path = require('path');
 
+const env = process.env.NODE_ENV || 'production';
+let config = path.resolve('./config/', 'database.js');
+let migrationsPath = path.resolve('./models', 'migrations');
+let modelsPath = path.resolve('./', 'models');
+let seedersPath = path.resolve('./models', 'seeds');
+if (env !== 'production') {
+  config = path.resolve('./script/config/models', 'database.js');
+  migrationsPath = path.resolve('./script/models/server', 'migrations');
+  modelsPath = path.resolve('./script/models/server', 'models');
+  seedersPath = path.resolve('./script/models/server', 'seeds');
+}
+
 module.exports = {
-  'config': path.resolve('./script/models/server/config', 'database.js'),
-  'migrations-path': path.resolve('./script/models/server', 'migrations'),
-  'models-path': path.resolve('./script/server', 'models'),
-  'seeders-path': path.resolve('./script/models/server', 'seeds'),
+  'config': config,
+  'migrations-path': migrationsPath,
+  'models-path': modelsPath,
+  'seeders-path': seedersPath,
 }

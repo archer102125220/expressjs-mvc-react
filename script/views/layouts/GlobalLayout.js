@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
   TEST_UserList: (payload, callback, loading) => {
     dispatch({ type: 'userList/TEST_UserList', payload, callback, loading });
   },
+  GET_UserList: (payload, callback, loading) => dispatch({ type: 'userList/GET_UserList', payload, callback, loading }),
   // goToRoute: (path, callback) => {
   //   // dispatch(routerRedux.push(path));
   //   if (callback) { callback(); }
@@ -28,6 +29,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     componentDidMount() {
       // this.props.TEST_UserList([1]);
+      this.props.GET_UserList();
     }
 
     render() {
@@ -43,7 +45,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     static propTypes = {
       children: PropTypes.any,
-      TEST_UserList: PropTypes.func
+      TEST_UserList: PropTypes.func,
+      GET_UserList: PropTypes.func
     }
   }
 );

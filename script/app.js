@@ -5,11 +5,8 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import page_render from '@utils/server/page-render';
-import indexRouter from '@server/routes/index';
-import usersRouter from '@server/routes/users';
 import JWTMiddleware from '@server/middlewares/JWT';
-import IndexPage from '@views';
-import ErrorPage from '@views/error';
+import { routesWeb, routesApi } from '@config/router/expressRouter';
 //import uploader from '@server/middlewares/uploader';
 
 class App extends Express {
@@ -47,13 +44,9 @@ class App extends Express {
     //uploader.avater()
   ]
 
-  routesWeb = [
-    { prefix: '/', route: indexRouter },
-  ]
+  routesWeb = routesWeb
 
-  routesApi = [
-    { prefix: '/users', route: usersRouter }
-  ]
+  routesApi = routesApi
 
   clientLinkTagList = [
     { rel: 'stylesheet', href: '/stylesheets/style.css' },
@@ -61,11 +54,6 @@ class App extends Express {
   ]
   clientScriptTagList = []
   defaultPageTitle = 'expressjs-mvc-react'
-
-  pageList = {
-    'index': IndexPage,
-    'error': ErrorPage
-  }
 
   setting = {
     'views': path.join(__dirname, 'views'),
@@ -97,7 +85,7 @@ class App extends Express {
     if (process.env.NODE_ENV !== 'production') {
       const webpack = require('webpack');
       const webpackDevMiddleware = require('webpack-dev-middleware');
-      const webpackHotMiddleware = require('webpack-hot-middleware');
+      // const webpackHotMiddleware = require('webpack-hot-middleware');
       const webpackConfig = require('./../webpack.config.client');
       const compilerWebpackConfig = webpack(webpackConfig);
       this.use(webpackDevMiddleware(compilerWebpackConfig, {
@@ -105,7 +93,7 @@ class App extends Express {
           colors: true
         }
       }));
-      this.use(webpackHotMiddleware(compilerWebpackConfig));
+      // this.use(webpackHotMiddleware(compilerWebpackConfig));
     }
   }
 

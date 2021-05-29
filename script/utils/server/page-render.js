@@ -4,12 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import _ from 'lodash';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
-import store from '@models/client/redux.config';
+import { store } from '@utils/client/reduxInit';
+import { pageList } from '@config/router/expressRouter';
 
 
 class pageRender {
   constructor(express) {
-    this.pageList = express.pageList;
     this.defaultPageTitle = express.defaultPageTitle || '';
 
     const View = express.get('view');
@@ -37,6 +37,7 @@ class pageRender {
       return accumulator;
     }, '');
   }
+  pageList = pageList
 
   renderReact = (pageName, options, callback) => {
     try {
@@ -51,6 +52,7 @@ class pageRender {
       delete options.res;
       delete options.req;
       let serverPageProps = {};
+      let serverProps = {};
       if (typeof (Page.getServerData) === 'function') {
         const newDefaultProps = Page.getServerData({ serverData: options, settings, res, req, serverReduxStore: store, isServer: true });
         delete newDefaultProps.reduxStore;
@@ -61,7 +63,8 @@ class pageRender {
         } else {
           Page.defaultProps = { ...defaultProps, ...newDefaultProps };
         }
-        serverPageProps = { ...Page.defaultProps, serverData: options, res: {}, req: {}, settings, isServer: false };
+        serverProps = Page.defaultProps;
+        serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       } else {
         // settings = {};
         serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
@@ -74,7 +77,7 @@ class pageRender {
         </MemoryRouter>
       );
 
-      serverData = { ...serverData, serverPageProps, serverReduxStore: store.getState() };
+      serverData = { ...serverData, serverPageData: serverPageProps, serverReduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? 'index.js' : '/javascripts/index.js';
       callback(null, `
         <html>

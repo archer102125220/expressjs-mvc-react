@@ -4,6 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 // const CopyJavascript = require('./webpack/copy-javascript');
 
 module.exports = {
+  mode:process.env.NODE_ENV || 'development',
   entry: {
     server: path.resolve(__dirname, 'script/bin/wwwboot.js'),
   },
@@ -41,11 +42,21 @@ module.exports = {
           to: path.resolve(__dirname, './dist/public'),
           force: true,
         },
-        // {
-        //   from: path.resolve(__dirname, './script/views'),
-        //   to: path.resolve(__dirname, './dist/views'),
-        //   force: true,
-        // }
+        {
+          from: path.resolve(__dirname, './.sequelizerc'),
+          to: path.resolve(__dirname, './dist'),
+          force: true,
+        },
+        {
+          from: path.resolve(__dirname, './script/config/models/database.js'),
+          to: path.resolve(__dirname, './dist/config/database.js'),
+          force: true,
+        },
+        {
+          from: path.resolve(__dirname, './script/models/server'),
+          to: path.resolve(__dirname, './dist/models'),
+          force: true,
+        }
       ]
     }),
     // new CopyJavascript({

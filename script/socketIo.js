@@ -1,5 +1,5 @@
 import socketIO from 'socket.io';
-import testEvent from '@server/socket/testEvent';
+import testEvent from '@socket/server/testEvent';
 
 class SocketIo extends socketIO {
   io = {}

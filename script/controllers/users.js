@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 // import fs from 'fs';
-import UserService from '@server/services/userService';
+import UserService from '@services/server/userService';
 import JWTMiddleware from '@server/middlewares/JWT';
 
 class Users {

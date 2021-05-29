@@ -1,4 +1,4 @@
-import userService from '@server/services/userService';
+import userService from '@services/server/userService';
 
 class testEvent {
   testEvent = async () => {

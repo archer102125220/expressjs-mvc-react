@@ -4,14 +4,7 @@ import { withRouter } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
-import IndexPage from '@views/index';
-
-const routeComponent = [
-  { key: 'root', path: '/', exact: true, component: IndexPage, pageName: 'index' },
-];
-const redirectComponent = [
-  { key: 'root', exact: true, to: '/', From: '/index' },
-];
+import { routeComponent, redirectComponent } from '@config/router/reactRouter';
 
 function setServerDate() {
   if (typeof (window) !== 'object') return;
@@ -19,14 +12,14 @@ function setServerDate() {
   const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
   const defaultProps = Page.defaultProps;
   if (typeof (Page.getServerData) === 'function') {
-    const newDefaultProps = Page.getServerData(serverData.serverPageProps);
+    const newDefaultProps = Page.getServerData(serverData.serverPageData);
     if (!defaultProps) {
       Page.defaultProps = { ...newDefaultProps };
     } else {
       Page.defaultProps = { ...defaultProps, ...newDefaultProps };
     }
   } else {
-    Page.defaultProps = { ...defaultProps, ...serverData.serverPageProps };
+    Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
   }
 }
 

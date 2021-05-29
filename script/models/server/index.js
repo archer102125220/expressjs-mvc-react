@@ -2,7 +2,7 @@
 // import path from 'path';
 // import _ from 'lodash';
 import _Sequelize from 'sequelize';
-import databaseConfig from '@models/server/config/database';
+import databaseConfig from '@config/models/database';
 import userList from '@models/server/userlist';
 
 // const basename = path.basename(__filename);

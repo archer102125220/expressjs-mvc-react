@@ -4,7 +4,7 @@ import * as reduxSagaEffects from 'redux-saga/effects';
 import { connectRouter } from 'connected-react-router';
 import * as historyCreater from 'history';
 import { routerMiddleware as createRouterMiddleware } from 'connected-react-router';
-import userList from './userList';
+import pluginModels from '@config/models/redux';
 
 let history;
 if (typeof (window) === 'object') {
@@ -15,11 +15,9 @@ if (typeof (window) === 'object') {
 
 export const BrowserHistory = history;
 
-const pluginModels = [userList];
+export const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent) : {};
 
-const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent) : {};
-
-function reduxInit(pluginModels, serverReduxStore = {}) {
+export default function reduxInit(pluginModels, serverReduxStore = {}) {
   // https://github.com/explooosion/react-redux-i18n-boilerplate/blob/master/src/reducers/settings.js
   // https://github.com/ms314006/React-With-Redux-Saga/blob/master/Ch02/src/saga/data.js
 
@@ -70,4 +68,4 @@ function reduxInit(pluginModels, serverReduxStore = {}) {
   return store;
 }
 
-export default reduxInit(pluginModels, serverData.serverReduxStore);
+export const store = reduxInit(pluginModels, serverData.serverReduxStore);
