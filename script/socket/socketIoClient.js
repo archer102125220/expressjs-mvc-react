@@ -21,5 +21,9 @@ class socketIoClient extends Io {
   }
 }
 
+let socket = { eventInit: function () { } };
+if (typeof (window) === 'object') {
+  socket = new socketIoClient(socketURL);
+}
 
-export default new socketIoClient(socketURL);
+export default socket;

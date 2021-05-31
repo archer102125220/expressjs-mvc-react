@@ -6,6 +6,7 @@ import _ from 'lodash';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { store } from '@utils/client/reduxInit';
 import { pageList } from '@config/router/expressRouter';
+import { clientLinkTagList, clientScriptTagList, defaultPageTitle } from '@config/globalHeadTage';
 
 
 class pageRender {
@@ -17,8 +18,8 @@ class pageRender {
     View.prototype.resolve = this.resolve;
     express.set('view', View);
 
-    const clientLinkTagList = express?.clientLinkTagList || [];
-    this.clientLinkTag = clientLinkTagList.reduce((accumulator, currentValue) => {
+    const linkTagList = clientLinkTagList || [];
+    this.clientLinkTag = linkTagList.reduce((accumulator, currentValue) => {
       accumulator += `<link ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
         accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
         return accumulator;
@@ -27,8 +28,8 @@ class pageRender {
       return accumulator;
     }, '');
 
-    const clientScriptTagList = express?.clientScriptTagList || [];
-    this.clientScriptTag = clientScriptTagList.reduce((accumulator, currentValue) => {
+    const scriptTagList = clientScriptTagList || [];
+    this.clientScriptTag = scriptTagList.reduce((accumulator, currentValue) => {
       accumulator += `<script ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
         accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
         return accumulator;
@@ -79,10 +80,12 @@ class pageRender {
 
       serverData = { ...serverData, serverPageData: serverPageProps, serverReduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? 'index.js' : '/javascripts/index.js';
+      const reactStylePath = process.env.NODE_ENV !== 'production' ? 'styles.css' : '/javascripts/styles.css';
       callback(null, `
         <html>
-          <title>${this.defaultPageTitle}</title>
+          <title>${defaultPageTitle || ''}</title>
           <script id="__EXPRESS_MVC_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
+          <link rel="stylesheet" type="text/css" href="${reactStylePath}" />
           ${this.clientLinkTag}
           ${this.clientScriptTag}
           <body>

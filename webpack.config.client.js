@@ -1,6 +1,7 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 // const theme = require('./theme');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // https://andyyou.github.io/2016/05/30/webpack-dev-middleware-in-express/
@@ -43,14 +44,6 @@ module.exports = {
       }],
     },
     {
-      test: /\.css$/,
-      use: ['style-loader', {
-        loader: 'css-loader',
-        options: {
-          modules: true
-        }
-      }],
-    }, {
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,
       use: {
@@ -83,6 +76,14 @@ module.exports = {
     {
       test: /\.scss$/,
       use: ['style-loader', 'css-loader', 'sass-loader']
+    }, {
+      test: /\.css$/,
+      use: [
+        {
+          loader: MiniCssExtractPlugin.loader,
+        },
+        'css-loader'
+      ],
     }],
   },
   plugins: [
@@ -92,6 +93,9 @@ module.exports = {
       // systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
       // silent: true, // hide any errors
       // defaults: false // load '.env.defaults' as the default values if empty.
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css',
+    }),
   ],
 };

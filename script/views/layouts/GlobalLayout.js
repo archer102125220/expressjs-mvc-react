@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'dva';
 import { connect } from 'react-redux';
-// import _ from 'lodash';
-// import { routerRedux } from 'dva/router';
-// import Typography from '@material-ui/core/Typography';
+import { BrowserHistory } from '@utils/client/reduxInit';
+import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = (state) => ({
   users: state.userList?.userList || [],
-  // users: _.get(state, 'userList.userList', []),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  TEST_UserList: (payload, callback, loading) => {
-    dispatch({ type: 'userList/TEST_UserList', payload, callback, loading });
-  },
   GET_UserList: (payload, callback, loading) => dispatch({ type: 'userList/GET_UserList', payload, callback, loading }),
-  // goToRoute: (path, callback) => {
-  //   // dispatch(routerRedux.push(path));
-  //   if (callback) { callback(); }
-  // }
+  goToRoute: (path, callback) => {
+    dispatch(BrowserHistory.push(path));
+    if (callback) { callback(); }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -28,7 +22,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     componentDidMount() {
-      // this.props.TEST_UserList([1]);
       this.props.GET_UserList();
     }
 
@@ -36,10 +29,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       const { children } = this.props;
 
       return (
-        <div>{children}</div>
-        // <Typography component='div'>
-        //   {children}
-        // </Typography>
+        // <div>{children}</div>
+        <Typography component='div'>
+          {children}
+        </Typography>
       );
     }
 

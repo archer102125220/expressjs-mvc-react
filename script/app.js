@@ -37,23 +37,12 @@ class App extends Express {
         '/api/users/login',
         /^\/assets\/.*/,
         /^.*\.js/,
-        /^\/stylesheets\/.*/
+        /^.*\.css/
       ]
     }),
     //uploader.video(),
     //uploader.avater()
   ]
-
-  routesWeb = routesWeb
-
-  routesApi = routesApi
-
-  clientLinkTagList = [
-    { rel: 'stylesheet', href: '/stylesheets/style.css' },
-    { rel: 'shortcut icon', href: '/assets/favicon.ico' },
-  ]
-  clientScriptTagList = []
-  defaultPageTitle = 'expressjs-mvc-react'
 
   setting = {
     'views': path.join(__dirname, 'views'),
@@ -98,11 +87,11 @@ class App extends Express {
   }
 
   setRoutes = () => {
-    this.routesWeb.forEach(element => {
+    routesWeb.forEach(element => {
       this.use(element.prefix, element.route);
     });
 
-    this.routesApi.forEach(element => {
+    routesApi.forEach(element => {
       this.use('/api' + (element.prefix || ''), element.route);
     });
   }

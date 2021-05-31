@@ -9,6 +9,14 @@
       "@babel/plugin-transform-runtime",
       "@babel/plugin-syntax-dynamic-import",
       "dynamic-import-node-babel-7",
+      "inline-react-svg",
+      [
+        "css-modules-transform",
+        {
+            "camelCase": true,
+            "extensions": [ ".css", ".scss" ]
+        }
+      ],
       [
         "module-resolver",
         {
