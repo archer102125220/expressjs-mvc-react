@@ -15,7 +15,9 @@ class socketIoClient extends Io {
 
   eventInit = (events = []) => {
     events.forEach(({ name, event }) => {
-      this[name + 'Send'] = (data = null) => this.emit(name, data);
+      this[name + 'Send'] = (data = null) => {
+        this.emit(name, data);
+      };
       this.on(name, (data) => event(data));
     });
   }

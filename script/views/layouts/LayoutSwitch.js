@@ -56,7 +56,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       );
     }
     static propTypes = {
-      children: PropTypes.any,
+      children: PropTypes.node,
       history: PropTypes.any,
       SOCKET_UserList: PropTypes.func,
     };

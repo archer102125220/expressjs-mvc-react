@@ -17,6 +17,7 @@ export const BrowserHistory = history;
 
 export const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent) : {};
 
+
 export default function reduxInit(pluginModels, serverReduxStore = {}) {
   // https://github.com/explooosion/react-redux-i18n-boilerplate/blob/master/src/reducers/settings.js
   // https://github.com/ms314006/React-With-Redux-Saga/blob/master/Ch02/src/saga/data.js

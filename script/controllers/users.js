@@ -1,9 +1,21 @@
+import Express from 'express';
 import crypto from 'crypto';
 // import fs from 'fs';
 import UserService from '@services/server/userService';
+import uploader from '@server/middlewares/uploader';
 import JWTMiddleware from '@server/middlewares/JWT';
 
-class Users {
+class Users extends Express.Router {
+  constructor(props) {
+    super(props);
+    this.get('/', this.usersList);
+    this.post('/registered', uploader.avater(), this.createUser);
+    this.post('/img_upload_test', uploader.avater(), this.imgUploadTest);
+    this.post('/video_upload_test', uploader.video(), this.imgUploadTest);
+    this.get('/account/:name', this.findUser);
+    this.get('/login', this.loginUser);
+  }
+
   usersList = async (req, res) => {
     //const { id, start, end } = req.body; //→接受前端來的資料
     const userData = await UserService.AllUsers(req.auth.id);

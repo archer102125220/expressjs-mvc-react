@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { enquireScreen } from 'enquire-js';
+import { enquireScreen, unenquireScreen  } from 'enquire-js';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Grid from '@material-ui/core/Grid';
@@ -32,6 +32,10 @@ class MaterialButton extends Component {
         isMobile: mobile ? true : false,
       });
     }/*, '(max-width: 1024px)' */);
+  }
+
+  componentWillUnmount = () => {
+    unenquireScreen(this.enquireHandler);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -141,7 +145,7 @@ class MaterialButton extends Component {
     }
   }
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
     buttons: PropTypes.array,
     vertical: PropTypes.any,
     buttonStyle: PropTypes.object,

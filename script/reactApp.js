@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { store, BrowserHistory } from '@utils/client/reduxInit';
 import Router from '@utils/client/reactRouterInit';
 import reportWebVitals from '@utils/client/reportWebVitals';
-import { store, BrowserHistory } from '@utils/client/reduxInit';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,4 +22,6 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 if (process.env.NODE_ENV !== 'production') reportWebVitals(console.log);
 
-if (process.env.NODE_ENV === 'production') document.getElementById('__EXPRESS_MVC_DATA__').remove();
+
+// if (process.env.NODE_ENV === 'production') document.getElementById('__EXPRESS_MVC_DATA__').remove();
+document.getElementById('__EXPRESS_MVC_DATA__').remove();

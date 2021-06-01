@@ -5,6 +5,7 @@ import '@server/public/stylesheets/App.css';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Button from '@utils/components/Button';
+import { BrowserHistory } from '@utils/client/reduxInit';
 import Socket from '@socket/socketIoClient';
 // https://stackoverflow.com/questions/57012780/adding-css-to-react-ssr-components
 
@@ -38,6 +39,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   GET_UserList: (payload, callback, loading) => dispatch({ type: 'userList/GET_UserList', payload, callback, loading }),
+  goToRoute: (path, callback) => {
+    BrowserHistory.push(path);
+    if (callback) { callback(); }
+  }
 });
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
@@ -49,10 +54,8 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
       };
     }
 
-    static getServerData({ serverData, serverReduxStore, isServer }) {
-      const defaultProps = this.defaultProps || {};
-      if (isServer) serverReduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
-      return { ...defaultProps, ...serverData };
+    static getInitialProps() {
+      return { title: 'testPage' };
     }
 
     render() {
@@ -72,16 +75,18 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
             >
               Learn React
             </a>
+            <Button onClick={() => { this.props.goToRoute('/'); }}>測試</Button>
             <Button buttons={buttons} />
           </header>
         </div>);
     }
 
     static propTypes = {
-      children: PropTypes.any,
-      history: PropTypes.any,
+      children: PropTypes.node,
+      history: PropTypes.object,
       title: PropTypes.string,
       users: PropTypes.array,
+      goToRoute: PropTypes.func,
     };
 
     static defaultProps = {

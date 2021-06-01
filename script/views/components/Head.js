@@ -14,6 +14,6 @@ export default class Head extends React.Component {
     return <head></head>;
   }
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
   };
 }

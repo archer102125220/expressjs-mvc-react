@@ -29,7 +29,7 @@ if (process.env.HTTPS && process.env.HTTP) {
 
 if (process.env.HTTP) {
   const server = http.createServer(App); //Create HTTP server.
-  Socket.init(server); //Create socket server.
+  if (process.env.SOCKET === 'true' || process.env.SOCKET === true) Socket.init(server); //Create socket server.
   server.listen(port, process.env.APP_HOST || '0.0.0.0'); //Listen on provided port, on all network interfaces.
   server.on('error', onError);
   server.on('listening', () => onListening(server));
@@ -44,7 +44,7 @@ if (process.env.HTTPS) {
   const ca = fs.readFileSync(rootPath + '/sslcert/cert.pem', 'utf8');
   const credentials = { key: privateKey, cert: certificate, ca, passphrase: '??' };
   const httpsServer = https.createServer(credentials, App);
-  if (Socket.state !== 'connected' && Socket.state !== 'connection') {
+  if ((process.env.SOCKET === 'true' || process.env.SOCKET === true) && Socket.state !== 'connected' && Socket.state !== 'connection') {
     Socket.init(httpsServer);
   }
   httpsServer.listen(sslPort, process.env.APP_HOST || '0.0.0.0');

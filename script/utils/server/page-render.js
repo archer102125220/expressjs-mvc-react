@@ -54,8 +54,8 @@ class pageRender {
       delete options.req;
       let serverPageProps = {};
       let serverProps = {};
-      if (typeof (Page.getServerData) === 'function') {
-        const newDefaultProps = Page.getServerData({ serverData: options, settings, res, req, serverReduxStore: store, isServer: true });
+      if (typeof (Page.getInitialProps) === 'function') {
+        const newDefaultProps = Page.getInitialProps({ serverData: options, settings, res, req, serverReduxStore: store, isServer: true });
         delete newDefaultProps.reduxStore;
         // settings = {};
         const defaultProps = Page.defaultProps;

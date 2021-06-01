@@ -3,7 +3,6 @@ import fetch from '@utils/client/request';
 
 
 export function GET_userList(payload = {}, token) {
-  console.log({ token });
   return fetch('GET', '/api/users', payload, {
     headers: {
       // eslint-disable-next-line no-useless-escape

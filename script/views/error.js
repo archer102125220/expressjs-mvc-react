@@ -16,7 +16,7 @@ export default class ErrorPage extends Component {
     </div>);
   }
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
     history: PropTypes.any,
     message: PropTypes.string,
     error: PropTypes.object,

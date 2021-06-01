@@ -8,17 +8,11 @@ import { routeComponent, redirectComponent } from '@config/router/reactRouter';
 
 function setServerDate() {
   if (typeof (window) !== 'object') return;
-  const serverData = JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent);
-  const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
-  const defaultProps = Page.defaultProps;
-  if (typeof (Page.getServerData) === 'function') {
-    const newDefaultProps = Page.getServerData(serverData.serverPageData);
-    if (!defaultProps) {
-      Page.defaultProps = { ...newDefaultProps };
-    } else {
-      Page.defaultProps = { ...defaultProps, ...newDefaultProps };
-    }
-  } else {
+  const __EXPRESS_MVC_DATA__ = document.getElementById('__EXPRESS_MVC_DATA__');
+  if (typeof (__EXPRESS_MVC_DATA__) === 'object' && __EXPRESS_MVC_DATA__ !== null) {
+    const serverData = JSON.parse(__EXPRESS_MVC_DATA__.textContent);
+    const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
+    const defaultProps = Page.defaultProps || {};
     Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
   }
 }
@@ -26,11 +20,20 @@ function setServerDate() {
 class Root extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    children: PropTypes.any
+    children: PropTypes.node
   };
 
   render() {
-    const { children } = this.props;
+    const { children, history } = this.props;
+    if (typeof (window) === 'object') {
+      const location = history.location || {};
+      const Page = routeComponent.find(page => page.path === location.pathname)?.component || {};
+      if (typeof (Page?.getInitialProps) === 'function') {
+        const newDefaultProps = Page.getInitialProps({ ...history });
+        const defaultProps = Page.defaultProps || {};
+        Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+      }
+    }
     return children;
   }
 }

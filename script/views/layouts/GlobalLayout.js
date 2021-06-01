@@ -37,7 +37,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     static propTypes = {
-      children: PropTypes.any,
+      children: PropTypes.node,
       TEST_UserList: PropTypes.func,
       GET_UserList: PropTypes.func
     }

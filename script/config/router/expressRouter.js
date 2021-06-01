@@ -1,5 +1,5 @@
-import indexRouter from '@server/routes/index';
-import usersRouter from '@server/routes/users';
+import indexRouter from '@server/controllers/index';
+import usersRouter from '@server/controllers/users';
 import IndexPage from '@views';
 import ErrorPage from '@views/error';
 

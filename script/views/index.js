@@ -24,7 +24,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       };
     }
 
-    static getServerData({ serverData, serverReduxStore, isServer }) {
+    static getInitialProps({ serverData, serverReduxStore, isServer }) {
       const defaultProps = this.defaultProps || {};
       if (isServer) serverReduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
       return { ...defaultProps, ...serverData };
@@ -45,13 +45,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             >
               Learn React
           </a>
-          <Link to="/testPage" className="navbar-brand">SPA換頁測試</Link>
+          <Link to="/testPage" className="App-link">SPA換頁測試</Link>
           </header>
         </div>);
     }
 
     static propTypes = {
-      children: PropTypes.any,
+      children: PropTypes.node,
       history: PropTypes.any,
       title: PropTypes.string,
     };
