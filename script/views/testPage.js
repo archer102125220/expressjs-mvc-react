@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Button from '@utils/components/Button';
 import { BrowserHistory } from '@utils/client/reduxInit';
-import Socket from '@socket/socketIoClient';
+import { GET_userList } from '@services/client/userList';
 // https://stackoverflow.com/questions/57012780/adding-css-to-react-ssr-components
 
 
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
-  class Index extends Component {
+  class TestPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -54,13 +54,15 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
       };
     }
 
-    static getInitialProps() {
-      return { title: 'testPage' };
+
+    static async getInitialProps({ isServer }) {
+      if (isServer === true) return { title: 'testPage' };
+      const userList = await GET_userList(null, 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWNjb3VudCI6Ik1hcm5pZSIsImVtYWlsIjoiTWFybmllQGIuY29tIiwiYWNjb3VudF9JZCI6IjEwZGU5MzY0LWVhM2ItNDQwNC04M2RkLTE0MDJmYTgxNzNiMyIsImNyZWF0ZWRBdCI6IjIwMjEtMDUtMjlUMDc6MDA6MjcuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjEtMDUtMjlUMDc6MDA6MjcuMDAwWiIsImlhdCI6MTYyMjk5MTY5NiwiZXhwIjoxNjIzMjUwODk2fQ.5IdJBaXGcvZ-hqBU9-V0sQNDxnUwRqhqMpL6pJZE8fk');
+      console.log({ userList });
+      return { title: userList[1].account || '', userList };
     }
 
     render() {
-      const { users } = this.props;
-      const buttons = users.map(element => ({ element: element.account, event: () => Socket.clickEventSend({ id: 10 }) }));
       return (
         <div className="App">
           <header className="App-header">
@@ -76,7 +78,6 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
               Learn React
             </a>
             <Button onClick={() => { this.props.goToRoute('/'); }}>測試</Button>
-            <Button buttons={buttons} />
           </header>
         </div>);
     }
@@ -90,7 +91,7 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(
     };
 
     static defaultProps = {
-      title: '12345'
+      title: ''
     }
   }
 ));

@@ -69,4 +69,4 @@ export default function reduxInit(pluginModels, serverReduxStore = {}) {
   return store;
 }
 
-export const store = reduxInit(pluginModels, serverData.serverReduxStore);
+export const store = reduxInit(pluginModels, serverData.reduxStore);

@@ -5,6 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { routeComponent, redirectComponent } from '@config/router/reactRouter';
+import { store } from '@utils/client/reduxInit';
 
 function setServerDate() {
   if (typeof (window) !== 'object') return;
@@ -16,25 +17,47 @@ function setServerDate() {
     Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
   }
 }
-
 class Root extends Component {
+  state = {}
+
   static propTypes = {
     history: PropTypes.object.isRequired,
     children: PropTypes.node
   };
 
-  render() {
-    const { children, history } = this.props;
-    if (typeof (window) === 'object') {
-      const location = history.location || {};
-      const Page = routeComponent.find(page => page.path === location.pathname)?.component || {};
-      if (typeof (Page?.getInitialProps) === 'function') {
-        const newDefaultProps = Page.getInitialProps({ ...history });
-        const defaultProps = Page.defaultProps || {};
+  async shouldComponentUpdate(nextProps) {
+    const { history } = nextProps;
+    const location = history.location || {};
+    const Page = routeComponent.find(page => page.path === location.pathname)?.component || {};
+    if (typeof (Page?.getInitialProps) === 'function') {
+      const newDefaultProps = await Page.getInitialProps({ ...history, isServer: false, reduxStore: store });
+      const defaultProps = Page.defaultProps || {};
+      const WrappedComponent = Page?.WrappedComponent;
+      if (WrappedComponent) {
+        const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+        Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+      } else {
         Page.defaultProps = { ...defaultProps, ...newDefaultProps };
       }
+      this.forceUpdate();
+
     }
-    return children;
+    return true;
+  }
+
+  render() {
+    const { props } = this;
+    return (
+      <Switch  {...props}>
+        <LayoutSwitch  {...props}>
+          {
+            routeComponent.map(value => renderRoutes(value, props))
+          }
+          {
+            redirectComponent.map(value => renderRedirects(value, props))
+          }
+        </LayoutSwitch>
+      </Switch>);
   }
 }
 
@@ -70,18 +93,7 @@ const Router = props => {
   setServerDate();
   return (
     <ConnectedRouter {...props}>
-      <RouterRoot {...props}>
-        <Switch  {...props}>
-          <LayoutSwitch  {...props}>
-            {
-              routeComponent.map(value => renderRoutes(value, props))
-            }
-            {
-              redirectComponent.map(value => renderRedirects(value, props))
-            }
-          </LayoutSwitch>
-        </Switch>
-      </RouterRoot>
+      <RouterRoot {...props} />
     </ConnectedRouter>
   );
 };

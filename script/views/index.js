@@ -24,10 +24,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       };
     }
 
-    static getInitialProps({ serverData, serverReduxStore, isServer }) {
-      const defaultProps = this.defaultProps || {};
-      if (isServer) serverReduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
-      return { ...defaultProps, ...serverData };
+    static getInitialProps({ serverData, reduxStore, isServer }) {
+      if (isServer === true) {
+        reduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
+        return { ...serverData };
+      }
     }
 
     render() {
@@ -45,7 +46,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             >
               Learn React
           </a>
-          <Link to="/testPage" className="App-link">SPA換頁測試</Link>
+            <Link to="/testPage" className="App-link">SPA換頁測試</Link>
           </header>
         </div>);
     }

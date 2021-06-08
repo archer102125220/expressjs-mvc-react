@@ -12,8 +12,13 @@ export default {
 
   effects: {
     *GET_UserList({ payload }, { call, put }) {  // eslint-disable-line
-      const data = yield call(GET_userList, payload, 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWNjb3VudCI6Ik1hcm5pZSIsImVtYWlsIjoiTWFybmllQGIuY29tIiwiYWNjb3VudF9JZCI6IjgwMTQxMDNmLWY5MjMtNGM3OC05M2U0LWQxZGY2YzI4MzI2YSIsImNyZWF0ZWRBdCI6IjIwMjEtMDUtMjlUMDY6MjU6MjguMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjEtMDUtMjlUMDY6MjU6MjguMDAwWiIsImlhdCI6MTYyMjI2OTU0MCwiZXhwIjoxNjIyNTI4NzQwfQ.1GCE_6DPg28qOMQLYHweyJv_VyEbf1mdNLpvzPFJFag');
-      yield put({ type: 'set_user_list', payload: data });
+      try {
+        const data = yield call(GET_userList, payload, 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWNjb3VudCI6Ik1hcm5pZSIsImVtYWlsIjoiTWFybmllQGIuY29tIiwiYWNjb3VudF9JZCI6IjEwZGU5MzY0LWVhM2ItNDQwNC04M2RkLTE0MDJmYTgxNzNiMyIsImNyZWF0ZWRBdCI6IjIwMjEtMDUtMjlUMDc6MDA6MjcuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjEtMDUtMjlUMDc6MDA6MjcuMDAwWiIsImlhdCI6MTYyMjk5MTY5NiwiZXhwIjoxNjIzMjUwODk2fQ.5IdJBaXGcvZ-hqBU9-V0sQNDxnUwRqhqMpL6pJZE8fk');
+        yield put({ type: 'set_user_list', payload: data });
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production' ) console.log(error);
+        console.log('get user list error');
+      }
     },
     *SOCKET_UserList({ payload, callback, loading, token }, { call, put }) {  // eslint-disable-line
       // const data = yield call(GET_userList, 'testEvent', payload, token);

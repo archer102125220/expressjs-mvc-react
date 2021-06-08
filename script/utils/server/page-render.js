@@ -40,7 +40,7 @@ class pageRender {
   }
   pageList = pageList
 
-  renderReact = (pageName, options, callback) => {
+  renderReact = async (pageName, options, callback) => {
     try {
       const Page = this.pageList[pageName];
       let serverData = { pageName };
@@ -55,7 +55,7 @@ class pageRender {
       let serverPageProps = {};
       let serverProps = {};
       if (typeof (Page.getInitialProps) === 'function') {
-        const newDefaultProps = Page.getInitialProps({ serverData: options, settings, res, req, serverReduxStore: store, isServer: true });
+        const newDefaultProps = await Page.getInitialProps({ serverData: options, settings, res, req, reduxStore: store, isServer: true });
         delete newDefaultProps.reduxStore;
         // settings = {};
         const defaultProps = Page.defaultProps;
@@ -78,7 +78,7 @@ class pageRender {
         </MemoryRouter>
       );
 
-      serverData = { ...serverData, serverPageData: serverPageProps, serverReduxStore: store.getState(), serverProps };
+      serverData = { ...serverData, serverPageData: serverPageProps, reduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? 'index.js' : '/javascripts/index.js';
       const reactStylePath = process.env.NODE_ENV !== 'production' ? 'styles.css' : '/javascripts/styles.css';
       callback(null, `
