@@ -14,7 +14,13 @@ function setServerDate() {
     const serverData = JSON.parse(__EXPRESS_MVC_DATA__.textContent);
     const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
     const defaultProps = Page.defaultProps || {};
-    Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
+    const WrappedComponent = Page?.WrappedComponent;
+    if (WrappedComponent) {
+      const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+      Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...serverData.serverProps };
+    } else {
+      Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
+    }
   }
 }
 class Root extends Component {
@@ -40,7 +46,7 @@ class Root extends Component {
         Page.defaultProps = { ...defaultProps, ...newDefaultProps };
       }
       this.forceUpdate();
-
+      return false;
     }
     return true;
   }

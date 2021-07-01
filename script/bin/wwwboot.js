@@ -19,15 +19,16 @@ const rootPath = process.cwd();
 
 const port = normalizePort(process.env.APP_PORT || '3000');
 const sslPort = normalizePort(process.env.SSL_APP_PORT);
-if (process.env.HTTPS && process.env.HTTP) {
+
+if (process.env.HTTPS === 'true' && process.env.HTTP === 'true') {
   App.set('port', [port, sslPort]);
-} else if (process.env.HTTP) {
+} else if (process.env.HTTP === 'true') {
   App.set('port', port);
-} else if (process.env.HTTPS) {
+} else if (process.env.HTTPS === 'true') {
   App.set('port', sslPort);
 }
 
-if (process.env.HTTP) {
+if (process.env.HTTP === 'true') {
   const server = http.createServer(App); //Create HTTP server.
   if (process.env.SOCKET === 'true' || process.env.SOCKET === true) Socket.init(server); //Create socket server.
   server.listen(port, process.env.APP_HOST || '0.0.0.0'); //Listen on provided port, on all network interfaces.
@@ -36,7 +37,7 @@ if (process.env.HTTP) {
   server.on('request', (request, response) => ipLog(request, response));
 }
 
-if (process.env.HTTPS) {
+if (process.env.HTTPS === 'true') {
   //https://medium.com/@savemuse/node-js-%E5%BB%BA%E7%AB%8Bhttps%E4%BC%BA%E6%9C%8D%E5%99%A8-46442e9cd433
   //https://dev.twsiyuan.com/2017/10/openssl-unable-to-load-config.html
   const privateKey = fs.readFileSync(rootPath + '/sslcert/server-key.pem', 'utf8');

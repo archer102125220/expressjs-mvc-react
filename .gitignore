@@ -3,6 +3,8 @@
 build
 dist
 script/public/upload/*
+script/public/assets/video/*
+script/public/video/*
 node_modules
 sslcert
 

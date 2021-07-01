@@ -79,8 +79,8 @@ class pageRender {
       );
 
       serverData = { ...serverData, serverPageData: serverPageProps, reduxStore: store.getState(), serverProps };
-      const reactAppPath = process.env.NODE_ENV !== 'production' ? 'index.js' : '/javascripts/index.js';
-      const reactStylePath = process.env.NODE_ENV !== 'production' ? 'styles.css' : '/javascripts/styles.css';
+      const reactAppPath = process.env.NODE_ENV !== 'production' ? '/index.js' : '/javascripts/index.js';
+      const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/javascripts/styles.css';
       callback(null, `
         <html>
           <title>${defaultPageTitle || ''}</title>

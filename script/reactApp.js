@@ -5,15 +5,26 @@ import { Provider } from 'react-redux';
 import { store, BrowserHistory } from '@utils/client/reduxInit';
 import Router from '@utils/client/reactRouterInit';
 import reportWebVitals from '@utils/client/reportWebVitals';
+import 'node_modules/plyr-react/dist/plyr.css';
+// import 'node_modules/video-react/dist/video-react.css'; // import video-react css
+// import 'node_modules/video.js/dist/video-js.css'; // import video-js css
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Router history={BrowserHistory} />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+  // https://stackoverflow.com/questions/61220424/material-ui-drawer-finddomnode-is-deprecated-in-strictmode
+  // <React.StrictMode>
+  //   <Provider store={store}>
+  //     <BrowserRouter>
+  //       <Router history={BrowserHistory} />
+  //     </BrowserRouter>
+  //   </Provider>
+  // </React.StrictMode>,
+
+  <Provider store={store}>
+    <BrowserRouter>
+      <Router history={BrowserHistory} />
+    </BrowserRouter>
+  </Provider>,
+
   document.getElementById('root')
 );
 

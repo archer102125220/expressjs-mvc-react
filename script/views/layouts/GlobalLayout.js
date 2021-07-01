@@ -22,7 +22,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     componentDidMount() {
-      this.props.GET_UserList();
+      // this.props.GET_UserList();
     }
 
     render() {
@@ -38,7 +38,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     static propTypes = {
       children: PropTypes.node,
-      TEST_UserList: PropTypes.func,
       GET_UserList: PropTypes.func
     }
   }

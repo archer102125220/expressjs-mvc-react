@@ -30,18 +30,15 @@ class App extends Express {
     JWTMiddleware.unless({
       path: [
         '/',
-        /^\/api\/users\/account\/.*/,
-        '/api/users/registered',
-        '/api/users/img_upload_test',
-        '/api/users/video_upload_test',
-        '/api/users/login',
+        '/login',
         /^\/assets\/.*/,
         /^.*\.js/,
-        /^.*\.css/
+        /^.*\.css/,
+        /^\/api\/users\/account\/.*/,
+        '/api/users/registered',
+        '/api/users/login'
       ]
     }),
-    //uploader.video(),
-    //uploader.avater()
   ]
 
   setting = {
@@ -87,13 +84,8 @@ class App extends Express {
   }
 
   setRoutes = () => {
-    routesWeb.forEach(element => {
-      this.use(element.prefix, element.route);
-    });
-
-    routesApi.forEach(element => {
-      this.use('/api' + (element.prefix || ''), element.route);
-    });
+    this.use('/', routesWeb);
+    this.use('/api', routesApi);
   }
 
   setErrorHandler = () => {

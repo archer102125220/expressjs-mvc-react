@@ -1,21 +1,10 @@
-import Express from 'express';
 import crypto from 'crypto';
-// import fs from 'fs';
+import fs from 'fs';
+import hbjs from 'handbrake-js';
 import UserService from '@services/server/userService';
-import uploader from '@server/middlewares/uploader';
 import JWTMiddleware from '@server/middlewares/JWT';
 
-class Users extends Express.Router {
-  constructor(props) {
-    super(props);
-    this.get('/', this.usersList);
-    this.post('/registered', uploader.avater(), this.createUser);
-    this.post('/img_upload_test', uploader.avater(), this.imgUploadTest);
-    this.post('/video_upload_test', uploader.video(), this.imgUploadTest);
-    this.get('/account/:name', this.findUser);
-    this.get('/login', this.loginUser);
-  }
-
+class Users {
   usersList = async (req, res) => {
     //const { id, start, end } = req.body; //→接受前端來的資料
     const userData = await UserService.AllUsers(req.auth.id);
@@ -39,7 +28,8 @@ class Users extends Express.Router {
   }
 
   loginUser = async (req, res) => {
-    const { account, password } = req.query;
+    // const { account, password } = req.query;
+    const { account, password } = req.body;
     const userData = await UserService.findUser({
       account,
       password: crypto.createHash('sha1').update(password).digest('hex')
@@ -48,7 +38,9 @@ class Users extends Express.Router {
     if ((userData || []).length === 0) {
       res.status(200).send('查無資料');
     } else {
-      res.status(200).send(JWTMiddleware.encode(userData[0].dataValues));
+      const token = JWTMiddleware.encode(userData[0].dataValues);
+      res.cookie('token', token, { httpOnly: true });
+      res.status(200).send(token);
     }
   }
 
@@ -63,13 +55,79 @@ class Users extends Express.Router {
     }
   }
 
-  imgUploadTest = async (req, res) => {
+  imgUploadTest = (req, res) => {
     const { body: payload } = req;
     console.log(req.file);
 
     res.status(200).json({
       ...payload, avater: req.avater, file: req.file, video: req.video
     });
+  }
+  videoUpload = (req, res) => {
+    try {
+      const { body: payload } = req;
+
+      const videoUploadList = req.file || req.files;
+      // console.log(req.file);
+      // console.log(req.files);
+
+      this.videoProcessing(videoUploadList);
+
+
+      res.status(200).json({
+        ...payload, videoUploadList
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500);
+    }
+  }
+
+  videoProcessing = (videoUploadList) => {
+    try {
+
+      const videoList = Array.isArray(videoUploadList) ? videoUploadList.map(this.handbrakeOption) : [this.handbrakeOption(videoUploadList)];
+      // https://liyaoli.com/2017-06-26/unhandled-promise-rejection.html
+      videoList.map((video) =>
+        hbjs
+          .spawn({
+            ...video,
+            subtitle: 1,
+            'subtitle-burned': 1
+          })
+          .on('start', () => {
+            console.log('video process start');
+            // console.log({ start });
+          })
+          // .on('progress', progress => {
+          //   console.log(
+          //     'Percent complete: %s, ETA: %s',
+          //     progress.percentComplete,
+          //     progress.eta
+          //   );
+          // })
+          .on('complete', () => {
+            // https://www.geeksforgeeks.org/node-js-fs-unlinksync-method/
+            fs.unlinkSync(video.input);
+            console.log('complete!');
+          })
+          .on('error', (err) => {
+            console.log({ err });
+          })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  handbrakeOption = (video = {}) => {
+    const videoFilename = video.filename || '';
+    const filename = videoFilename.substring(0, videoFilename.lastIndexOf('.')) + '.mp4';
+
+    return {
+      input: video.path,
+      output: (video.destination || '').replace('/originalVideo', '') + '/' + filename
+    };
   }
 
   // usersListSocket = async (packet, next) => {
