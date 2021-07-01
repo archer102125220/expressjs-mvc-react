@@ -1,10 +1,12 @@
 import crypto from 'crypto';
-import fs from 'fs';
-import hbjs from 'handbrake-js';
 import UserService from '@services/server/userService';
 import JWTMiddleware from '@server/middlewares/JWT';
+import videoConverter from '@utils/server/video-converter';
 
 class Users {
+  constructor() {
+    this.VideoConverter = new videoConverter({ deleteOriginalVideo: true });
+  }
   usersList = async (req, res) => {
     //const { id, start, end } = req.body; //→接受前端來的資料
     const userData = await UserService.AllUsers(req.auth.id);
@@ -64,70 +66,18 @@ class Users {
     });
   }
   videoUpload = (req, res) => {
-    try {
-      const { body: payload } = req;
+    const { body: payload } = req;
 
-      const videoUploadList = req.file || req.files;
-      // console.log(req.file);
-      // console.log(req.files);
+    const videoUploadList = req.file || req.files;
+    // console.log(req.file);
+    // console.log(req.files);
 
-      this.videoProcessing(videoUploadList);
+    this.VideoConverter.convert(videoUploadList);
 
 
-      res.status(200).json({
-        ...payload, videoUploadList
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500);
-    }
-  }
-
-  videoProcessing = (videoUploadList) => {
-    try {
-
-      const videoList = Array.isArray(videoUploadList) ? videoUploadList.map(this.handbrakeOption) : [this.handbrakeOption(videoUploadList)];
-      // https://liyaoli.com/2017-06-26/unhandled-promise-rejection.html
-      videoList.map((video) =>
-        hbjs
-          .spawn({
-            ...video,
-            subtitle: 1,
-            'subtitle-burned': 1
-          })
-          .on('start', () => {
-            console.log('video process start');
-            // console.log({ start });
-          })
-          // .on('progress', progress => {
-          //   console.log(
-          //     'Percent complete: %s, ETA: %s',
-          //     progress.percentComplete,
-          //     progress.eta
-          //   );
-          // })
-          .on('complete', () => {
-            // https://www.geeksforgeeks.org/node-js-fs-unlinksync-method/
-            fs.unlinkSync(video.input);
-            console.log('complete!');
-          })
-          .on('error', (err) => {
-            console.log({ err });
-          })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  handbrakeOption = (video = {}) => {
-    const videoFilename = video.filename || '';
-    const filename = videoFilename.substring(0, videoFilename.lastIndexOf('.')) + '.mp4';
-
-    return {
-      input: video.path,
-      output: (video.destination || '').replace('/originalVideo', '') + '/' + filename
-    };
+    res.status(200).json({
+      ...payload, videoUploadList
+    });
   }
 
   // usersListSocket = async (packet, next) => {
