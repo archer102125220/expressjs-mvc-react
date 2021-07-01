@@ -1,5 +1,6 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 //https://github.com/expressjs/multer/blob/master/doc/README-zh-cn.md
 //const dest = process.env.UPLOAD_IMG || 'script/public/upload';
@@ -19,7 +20,11 @@ class uploader {
       this.avaterUploader = new multer({
         storage: diskStorage({
           destination: function (req, file, cb) {
-            cb(null, publicPath + '/' + process.env.AVATER_DIR || publicPath + '/assets/upload');
+            const dirName = (publicPath + '/' + process.env.AVATER_DIR) || (publicPath + '/assets/upload');
+            if (fs.existsSync(dirName) === false) {
+              fs.mkdirSync(dirName);
+            }
+            cb(null, dirName);
           },
           filename
         })
@@ -34,7 +39,15 @@ class uploader {
     return new multer({
       storage: process.env.BUFFER_IMAGE && video === false ? memoryStorage() : diskStorage({
         destination: function (req, file, cb) {
-          cb(null, (dir || this.publicPath + '/upload') + (video === true ? '/originalVideo' : '/'));
+          const dirName = (dir || this.publicPath + '/upload');
+          const subDirName = (dir || this.publicPath + '/upload') + (video === true ? '/originalVideo' : '/');
+          if (fs.existsSync(dirName) === false) {
+            fs.mkdirSync(dirName);
+          }
+          if (fs.existsSync(subDirName) === false) {
+            fs.mkdirSync(subDirName);
+          }
+          cb(null, subDirName);
         },
         filename
       })

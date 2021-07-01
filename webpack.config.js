@@ -46,8 +46,13 @@ module.exports = {
           from: path.resolve(__dirname, './script/public'),
           to: path.resolve(__dirname, './dist/public'),
           force: true,
+          globOptions: {
+            ignore: [
+              '**/video/*',
+            ],
+          },
         }
-      ]
+      ],
     }),
     // new CopyJavascript({
     //   from: path.resolve(__dirname, './script/views'),
