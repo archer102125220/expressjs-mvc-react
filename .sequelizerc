@@ -4,8 +4,8 @@ require('dotenv').config();
 const path = require('path');
 
 module.exports = {
-  'config': path.resolve('./config/', 'database.js'),
-  'migrations-path': path.resolve('./models', 'migrations'),
-  'models-path': path.resolve('./', 'models'),
-  'seeders-path': path.resolve('./models', 'seeds'),
+  'config': path.resolve('./script/config/models', 'database.js'),
+  'migrations-path': path.resolve('./script/models/server', 'migrations'),
+  'models-path': path.resolve('./server', 'models'),
+  'seeders-path': path.resolve('./script/models/server', 'seeds'),
 }
