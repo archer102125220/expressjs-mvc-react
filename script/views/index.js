@@ -25,7 +25,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       super(props);
       this.state = {
         title: 'state',
-        uploadVideoList: []
+        uploadVideoList: [],
+        uploaded: false,
+        loading: false,
       };
     }
 
@@ -50,7 +52,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         let video = uploadVideoList[i];
         formData.append('video', video);
       }
-      this.props.POST_VideoUploadTest(formData, this.onUploadProgress);
+      const loading = bool => this.setState({ loading: bool });
+      this.props.POST_VideoUploadTest(formData, this.onUploadProgress, this.onUploaded, loading);
+    }
+
+    onUploaded = () => {
+      this.setState({ uploaded: true });
     }
 
     onUploadProgress = (e) => {
@@ -74,10 +81,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
               Learn React
             </a>
             <Link to='/login' className='App-link'>登入/註冊</Link>
-            <VideoUploader getUploadVideo={this.getUploadVideo}>上傳影片</VideoUploader>
-            <Button onClick={this.handleUpload}>確認上傳</Button>
+            <VideoUploader getUploadVideo={this.getUploadVideo} uploaded={this.state.uploaded} onUploaded={() => this.setState({ uploaded: false })} >上傳影片</VideoUploader>
+            <Button onClick={this.handleUpload} disabled={this.state.loading}>確認上傳</Button>
           </header>
-        </div>);
+        </div >);
     }
 
     static propTypes = {

@@ -35,6 +35,17 @@ export default withStyles(styles)(
       };
     }
 
+
+    shouldComponentUpdate(nextProps) {
+      if (this.state.uploadVideoList.length > 0 && nextProps.uploaded === true) {
+        this.setState({ uploadVideoList: new Array() });
+        nextProps.getUploadVideo(new Array());
+        nextProps.onUploaded();
+        return false;
+      }
+      return true;
+    }
+
     getUploadVideo = (e) => {
       const fileList = e.target.files;
       const uploadVideoList = this.state.uploadVideoList;
@@ -58,8 +69,8 @@ export default withStyles(styles)(
         <div className={classes.videoUploader}>
           <label>
             {/* https://stackoverflow.com/questions/56454681/why-is-no-file-type-returned-when-adding-an-mkv-file-to-a-file-input */}
-            <input accept="video/*,.mkv" style={{ display: 'none' }} type="file" disabled={disabled === 'true'} multiple={multiple === 'true'} {...uploaderConfig} onChange={this.getUploadVideo} />
-            <Fab variant="extended" color="primary" component="span" disabled={disabled === 'true'} className={className}>
+            <input accept="video/*,.mkv" style={{ display: 'none' }} type="file" disabled={disabled} multiple={multiple} {...uploaderConfig} onChange={this.getUploadVideo} />
+            <Fab variant="extended" color="primary" component="span" disabled={disabled} className={className}>
               <CloudUploadIcon />{children}
             </Fab>
           </label>
@@ -104,15 +115,18 @@ export default withStyles(styles)(
     static propTypes = {
       classes: PropTypes.object,
       uploaderConfig: PropTypes.object,
-      disabled: PropTypes.string,
+      disabled: PropTypes.bool,
       children: PropTypes.node,
       className: PropTypes.string,
-      multiple: PropTypes.string,
+      multiple: PropTypes.bool,
       getUploadVideo: PropTypes.func,
+      onUploaded: PropTypes.func,
+      uploaded: PropTypes.bool
     };
     static defaultProps = {
-      disabled: 'false',
-      multiple: 'true',
+      disabled: false,
+      multiple: true,
+      uploaded: false
     }
   }
 );
