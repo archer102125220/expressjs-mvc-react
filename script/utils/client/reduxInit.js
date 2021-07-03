@@ -9,6 +9,13 @@ import pluginModels from '@config/models/redux';
 let history;
 if (typeof (window) === 'object') {
   history = historyCreater.createBrowserHistory();
+  history.listen(function (/*location, action*/) {
+    const __PAGE_HEAD__ = document.querySelectorAll('.__EXPRESS_MVC_PAGE_HEAD__');
+    __PAGE_HEAD__.forEach(element => {
+      element.remove();
+    });
+    document.querySelector('title').innerText = serverData.defaultPageTitle;
+  });
 } else {
   history = historyCreater.createMemoryHistory();
 }

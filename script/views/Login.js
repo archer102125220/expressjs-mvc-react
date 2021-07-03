@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { BrowserHistory } from '@utils/client/reduxInit';
 import Button from '@utils/components/Button';
+import Head from '@utils/components/Head';
 
 //https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app
 const styles = {
@@ -122,6 +123,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       const { account, password, accountError, passwordError, login, rememberMe } = this.state;
       return (
         <div className={classes.normal} >
+          <Head>
+            <title>test</title>
+            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          </Head>
           <div className={classes.login} >
             <div className={classes.title}>
               {login === true ? '登入' : '註冊'}

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import VideoUploader from '@utils/components/VideoUploader';
 import Button from '@utils/components/Button';
+import Head from '@utils/components/Head';
 // https://stackoverflow.com/questions/57012780/adding-css-to-react-ssr-components
 
 
@@ -68,6 +69,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render() {
       return (
         <div className='App'>
+          <Head><title>BBB</title></Head>
           <header className='App-header'>
             <Logo className='App-logo' alt='logo' />
             <h1>{this.props.title}</h1>

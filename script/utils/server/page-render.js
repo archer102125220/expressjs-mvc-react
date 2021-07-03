@@ -3,10 +3,11 @@ import { renderToString } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import _ from 'lodash';
+import { parse } from 'node-html-parser';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { store } from '@utils/client/reduxInit';
 import { pageList } from '@config/router/expressRouter';
-import { clientLinkTagList, clientScriptTagList, defaultPageTitle } from '@config/globalHeadTage';
+import { clientLinkTagList, clientScriptTagList, defaultPageTitle, clientMetaTagList } from '@config/globalHeadTage';
 
 
 class pageRender {
@@ -19,31 +20,36 @@ class pageRender {
     express.set('view', View);
 
     const linkTagList = clientLinkTagList || [];
-    this.clientLinkTag = linkTagList.reduce((accumulator, currentValue) => {
-      accumulator += `<link ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
-        accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
-        return accumulator;
-      }, '')
-        } />`;
-      return accumulator;
-    }, '');
+    this.clientLinkTag = this.tegCreate(linkTagList, 'link');
+    // this.clientLinkTag = linkTagList.reduce((accumulator, currentValue) => {
+    //   accumulator += `<link ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
+    //     accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
+    //     return accumulator;
+    //   }, '')
+    //     } />`;
+    //   return accumulator;
+    // }, '');
 
     const scriptTagList = clientScriptTagList || [];
-    this.clientScriptTag = scriptTagList.reduce((accumulator, currentValue) => {
-      accumulator += `<script ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
-        accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
-        return accumulator;
-      }, '')
-        } />`;
-      return accumulator;
-    }, '');
+    this.clientScriptTag = this.tegCreate(scriptTagList, 'script');
+    // this.clientScriptTag = scriptTagList.reduce((accumulator, currentValue) => {
+    //   accumulator += `<script ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
+    //     accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
+    //     return accumulator;
+    //   }, '')
+    //     } />`;
+    //   return accumulator;
+    // }, '');
+
+    const metaTagList = clientMetaTagList || [];
+    this.clientMetaTag = this.tegCreate(metaTagList, 'meta');
   }
   pageList = pageList
 
   renderReact = async (pageName, options, callback) => {
     try {
       const Page = this.pageList[pageName];
-      let serverData = { pageName };
+      let serverData = { pageName, defaultPageTitle };
 
       let settings = _.cloneDeep(options.settings);
       delete options.settings;
@@ -78,18 +84,45 @@ class pageRender {
         </MemoryRouter>
       );
 
+      const dom = parse(content);
+      const domTitle = dom.querySelectorAll('title');
+      const pageTitle = (domTitle[domTitle.length - 1]?.childNodes || [])[0]?.rawText || defaultPageTitle;
+      const domTitleCount = domTitle.length;
+      for (let i = 0; i < domTitleCount; i++) {
+        domTitle[i].remove();
+      }
+
+      const domMeta = dom.querySelectorAll('meta');
+      const domMetaCount = domMeta.length;
+      let pageMeta = '';
+      for (let i = 0; i < domMetaCount; i++) {
+        domMeta[i].classList.add('__EXPRESS_MVC_PAGE_HEAD__');
+        domMeta[i].classList.add('__SSR__');
+        pageMeta += domMeta[i].toString();
+        domMeta[i].remove();
+      }
+
+      const domLink = dom.querySelectorAll('link');
+      const domLinkCount = domLink.length;
+      let pageLink = '';
+      for (let i = 0; i < domLinkCount; i++) {
+        domLink[i].classList.add('__EXPRESS_MVC_PAGE_HEAD__');
+        domLink[i].classList.add('__SSR__');
+        pageLink += domLink[i].toString();
+        domLink[i].remove();
+      }
+
       serverData = { ...serverData, serverPageData: serverPageProps, reduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? '/index.js' : '/javascripts/index.js';
       const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/javascripts/styles.css';
       callback(null, `
         <html>
-          <title>${defaultPageTitle || ''}</title>
+          <title>${pageTitle || ''}</title>
           <script id="__EXPRESS_MVC_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
           <link rel="stylesheet" type="text/css" href="${reactStylePath}" />
-          ${this.clientLinkTag}
-          ${this.clientScriptTag}
+          ${this.clientLinkTag} ${this.clientScriptTag} ${this.clientMetaTag} ${pageMeta} ${pageLink}
           <body>
-            <div id="root">${content}</div>
+            <div id="root">${dom.toString()}</div>
           </body>
           <script src="${reactAppPath}"></script>
         </html>
@@ -132,6 +165,17 @@ class pageRender {
     if (this.pageList[pageName] !== undefined) {
       return pageName;
     }
+  }
+
+  tegCreate = (tageList, tageName) => {
+    return tageList.reduce((accumulator, currentValue) => {
+      accumulator += `<${tageName} ${Object.keys(currentValue).reduce((accumulator, currentValueKey) => {
+        accumulator += `${currentValueKey}='${currentValue[currentValueKey]}' `;
+        return accumulator;
+      }, '')
+        } />`;
+      return accumulator;
+    }, '');
   }
 }
 

@@ -13,12 +13,12 @@ function setServerDate() {
   if (typeof (__EXPRESS_MVC_DATA__) === 'object' && __EXPRESS_MVC_DATA__ !== null) {
     const serverData = JSON.parse(__EXPRESS_MVC_DATA__.textContent);
     const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
-    const defaultProps = Page.defaultProps || {};
     const WrappedComponent = Page?.WrappedComponent;
     if (WrappedComponent) {
       const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
       Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...serverData.serverProps };
     } else {
+      const defaultProps = Page.defaultProps || {};
       Page.defaultProps = { ...defaultProps, ...serverData.serverProps };
     }
   }
