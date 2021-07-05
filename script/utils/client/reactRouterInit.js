@@ -9,9 +9,9 @@ import { store } from '@utils/client/reduxInit';
 
 function setServerDate() {
   if (typeof (window) !== 'object') return;
-  const __EXPRESS_MVC_DATA__ = document.getElementById('__EXPRESS_MVC_DATA__');
-  if (typeof (__EXPRESS_MVC_DATA__) === 'object' && __EXPRESS_MVC_DATA__ !== null) {
-    const serverData = JSON.parse(__EXPRESS_MVC_DATA__.textContent);
+  const __EXPRESS_MVC_REACT_DATA__ = document.getElementById('__EXPRESS_MVC_REACT_DATA__');
+  if (typeof (__EXPRESS_MVC_REACT_DATA__) === 'object' && __EXPRESS_MVC_REACT_DATA__ !== null) {
+    const serverData = JSON.parse(__EXPRESS_MVC_REACT_DATA__.textContent);
     const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
     const WrappedComponent = Page?.WrappedComponent;
     if (WrappedComponent) {

@@ -47,6 +47,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       this.enquireHandler = enquireScreen(mobile => {
         this.props.enquireScreen(mobile ? true : false);
       }/*, '(max-width: 1024px)' */);
+      const _SSR_CSS__ = document.querySelector('#__EXPRESS_MVC_REACT_SSR_CSS__');
+      if (_SSR_CSS__) {
+        _SSR_CSS__.parentElement.removeChild(_SSR_CSS__);
+      }
     }
 
     render() {

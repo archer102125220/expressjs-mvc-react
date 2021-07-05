@@ -1,5 +1,5 @@
 
-import { GET_userList, POST_userList, POST_userLogin, POST_videoUploadTest } from '@services/client/userList';
+import { GET_userList, POST_userRegistered, POST_userLogin, POST_videoUploadTest } from '@services/client/userList';
 
 export default {
 
@@ -41,9 +41,9 @@ export default {
         console.log('get user list error');
       }
     },
-    *POST_UserList({ payload }, { call, put }) {
+    *POST_UserRegistered({ payload }, { call, put }) {
       try {
-        yield call(POST_userList, payload);
+        yield call(POST_userRegistered, payload);
         yield put({ type: 'system/message_success', payload: '註冊成功!' });
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') console.log(error);

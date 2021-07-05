@@ -9,7 +9,7 @@ export function GET_userList(payload = {}, token) {
   });
 }
 
-export function POST_userList(payload = {}) {
+export function POST_userRegistered(payload = {}) {
   return fetch('POST', '/api/users/registered', payload);
 }
 

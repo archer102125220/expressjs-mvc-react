@@ -10,7 +10,7 @@ let history;
 if (typeof (window) === 'object') {
   history = historyCreater.createBrowserHistory();
   history.listen(function (/*location, action*/) {
-    const __PAGE_HEAD__ = document.querySelectorAll('.__EXPRESS_MVC_PAGE_HEAD__');
+    const __PAGE_HEAD__ = document.querySelectorAll('.__EXPRESS_MVC_REACT_PAGE_HEAD__');
     __PAGE_HEAD__.forEach(element => {
       element.remove();
     });
@@ -22,7 +22,7 @@ if (typeof (window) === 'object') {
 
 export const BrowserHistory = history;
 
-export const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_DATA__').textContent) : {};
+export const serverData = typeof (window) === 'object' ? JSON.parse(document.getElementById('__EXPRESS_MVC_REACT_DATA__').textContent) : {};
 
 
 export default function reduxInit(pluginModels, serverReduxStore = {}) {

@@ -34,5 +34,5 @@ ReactDOM.render(
 if (process.env.NODE_ENV !== 'production') reportWebVitals(console.log);
 
 
-// if (process.env.NODE_ENV === 'production') document.getElementById('__EXPRESS_MVC_DATA__').remove();
-document.getElementById('__EXPRESS_MVC_DATA__').remove();
+// if (process.env.NODE_ENV === 'production') document.getElementById('__EXPRESS_MVC_REACT_DATA__').remove();
+document.getElementById('__EXPRESS_MVC_REACT_DATA__').remove();

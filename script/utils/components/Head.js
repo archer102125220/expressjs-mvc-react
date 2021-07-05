@@ -27,7 +27,7 @@ export default class Head extends React.Component {
     if (children.props?.children) {
       tage.innerHTML = children.props.children;
     }
-    tage.classList.add('__EXPRESS_MVC_PAGE_HEAD__');
+    tage.classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
     tage.classList.add(`__HEAD_${this.state.timestamp}__`);
     document.head.appendChild(tage);
   }

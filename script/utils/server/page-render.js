@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import _ from 'lodash';
 import { parse } from 'node-html-parser';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { store } from '@utils/client/reduxInit';
 import { pageList } from '@config/router/expressRouter';
@@ -76,13 +77,17 @@ class pageRender {
         // settings = {};
         serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       }
+      const sheets = new ServerStyleSheets();
       const content = renderToString(
-        <MemoryRouter initialEntries={[{ pathname: pageName }]}>
-          <Provider store={store}>
-            <LayoutSwitch><Page /></LayoutSwitch>
-          </Provider>
-        </MemoryRouter>
+        sheets.collect(
+          <MemoryRouter initialEntries={[{ pathname: pageName }]}>
+            <Provider store={store}>
+              <LayoutSwitch><Page /></LayoutSwitch>
+            </Provider>
+          </MemoryRouter>
+        )
       );
+      const cssString = sheets.toString();
 
       const dom = parse(content);
       const domTitle = dom.querySelectorAll('title');
@@ -96,7 +101,7 @@ class pageRender {
       const domMetaCount = domMeta.length;
       let pageMeta = '';
       for (let i = 0; i < domMetaCount; i++) {
-        domMeta[i].classList.add('__EXPRESS_MVC_PAGE_HEAD__');
+        domMeta[i].classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
         domMeta[i].classList.add('__SSR__');
         pageMeta += domMeta[i].toString();
         domMeta[i].remove();
@@ -106,7 +111,7 @@ class pageRender {
       const domLinkCount = domLink.length;
       let pageLink = '';
       for (let i = 0; i < domLinkCount; i++) {
-        domLink[i].classList.add('__EXPRESS_MVC_PAGE_HEAD__');
+        domLink[i].classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
         domLink[i].classList.add('__SSR__');
         pageLink += domLink[i].toString();
         domLink[i].remove();
@@ -118,8 +123,9 @@ class pageRender {
       callback(null, `
         <html>
           <title>${pageTitle || ''}</title>
-          <script id="__EXPRESS_MVC_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
+          <script id="__EXPRESS_MVC_REACT_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
           <link rel="stylesheet" type="text/css" href="${reactStylePath}" />
+          <style id="__EXPRESS_MVC_REACT_SSR_CSS__">${cssString}</style>
           ${this.clientLinkTag} ${this.clientScriptTag} ${this.clientMetaTag} ${pageMeta} ${pageLink}
           <body>
             <div id="root">${dom.toString()}</div>

@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
+import Grid from '@material-ui/core/Grid';
 import { BrowserHistory } from '@utils/client/reduxInit';
 import Button from '@utils/components/Button';
 import Head from '@utils/components/Head';
@@ -41,15 +43,13 @@ const styles = {
       marginTop: '1em',
     },
   },
-  Link: {
-    color: '#61dafb'
-  }
 };
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   POST_UserLogin: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserLogin', payload, callback, loading }),
+  POST_UserRegistered: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserRegistered', payload, callback, loading }),
   goToRoute: (path, callback) => {
     BrowserHistory.push(path);
     if (callback) { callback(); }
@@ -68,6 +68,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
         passwordError: false,
         login: true,
         rememberMe: false,
+        email: '',
+        emailError: false,
       };
     }
 
@@ -83,21 +85,32 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     handleLogin = () => {
-      const { account, password, rememberMe } = this.state;
-      let { accountError, passwordError } = this.state;
+      const { account, password, rememberMe, login, email } = this.state;
+      let { accountError, passwordError, emailError } = this.state;
       accountError = typeof (account) !== 'string' || account === '';
       passwordError = typeof (password) !== 'string' || password === '';
+      emailError = typeof (email) !== 'string' || password === '';
+      const errorState = { accountError, passwordError };
 
       if (accountError === true || passwordError === true) {
-        this.setState({
-          accountError,
-          passwordError
-        });
+        if (emailError === true && login === false) {
+          errorState.emailError = emailError;
+        }
+        this.setState(errorState);
         return;
       }
 
-      this.props.POST_UserLogin({ account, password, rememberMe }, () => this.props.goToRoute('/'));
-
+      if (login === true) {
+        this.props.POST_UserLogin({ account, password, rememberMe }, () => this.props.goToRoute('/'));
+      } else {
+        if (emailError === true) {
+          this.setState({
+            emailError
+          });
+          return;
+        }
+        this.props.POST_UserRegistered({ account, password, email });
+      }
     }
 
     accountChange = (e) => {
@@ -112,6 +125,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
         passwordError: false
       });
     }
+    emailChange = (e) => {
+      this.setState({
+        email: e.target.value,
+        emailError: false
+      });
+    }
     rememberMeChange = () => {
       this.setState({
         rememberMe: !this.state.rememberMe
@@ -120,14 +139,27 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     render() {
       const { classes } = this.props;
-      const { account, password, accountError, passwordError, login, rememberMe } = this.state;
+      const { account, password, accountError, passwordError, login, rememberMe, email, emailError } = this.state;
       return (
         <div className={classes.normal} >
           <Head>
             <title>test</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           </Head>
-          <div className={classes.login} >
+          <div className={classes.login}>
+            <div>
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>註冊</Grid>
+                <Grid item>
+                  <Switch
+                    checked={login}
+                    onChange={() => this.setState({ login: !login })}
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item>登入</Grid>
+              </Grid>
+            </div>
             <div className={classes.title}>
               {login === true ? '登入' : '註冊'}
             </div>
@@ -140,6 +172,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                 error={accountError}
                 onChange={this.accountChange}
               />
+
+              {
+                login === false &&
+                <TextField
+                  label="信箱"
+                  type="email"
+                  autoComplete="current-password"
+                  variant="outlined"
+                  value={email}
+                  error={emailError}
+                  onChange={this.emailChange}
+                />
+              }
               <TextField
                 label="密碼"
                 type="password"
@@ -161,8 +206,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                 label="記住我"
                 labelPlacement="end"
               />
-              <Button onClick={this.handleLogin}>登入</Button>
-              <Link to='/' className={classes.Link} >返回</Link>
+              <Button onClick={this.handleLogin}>{login === true ? '登入' : '註冊'}</Button>
+              <Button component={Link} to='/' >返回</Button>
             </div>
           </div>
         </div>);
@@ -173,6 +218,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       goToRoute: PropTypes.func,
       POST_UserLogin: PropTypes.func,
       Message_information: PropTypes.func,
+      POST_UserRegistered: PropTypes.func,
     };
 
     static defaultProps = {

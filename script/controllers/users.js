@@ -48,12 +48,16 @@ class Users {
 
   createUser = async (req, res) => {
     const { body: payload } = req;
-    const clear = await UserService.createUser({ ...payload, avater: (req.file || {}).filename });
+    try {
+      const clear = await UserService.createUser({ ...payload, avater: (req.file || {}).filename });
 
-    if (clear) {
-      res.status(200).send('註冊成功！');
-    } else {
-      res.status(200).send('帳號或信箱已存在！');
+      if (clear) {
+        res.status(200).send('註冊成功！');
+      } else {
+        res.status(200).send('帳號或信箱已存在！');
+      }
+    } catch (error) {
+      res.status(500).send('請輸入正確資料！');
     }
   }
 
