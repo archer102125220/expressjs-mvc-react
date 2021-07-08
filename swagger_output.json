@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/login": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/video/player": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/registered": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/img_upload_test": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/users/video_upload_test": {
+      "post": {
+        "tags": [],
+        "description": "Upload video and subtitle.",
+        "parameters": [
+          {
+            "name": "video",
+            "in": "body",
+            "type": "object",
+            "description": "Upload video."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload complete and convert start.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/account/:name": {
+      "get": {
+        "tags": [],
+        "description": "Query a user.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "User name.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User info.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {}
+}

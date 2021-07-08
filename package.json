@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --inspect ./script/bin/wwwboot.js --exec babel-node",
+    "swagger-autogen": "babel-node ./script/utils/server/swaggerAutogen.js",
     "build": "yarn build:server && yarn build:client",
     "start": "node ./dist/server",
     "build:server": "webpack --mode production",
@@ -66,6 +67,8 @@
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^4.1.2",
+    "swagger-autogen": "^2.10.2",
+    "swagger-ui-express": "^4.1.6",
     "tedious": "5.0.0",
     "url-loader": "^4.1.1",
     "uuid": "^3.3.2",

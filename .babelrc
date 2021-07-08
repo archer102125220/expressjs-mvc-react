@@ -1,42 +1,48 @@
 {
-    "presets": [
-      "@babel/env",
-      "@babel/preset-react"
+  "presets": [
+    "@babel/env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-dynamic-import",
+    "dynamic-import-node-babel-7",
+    "inline-react-svg",
+    [
+      "css-modules-transform",
+      {
+        "camelCase": true,
+        "extensions": [
+          ".css",
+          ".scss"
+        ]
+      }
     ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-transform-runtime",
-      "@babel/plugin-syntax-dynamic-import",
-      "dynamic-import-node-babel-7",
-      "inline-react-svg",
-      [
-        "css-modules-transform",
-        {
-            "camelCase": true,
-            "extensions": [ ".css", ".scss" ]
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./"
+        ],
+        "alias": {
+          "@": "./script",
+          "@server/bin": "./script/bin",
+          "@server/controllers": "./script/controllers",
+          "@server/middlewares": "./script/middlewares/server",
+          "@server/public": "./script/public",
+          "@server/routes": "./script/routes",
+          "@services": "./script/services",
+          "@socket": "./script/socket",
+          "@models": "./script/models",
+          "@views": "./script/views",
+          "@utils": "./script/utils",
+          "@config": "./script/config",
+          "@theme": "./theme",
+          "@swagger_output": "./swagger_output.json"
         }
-      ],
-      [
-        "module-resolver",
-        {
-          "root": ["./"],
-          "alias": {
-            "@": "./script",
-            "@server/bin": "./script/bin",
-            "@server/controllers": "./script/controllers",
-            "@server/middlewares": "./script/middlewares/server",
-            "@server/public": "./script/public",
-            "@server/routes": "./script/routes",
-            "@services": "./script/services",
-            "@socket": "./script/socket",
-            "@models": "./script/models",
-            "@views": "./script/views",
-            "@utils": "./script/utils",
-            "@config": "./script/config",
-            "@theme": "./theme"
-          }
-        }
-      ]
+      }
     ]
-  }
+  ]
+}

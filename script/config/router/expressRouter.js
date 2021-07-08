@@ -17,10 +17,10 @@ class ExpressRouterConstructor {
   }
 
   pageList = {
-    'index': IndexPage,
-    'error': ErrorPage,
-    'login': LoginPage,
-    'video_player': Player
+    'Index': IndexPage,
+    'Error': ErrorPage,
+    'Login': LoginPage,
+    'video_Player': Player
   }
 
   createRoutesWeb = () => {
@@ -36,9 +36,38 @@ class ExpressRouterConstructor {
     routesApi.get('/users', usersController.usersList);
     routesApi.post('/users/registered', uploader.avater(), usersController.createUser);
     routesApi.post('/users/img_upload_test', uploader.singleImg(), usersController.imgUploadTest);
-    routesApi.post('/users/video_upload_test', uploader.arrayVideo(), usersController.videoUpload);
+    routesApi.post('/users/video_upload_test',
+      /*
+          #swagger.path = '/api/users/video_upload_test'
+          #swagger.method = 'post'
+          #swagger.description = 'Upload video and subtitle.'
+          #swagger.parameters['video'] = {
+              in: 'body',
+              type:'object',
+              description: 'Upload video.' }
+          #swagger.responses[200] = {
+              description: 'Upload complete and convert start.',
+              schema: {}
+          } 
+      */
+      uploader.arrayVideo(), usersController.videoUpload);
+
     // this.post('/users/video_upload_test', uploader.singleVideo(), usersController.videoUpload);
-    routesApi.get('/users/account/:name', usersController.findUser);
+    routesApi.get('/users/account/:name',
+      /*
+          #swagger.path = '/api/users/account/:name'
+          #swagger.method = 'get'
+          #swagger.description = 'Query a user.'
+          #swagger.parameters['name'] = {
+              in: 'path',
+              description: 'User name.' }
+          #swagger.responses[200] = {
+              description: 'User info.',
+              schema: {}
+          } 
+      */
+      usersController.findUser);
+
     routesApi.post('/users/login', usersController.loginUser);
     this.routesApi = routesApi;
   }

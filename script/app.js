@@ -4,10 +4,12 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import page_render from '@utils/server/page-render';
 import JWTMiddleware from '@server/middlewares/JWT';
 import { routesWeb, routesApi } from '@config/router/expressRouter';
 //import uploader from '@server/middlewares/uploader';
+import swaggerFile from '@swagger_output'; // swagger-autogen輸出的 JSON
 
 class App extends Express {
   constructor(porps) {
@@ -39,6 +41,7 @@ class App extends Express {
         '/api/users/login'
       ]
     }),
+    ['/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile)]
   ]
 
   setting = {
@@ -62,7 +65,7 @@ class App extends Express {
   setMiddlewares = () => {
     this.middlewares.forEach(element => {
       if (Array.isArray(element)) {
-        this.use(element[0], element[1]);
+        this.use(...element);
       } else if (typeof (element) !== 'undefined') {
         this.use(element);
       }
@@ -118,7 +121,7 @@ class App extends Express {
           payload = { message };
         }
         res.status(status);
-        res.render('error', payload);
+        res.render('Error', payload);
       }
     });
   }
