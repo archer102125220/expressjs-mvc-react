@@ -65,13 +65,16 @@ class pageRender {
         const newDefaultProps = await Page.getInitialProps({ serverData: options, settings, res, req, reduxStore: store, isServer: true });
         delete newDefaultProps.reduxStore;
         // settings = {};
-        const defaultProps = Page.defaultProps;
-        if (!defaultProps) {
-          Page.defaultProps = { ...newDefaultProps };
+        const WrappedComponent = Page?.WrappedComponent;
+        if (WrappedComponent) {
+          const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+          serverProps = Page.WrappedComponent.defaultProps;
         } else {
+          const defaultProps = Page?.defaultProps || {};
           Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+          serverProps = Page.defaultProps;
         }
-        serverProps = Page.defaultProps;
         serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       } else {
         // settings = {};
@@ -117,6 +120,26 @@ class pageRender {
         domLink[i].remove();
       }
 
+      const domScript = dom.querySelectorAll('script');
+      const domScriptCount = domScript.length;
+      let pageScript = '';
+      for (let i = 0; i < domScriptCount; i++) {
+        domScript[i].classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
+        domScript[i].classList.add('__SSR__');
+        pageScript += domScript[i].toString();
+        domScript[i].remove();
+      }
+
+      const domStyle = dom.querySelectorAll('style');
+      const domStyleCount = domStyle.length;
+      let pageStyle = '';
+      for (let i = 0; i < domStyleCount; i++) {
+        domStyle[i].classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
+        domStyle[i].classList.add('__SSR__');
+        pageStyle += domStyle[i].toString();
+        domStyle[i].remove();
+      }
+
       serverData = { ...serverData, serverPageData: serverPageProps, reduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? '/index.js' : '/javascripts/index.js';
       const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/javascripts/styles.css';
@@ -126,7 +149,7 @@ class pageRender {
           <script id="__EXPRESS_MVC_REACT_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
           <link rel="stylesheet" type="text/css" href="${reactStylePath}" />
           <style id="__EXPRESS_MVC_REACT_SSR_CSS__">${cssString}</style>
-          ${this.clientLinkTag} ${this.clientScriptTag} ${this.clientMetaTag} ${pageMeta} ${pageLink}
+          ${this.clientLinkTag} ${this.clientScriptTag} ${this.clientMetaTag} ${pageMeta} ${pageLink} ${pageScript} ${pageStyle}
           <body>
             <div id="root">${dom.toString()}</div>
           </body>
