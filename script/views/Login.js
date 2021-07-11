@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
+import Collapse from '@material-ui/core/Collapse';
 import { BrowserHistory } from '@utils/client/reduxInit';
 import Button from '@utils/components/Button';
 import Head from '@utils/components/Head';
@@ -89,7 +90,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       let { accountError, passwordError, emailError } = this.state;
       accountError = typeof (account) !== 'string' || account === '';
       passwordError = typeof (password) !== 'string' || password === '';
-      emailError = typeof (email) !== 'string' || password === '';
+      emailError = typeof (email) !== 'string' || email === '';
       const errorState = { accountError, passwordError };
 
       if (accountError === true || passwordError === true) {
@@ -172,9 +173,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                 error={accountError}
                 onChange={this.accountChange}
               />
-
-              {
-                login === false &&
+              <Collapse in={login === false}>
                 <TextField
                   label="信箱"
                   type="email"
@@ -184,7 +183,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                   error={emailError}
                   onChange={this.emailChange}
                 />
-              }
+              </Collapse>
               <TextField
                 label="密碼"
                 type="password"
@@ -210,7 +209,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
               <Button component={Link} to='/' >返回</Button>
             </div>
           </div>
-        </div>);
+        </div >);
     }
 
     static propTypes = {

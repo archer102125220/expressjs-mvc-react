@@ -27,6 +27,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       this.state = {
         title: 'state',
         uploadVideoList: [],
+        videoOptionList: [],
+        uploadSubtitleList: [],
         uploaded: false,
         loading: false,
       };
@@ -44,16 +46,32 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     getUploadVideo = (uploadVideoList) => {
       this.setState({ uploadVideoList });
     }
+    getUploadSubtitleList = (uploadSubtitleList) => {
+      this.setState({ uploadSubtitleList });
+    }
+    getVideoOptionList = (videoOptionList) => {
+      this.setState({ videoOptionList });
+    }
 
     handleUpload = () => {
-      const { uploadVideoList } = this.state;
+      const { uploadVideoList, uploadSubtitleList, videoOptionList } = this.state;
+      const debugLogData = { video: [], subtitle: [], videoOptionList: '' };
       // https://www.gushiciku.cn/pl/gfcM/zh-tw
       const formData = new FormData();
+      debugLogData.videoOptionList = JSON.stringify(videoOptionList);
+      formData.append('videoOptionList', JSON.stringify(videoOptionList));
       for (let i = 0; i < uploadVideoList.length; i++) {
         let video = uploadVideoList[i];
+        debugLogData.video.push(video);
         formData.append('video', video);
+        let subtitle = uploadSubtitleList[i];
+        if (typeof (subtitle) === 'object' && subtitle !== null) {
+          debugLogData.subtitle.push(subtitle);
+          formData.append('video', subtitle);
+        }
       }
       const loading = bool => this.setState({ loading: bool });
+      console.log(debugLogData, this.onUploadProgress, this.onUploaded, loading);
       this.props.POST_VideoUploadTest(formData, this.onUploadProgress, this.onUploaded, loading);
     }
 
@@ -69,7 +87,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render() {
       return (
         <div className='App'>
-          <Head><title>BBB</title></Head>
+          <Head><title>Cloud video</title></Head>
           <header className='App-header'>
             <Logo className='App-logo' alt='logo' />
             <h1>{this.props.title}</h1>
@@ -83,7 +101,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
               Learn React
             </a>
             <Link to='/login' className='App-link'>登入/註冊</Link>
-            <VideoUploader getUploadVideo={this.getUploadVideo} uploaded={this.state.uploaded} onUploaded={() => this.setState({ uploaded: false })} >上傳影片</VideoUploader>
+            <VideoUploader getUploadVideo={this.getUploadVideo} getVideoOptionList={this.getVideoOptionList} getUploadSubtitleList={this.getUploadSubtitleList} uploaded={this.state.uploaded} onUploaded={() => this.setState({ uploaded: false })} >上傳影片</VideoUploader>
             <Button onClick={this.handleUpload} disabled={this.state.loading}>確認上傳</Button>
           </header>
         </div >);

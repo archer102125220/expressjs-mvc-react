@@ -3,5 +3,8 @@ module.exports = {
     primary: {
       main: '#388e3c',
     },
+    secondary: {
+      main: '#f44336',
+    },
   },
 };

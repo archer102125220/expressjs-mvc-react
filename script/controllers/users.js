@@ -71,17 +71,17 @@ class Users {
   }
   videoUpload = (req, res) => {
     const { body: payload } = req;
-
+    const { videoOptionList: videoOptionListJSON } = payload;
+    const videoOptionList = JSON.parse(videoOptionListJSON);
     const videoUploadList = req.file || req.files;
-    // console.log(req.file);
-    // console.log(req.files);
+    // console.log(req.record);
 
-    this.VideoConverter.convert(videoUploadList);
+    this.VideoConverter.convert(videoUploadList, videoOptionList);
 
-
-    res.status(200).json({
-      ...payload, videoUploadList
-    });
+    // res.status(200).json({
+    //   ...payload, videoUploadList, videoOptionList
+    // });
+    res.status(200).send('檔案上傳成功！開始轉檔...');
   }
 
   // usersListSocket = async (packet, next) => {

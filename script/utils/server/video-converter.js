@@ -3,7 +3,7 @@ import hbjs from 'handbrake-js';
 
 export default class videoConverter {
   constructor(config = {}) {
-    this.videoUploadList = config.videoUploadList;
+    this.videoUpload = config.videoUpload;
     this.deleteOriginalVideo = config.deleteOriginalVideo || true;
     this.onStart = config.onStart;
     this.onProgress = config.onProgress;
@@ -11,13 +11,14 @@ export default class videoConverter {
     this.onError = config.onError;
   }
 
-  convert = (videoUploadList) => {
-    const videoList =
-      videoUploadList ?
-        (Array.isArray(videoUploadList) ? videoUploadList.map(this.handbrakeOption) : [this.handbrakeOption(videoUploadList)]) :
-        (Array.isArray(this.videoUploadList) ? this.videoUploadList.map(this.handbrakeOption) : [this.handbrakeOption(this.videoUploadList)]);
+  convert = (videoUpload = this.videoUpload, convertOptionList = []) => {
+    const videoList = Array.isArray(videoUpload) ?
+      videoUpload
+        .filter(element => element?.mimetype?.indexOf('video') >= 0)
+        .map((element, index) => this.handbrakeOption(element, convertOptionList, index)) :
+      [this.handbrakeOption(videoUpload, convertOptionList)];
 
-    videoList.map((video) =>
+    videoList.map((video) => {
       // https://liyaoli.com/2017-06-26/unhandled-promise-rejection.html
       // await hbjs
       //   .run({
@@ -25,11 +26,10 @@ export default class videoConverter {
       //     subtitle: 1,
       //     'subtitle-burned': 1
       //   })
+
       hbjs
         .spawn({
-          ...video,
-          subtitle: 1,
-          'subtitle-burned': 1
+          ...video
         })
         .on('start', () => {
           console.log('video process start');
@@ -48,12 +48,15 @@ export default class videoConverter {
             this.onProgress(progress, video);
           }
         })
-        .on('complete', () => {
+        .on('complete', async () => {
           if (typeof (this.onComplete) === 'function') {
-            this.onComplete(video);
+            await this.onComplete(video);
           }
           if (this.deleteOriginalVideo === true) {
             // https://www.geeksforgeeks.org/node-js-fs-unlinksync-method/
+            if (typeof (video['ssa-file']) === 'string') {
+              fs.unlinkSync(video['ssa-file']);
+            }
             fs.unlinkSync(video.input);
           }
           console.log('complete!');
@@ -63,17 +66,27 @@ export default class videoConverter {
             this.onError(err, video);
           }
           console.log({ err });
-        })
-    );
+        });
+    });
   }
 
-  handbrakeOption = (video = {}) => {
+  handbrakeOption = (video = {}, convertOptionList = [], index = 0) => {
     const videoFilename = video.filename || '_';
     const filename = videoFilename.substring(0, videoFilename.lastIndexOf('.')) + '.mp4';
+    const ssaFilePath = (video.path || '').substring(0, (video.path || '').lastIndexOf('/originalVideo')) + '/subtitle/';
+
+    const subtitleOptions = typeof (convertOptionList[index]?.['ssa-file']) === 'string' && convertOptionList[index]?.['ssa-file'] !== '' ? {
+      'ssa-file': ssaFilePath + convertOptionList[index]['ssa-file'],
+      'ssa-burn': convertOptionList[index]['ssa-burn'],
+    } : {
+      subtitle: convertOptionList[index]?.subtitle || 1,
+      'subtitle-burned': convertOptionList[index]?.['subtitle-burned'] || 1
+    }
 
     return {
       input: video.path,
-      output: (video.destination || '').replace('/originalVideo', '') + '/' + filename
+      output: (video.destination || '').replace('/originalVideo', '') + '/' + filename,
+      ...subtitleOptions
     };
   }
 }

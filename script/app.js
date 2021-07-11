@@ -36,6 +36,7 @@ class App extends Express {
         /^\/assets\/.*/,
         /^.*\.js/,
         /^.*\.css/,
+        '/api',
         /^\/api\/users\/account\/.*/,
         '/api/users/registered',
         '/api/users/login'

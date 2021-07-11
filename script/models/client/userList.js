@@ -57,13 +57,13 @@ export default {
         const token = yield select(state => state.userList?.userToken || '');
         yield call(POST_videoUploadTest, payload, token, onUploadProgress);
         yield put({ type: 'system/message_success', payload: '上傳成功!' });
-        if (typeof (loading) === 'function') { loading(false); }
         if (typeof (callback) === 'function') { callback(); }
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') console.log(error);
-        console.log('get user list error');
+        console.log('upload video error');
         yield put({ type: 'system/message_error', payload: '上傳失敗!' });
       }
+      if (typeof (loading) === 'function') { loading(false); }
     },
     *SOCKET_UserList({ payload, callback, loading, token }, { call, put }) {  // eslint-disable-line
       // const data = yield call(GET_userList, 'testEvent', payload, token);
