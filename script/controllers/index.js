@@ -7,16 +7,16 @@ class Index {
   }
   homePage = async (req, res) => {
     // Socket.io.emit('testEvent', await userService.AllUsers());
-    res.render('index', this.homePageData());
+    res.render('Index', this.homePageData());
   }
   homePageAPI = (req, res) => {
     res.status(200).json(this.homePageData());
   }
   login = (req, res) => {
-    res.render('login');
+    res.render('Login');
   }
   player = (req, res) => {
-    res.render('video_player');
+    res.render('Video_Player');
   }
 }
 

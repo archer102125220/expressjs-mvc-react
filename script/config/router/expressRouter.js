@@ -20,7 +20,7 @@ class ExpressRouterConstructor {
     'Index': IndexPage,
     'Error': ErrorPage,
     'Login': LoginPage,
-    'video_Player': Player
+    'Video_Player': Player
   }
 
   createRoutesWeb = () => {
