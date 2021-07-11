@@ -6,4 +6,8 @@ export const clientLinkTagList = [
 
 export const clientScriptTagList = [];
 
+export const clientMetaTagList = [
+  { name: 'viewport', content: 'initial-scale=1.0, width=device-width' }
+];
+
 export const defaultPageTitle = 'expressjs-mvc-react';
