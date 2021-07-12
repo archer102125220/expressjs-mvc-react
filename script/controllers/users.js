@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import UserService from '@services/server/userService';
-import JWTMiddleware from '@server/middlewares/JWT';
+import JWTMiddleware from '@middlewares/JWT';
 import videoConverter from '@utils/server/video-converter';
 
 class Users {

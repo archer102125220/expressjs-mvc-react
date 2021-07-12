@@ -5,6 +5,7 @@ dist
 script/public/upload/*
 script/public/assets/video/*
 script/public/video/*
+script/public/image/*
 node_modules
 sslcert
 

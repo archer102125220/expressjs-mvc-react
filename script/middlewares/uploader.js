@@ -5,14 +5,6 @@ import fs from 'fs';
 //https://github.com/expressjs/multer/blob/master/doc/README-zh-cn.md
 //const dest = process.env.UPLOAD_IMG || 'script/public/upload';
 const { diskStorage, memoryStorage } = multer;
-// function filename(req, file, cb) {
-//   // const { body, query } = req;
-//   // const { videoOptionList: videoOptionListJSON } = body || query || {};
-//   // const videoOptionList = JSON.parse(videoOptionListJSON);
-
-//   const userName = req.auth ? '-' + req.auth.account : '';
-//   cb(null, file.fieldname + '-' + path.basename(file.originalname, path.extname(file.originalname)) + userName + '-' + Date.now() + path.extname(file.originalname));
-// }
 
 class uploader {
   constructor() {
@@ -41,6 +33,11 @@ class uploader {
   }
 
   filename = (req, file, cb) => {
+    const userName = req.auth ? '-' + req.auth.account : '';
+    cb(null, file.fieldname + '-' + path.basename(file.originalname, path.extname(file.originalname)) + userName + '-' + Date.now() + path.extname(file.originalname));
+  }
+
+  videoFilename = (req, file, cb) => {
     const { body, query } = req;
     const { videoOptionList: videoOptionListJSON } = body || query || {};
     const videoOptionList = JSON.parse(videoOptionListJSON);
@@ -74,7 +71,7 @@ class uploader {
           }
           cb(null, subDirName);
         },
-        filename: this.filename
+        filename: videoMode === true ? this.videoFilename : this.filename
       })
     });
   }

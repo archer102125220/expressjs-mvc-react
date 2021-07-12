@@ -30,7 +30,7 @@
           "@": "./script",
           "@server/bin": "./script/bin",
           "@server/controllers": "./script/controllers",
-          "@server/middlewares": "./script/middlewares/server",
+          "@middlewares": "./script/middlewares",
           "@server/public": "./script/public",
           "@server/routes": "./script/routes",
           "@services": "./script/services",

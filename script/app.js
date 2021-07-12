@@ -6,9 +6,9 @@ import logger from 'morgan';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import page_render from '@utils/server/page-render';
-import JWTMiddleware from '@server/middlewares/JWT';
+import JWTMiddleware from '@middlewares/JWT';
 import { routesWeb, routesApi } from '@config/router/expressRouter';
-//import uploader from '@server/middlewares/uploader';
+//import uploader from '@middlewares/uploader';
 import swaggerFile from '@swagger_output'; // swagger-autogen輸出的 JSON
 
 class App extends Express {
