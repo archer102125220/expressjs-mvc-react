@@ -58,7 +58,7 @@ class uploader {
 
   creater = (dir, videoMode = false) => {
     return new multer({
-      storage: process.env.BUFFER_IMAGE && video === false ? memoryStorage() : diskStorage({
+      storage: process.env.BUFFER_IMAGE && videoMode === false ? memoryStorage() : diskStorage({
         destination: function (req, file, cb) {
           const isVideo = file.mimetype.indexOf('video') >= 0;
           const dirName = (dir || this.publicPath + '/upload');

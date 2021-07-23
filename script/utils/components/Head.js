@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { defaultPageTitle, pageTitleTemplate } from '@config/globalHeadTage';
 
 export default class Head extends React.Component {
   constructor(props) {
@@ -12,7 +13,10 @@ export default class Head extends React.Component {
 
   handleTitleTag = (children) => {
     if (children.props?.children) {
-      document.querySelector('title').innerText = children.props.children;
+      const pageTitleBeforTemplate = children.props.children;
+      if (typeof (pageTitleBeforTemplate) !== 'string' || pageTitleBeforTemplate === '') return;
+      const pageTitleAfterTemplate = (typeof (pageTitleTemplate) === 'string') ? pageTitleTemplate.replace('{{title}}', pageTitleBeforTemplate) : pageTitleTemplate(pageTitleBeforTemplate);
+      document.querySelector('title').innerText = (typeof (pageTitleAfterTemplate) !== 'string' || pageTitleAfterTemplate === '') ? defaultPageTitle : pageTitleAfterTemplate;
     }
   }
 
@@ -24,8 +28,8 @@ export default class Head extends React.Component {
         tage.setAttribute(attributeName, props[attributeName]);
       }
     });
-    if (children.props?.children) {
-      tage.innerHTML = children.props.children;
+    if (props?.children) {
+      tage.innerHTML = props.children;
     }
     tage.classList.add('__EXPRESS_MVC_REACT_PAGE_HEAD__');
     tage.classList.add(`__HEAD_${this.state.timestamp}__`);
@@ -39,8 +43,8 @@ export default class Head extends React.Component {
     }
 
     if (document.querySelector('.__SSR__')) return '';
-    const oldTage = document.querySelectorAll(`.__HEAD_${this.state.timestamp}__`);
-    oldTage.forEach(element => {
+    const oldTag = document.querySelectorAll(`.__HEAD_${this.state.timestamp}__`);
+    oldTag.forEach(element => {
       element.remove();
     });
 

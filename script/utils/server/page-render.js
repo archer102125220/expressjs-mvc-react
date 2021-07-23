@@ -8,13 +8,11 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { store } from '@utils/client/reduxInit';
 import { pageList } from '@config/router/expressRouter';
-import { clientLinkTagList, clientScriptTagList, defaultPageTitle, clientMetaTagList } from '@config/globalHeadTage';
+import { clientLinkTagList, clientScriptTagList, defaultPageTitle, clientMetaTagList, pageTitleTemplate } from '@config/globalHeadTage';
 
 
 class pageRender {
   constructor(express) {
-    this.defaultPageTitle = express.defaultPageTitle || '';
-
     const View = express.get('view');
     View.prototype.pageList = this.pageList;
     View.prototype.resolve = this.resolve;
@@ -94,7 +92,9 @@ class pageRender {
 
       const dom = parse(content);
       const domTitle = dom.querySelectorAll('title');
-      const pageTitle = (domTitle[domTitle.length - 1]?.childNodes || [])[0]?.rawText || defaultPageTitle;
+      const pageTitleBeforTemplate = (domTitle[domTitle.length - 1]?.childNodes || [])[0]?.rawText || defaultPageTitle;
+      const pageTitleAfterTemplate = (typeof (pageTitleTemplate) === 'string') ? pageTitleTemplate.replace('{{title}}', pageTitleBeforTemplate) : pageTitleTemplate(pageTitleBeforTemplate);
+      const pageTitle = (typeof (pageTitleAfterTemplate) !== 'string' || pageTitleAfterTemplate === '') ? defaultPageTitle : pageTitleAfterTemplate;
       const domTitleCount = domTitle.length;
       for (let i = 0; i < domTitleCount; i++) {
         domTitle[i].remove();

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store, BrowserHistory } from '@utils/client/reduxInit';
 import Router from '@utils/client/reactRouterInit';
 import reportWebVitals from '@utils/client/reportWebVitals';
-import 'node_modules/plyr-react/dist/plyr.css';
+import 'node_modules/plyr-react/dist/plyr.css'; // import plyr-react css
 // import 'node_modules/video-react/dist/video-react.css'; // import video-react css
 // import 'node_modules/video.js/dist/video-js.css'; // import video-js css
 
