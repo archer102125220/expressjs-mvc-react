@@ -11,6 +11,10 @@ export default class videoConverter {
     this.onError = config.onError;
   }
 
+  setEvent = (eventName = 'onStart', event = () => { }) => {
+    this[eventName] = event;
+  }
+
   convert = (videoUpload = this.videoUpload, convertOptionList = []) => {
     const videoList = Array.isArray(videoUpload) ?
       videoUpload
