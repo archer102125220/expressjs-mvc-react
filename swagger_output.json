@@ -16,7 +16,9 @@
   "paths": {
     "/": {
       "get": {
-        "tags": [],
+        "tags": [
+          "web"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
@@ -24,7 +26,9 @@
     },
     "/login": {
       "get": {
-        "tags": [],
+        "tags": [
+          "web"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
@@ -32,31 +36,52 @@
     },
     "/video/player": {
       "get": {
-        "tags": [],
+        "tags": [
+          "web"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
       }
     },
-    "/users": {
+    "/api": {
       "get": {
-        "tags": [],
+        "tags": [
+          "api"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
       }
     },
-    "/users/registered": {
-      "post": {
-        "tags": [],
+    "/api/users": {
+      "get": {
+        "tags": [
+          "api",
+          "users"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
       }
     },
-    "/users/img_upload_test": {
+    "/api/users/registered": {
       "post": {
-        "tags": [],
+        "tags": [
+          "api",
+          "users"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/users/img_upload_test": {
+      "post": {
+        "tags": [
+          "api",
+          "users"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
@@ -64,22 +89,38 @@
     },
     "/api/users/video_upload_test": {
       "post": {
-        "tags": [],
+        "tags": [
+          "api",
+          "users"
+        ],
         "description": "Upload video and subtitle.",
+        "consumes": [
+          "videooptionlist"
+        ],
         "parameters": [
           {
+            "name": "videoOptionList",
+            "in": "formData",
+            "type": "txt",
+            "description": "Upload video config.",
+            "example": "[{ originName: videoName, timestamp: Date.now(), newName: 'newName', 'ssa-file': subtitleName, 'ssa-burn': 1 }]"
+          },
+          {
             "name": "video",
-            "in": "body",
-            "type": "object",
-            "description": "Upload video."
+            "in": "formData",
+            "type": "array",
+            "items": {
+              "type": "file"
+            },
+            "description": "Upload video and subtitle."
           }
         ],
         "responses": {
           "200": {
             "description": "Upload complete and convert start.",
             "schema": {
-              "type": "object",
-              "properties": {},
+              "type": "string",
+              "example": "檔案上傳成功！開始轉檔...",
               "xml": {
                 "name": "main"
               }
@@ -90,7 +131,10 @@
     },
     "/api/users/account/:name": {
       "get": {
-        "tags": [],
+        "tags": [
+          "api",
+          "users"
+        ],
         "description": "Query a user.",
         "parameters": [
           {
@@ -114,9 +158,12 @@
         }
       }
     },
-    "/users/login": {
+    "/api/users/login": {
       "post": {
-        "tags": [],
+        "tags": [
+          "api",
+          "users"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
