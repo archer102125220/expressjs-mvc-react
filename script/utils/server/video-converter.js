@@ -85,7 +85,7 @@ export default class videoConverter {
     } : {
       subtitle: convertOptionList[index]?.subtitle || 1,
       'subtitle-burned': convertOptionList[index]?.['subtitle-burned'] || 1
-    }
+    };
 
     return {
       input: video.path,

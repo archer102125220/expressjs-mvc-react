@@ -96,6 +96,7 @@ class App extends Express {
 
     // catch 404 and forward to error handler
     this.use(function (req, res, next) {
+      // console.log(req.originalUrl);
       next(createError(404));
     });
 
@@ -111,6 +112,7 @@ class App extends Express {
         console.log(err.status);
         console.log(err.stack);
       }
+      // console.log(req.originalUrl);
 
       if (req.originalUrl.includes('/api')) {
         res.status(status).send(message);

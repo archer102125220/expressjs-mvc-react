@@ -90,6 +90,7 @@ function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
+  const port = normalizePort(process.env.APP_PORT || '3000');
 
   const bind = typeof port === 'string'
     ? 'Pipe ' + port
