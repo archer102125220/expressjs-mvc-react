@@ -4,6 +4,27 @@ const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 require('dotenv').config({ path: __dirname + '/.env' });
 
+// const optimization = {};
+
+const optimization = {
+  splitChunks: {
+    cacheGroups: {
+      // styles: {
+      //   name: 'styles',
+      //   test: /.css$/,
+      //   chunks: 'all',
+      //   enforce: true,
+      //   priority: 20
+      // },
+      commons: {
+        test: /[\\/]node_modules[\\/]/,
+        name: 'modules',
+        chunks: 'all'
+      }
+    },
+  }
+};
+
 // https://andyyou.github.io/2016/05/30/webpack-dev-middleware-in-express/
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -12,7 +33,12 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist/public/javascripts'),
-    filename: 'index.js'
+    // filename: 'index.js',
+    // filename: '[name].js',
+    // chunkFilename: '[name].js',
+    filename: (pathData) => {
+      return pathData.chunk.name === 'main' ? 'index.js' : '[name].js';
+    }
   },
   resolve: {
     alias: {
@@ -95,7 +121,10 @@ module.exports = {
       // defaults: false // load '.env.defaults' as the default values if empty.
     }),
     new MiniCssExtractPlugin({
-      filename: 'styles.css',
+      filename: (pathData) => {
+        return pathData.chunk.name === 'main' ? 'styles.css' : '[name].css';
+      },
     }),
   ],
+  optimization
 };
