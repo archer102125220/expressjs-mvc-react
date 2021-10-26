@@ -87,7 +87,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render() {
       return (
         <div className='App'>
-          <Head><title>Cloud video</title></Head>
+          <Head><title>私人YouTube</title></Head>
           <header className='App-header'>
             <Logo className='App-logo' alt='logo' />
             <h1>{this.props.title}</h1>
@@ -104,7 +104,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             <VideoUploader getUploadVideo={this.getUploadVideo} getVideoOptionList={this.getVideoOptionList} getUploadSubtitleList={this.getUploadSubtitleList} uploaded={this.state.uploaded} onUploaded={() => this.setState({ uploaded: false })} >上傳影片</VideoUploader>
             <Button onClick={this.handleUpload} disabled={this.state.loading}>確認上傳</Button>
           </header>
-        </div >);
+        </div>);
     }
 
     static propTypes = {
