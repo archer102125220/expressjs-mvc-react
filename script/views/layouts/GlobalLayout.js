@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { BrowserHistory } from '@utils/client/reduxInit';
 import Typography from '@material-ui/core/Typography';
+import Footer from '@views/components/Footer';
 
 const mapStateToProps = (state) => ({
   users: state.userList?.userList || [],
@@ -32,6 +33,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         // <div>{children}</div>
         <Typography component='div'>
           {children}
+          <Footer />
         </Typography>
       );
     }
