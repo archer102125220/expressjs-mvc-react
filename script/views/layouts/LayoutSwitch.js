@@ -3,13 +3,13 @@ import { Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { enquireScreen } from 'enquire-js';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import themCofing from '@theme';
 import Message from '@views/components/Message';
 // import Socket from '@socket/socketIoClient';
 import GlobalLayout from '@views/layouts/GlobalLayout';
 
-const theme = createMuiTheme(themCofing);
+const theme = createTheme(themCofing);
 
 
 const mapStateToProps = (state) => ({

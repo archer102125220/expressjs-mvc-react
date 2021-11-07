@@ -71,7 +71,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         }
       }
       const loading = bool => this.setState({ loading: bool });
-      console.log(debugLogData, this.onUploadProgress, this.onUploaded, loading);
+      // console.log(debugLogData, this.onUploadProgress, this.onUploaded, loading);
       this.props.POST_VideoUploadTest(formData, this.onUploadProgress, this.onUploaded, loading);
     }
 
