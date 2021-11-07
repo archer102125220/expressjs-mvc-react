@@ -52,25 +52,25 @@ class ExpressRouterConstructor {
       indexController.homePageAPI);
     routesApi.get('/users',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users'
       */
       usersController.usersList);
     routesApi.post('/users/registered',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/registered'
       */
       uploader.avater(), usersController.createUser);
     routesApi.post('/users/img_upload_test',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/img_upload_test'
       */
       uploader.singleImg(), usersController.imgUploadTest);
     routesApi.post('/users/video_upload_test',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/video_upload_test'
         #swagger.method = 'post'
         #swagger.description = 'Upload video and subtitle.'
@@ -97,7 +97,7 @@ class ExpressRouterConstructor {
     // this.post('/users/video_upload_test', uploader.singleVideo(), usersController.videoUpload);
     routesApi.get('/users/account/:name',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/account/:name'
         #swagger.method = 'get'
         #swagger.description = 'Query a user.'
@@ -113,7 +113,7 @@ class ExpressRouterConstructor {
 
     routesApi.post('/users/login',
       /*
-        #swagger.tags = ['api', 'users']
+        #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/login'
       */
       usersController.loginUser);
