@@ -39,7 +39,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         // reduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
         return { ...serverData };
       } else {
-        reduxStore.dispatch({ type: 'system/GET_HomePage' });
+        try {
+          reduxStore.dispatch({ type: 'system/GET_HomePage' });
+        } catch (error) {
+          if (process.env.NODE_ENV !== 'production') console.log(error);
+        }
       }
     }
 

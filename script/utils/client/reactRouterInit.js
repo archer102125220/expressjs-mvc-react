@@ -36,16 +36,20 @@ class Root extends Component {
     const location = history.location || {};
     const Page = routeComponent.find(page => page.path === location.pathname)?.component || {};
     if (typeof (Page?.getInitialProps) === 'function') {
-      const newDefaultProps = await Page.getInitialProps({ ...history, isServer: false, reduxStore: store });
-      const defaultProps = Page.defaultProps || {};
-      const WrappedComponent = Page?.WrappedComponent;
-      if (WrappedComponent) {
-        const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
-        Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
-      } else {
-        Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+      try {
+        const newDefaultProps = await Page.getInitialProps({ ...history, isServer: false, reduxStore: store });
+        const defaultProps = Page.defaultProps || {};
+        const WrappedComponent = Page?.WrappedComponent;
+        if (WrappedComponent) {
+          const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+        } else {
+          Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+        }
+        this.forceUpdate();
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') console.log(error);
       }
-      this.forceUpdate();
       return false;
     }
     return true;
