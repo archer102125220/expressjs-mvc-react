@@ -2,8 +2,8 @@
 // import path from 'path';
 // import _ from 'lodash';
 import _Sequelize from 'sequelize';
-import databaseConfig from '@config/models/database';
-import userList from '@models/server/userlist';
+import databaseConfig, { pluginBatabases } from '@config/models/database';
+// import userList from '@models/server/userlist';
 
 // const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
@@ -29,8 +29,11 @@ if (config.use_env_variable) {
 //   });
 
 const db = {
-  userList:  _sequelize.import('userList', userList),
+  // userList:  _sequelize.import('userList', userList),
 };
+Object.keys(pluginBatabases).forEach((modelName) => {
+  db[modelName] = _sequelize.import(modelName, pluginBatabases[modelName]);
+});
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

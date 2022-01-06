@@ -1,5 +1,10 @@
 import '@babel/register';
+import userList from '@models/server/userlist';
 'use strict';
+
+export const pluginBatabases = {
+  userList
+};
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 
