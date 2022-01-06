@@ -6,6 +6,6 @@ const path = require('path');
 module.exports = {
   'config': path.resolve('./script/config/models', 'database.js'),
   'migrations-path': path.resolve('./script/models/server', 'migrations'),
-  'models-path': path.resolve('./server', 'models'),
+  'models-path': path.resolve('./script', 'models/server'),
   'seeders-path': path.resolve('./script/models/server', 'seeds'),
 }
