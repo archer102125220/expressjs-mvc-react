@@ -1,9 +1,11 @@
 import '@babel/register';
 import userList from '@models/server/userlist';
+import videoList from '@models/server/videolist';
 'use strict';
 
 export const pluginBatabases = {
-  userList
+  userList,
+  videoList
 };
 
 const nodeEnv = process.env.NODE_ENV || 'development';

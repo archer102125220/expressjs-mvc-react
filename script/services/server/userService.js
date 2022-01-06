@@ -5,7 +5,7 @@ const { Op } = sequelize;
 
 class userService {
   // eslint-disable-next-line no-unused-vars
-  AllUsers = async (payload = -1) => {
+  allUsers = async (payload = -1) => {
     return await userList.findAll({
       /*where: {
           [Op.not]:[

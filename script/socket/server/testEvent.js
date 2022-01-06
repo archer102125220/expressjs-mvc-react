@@ -2,7 +2,7 @@ import userService from '@services/server/userService';
 
 class testEvent {
   testEvent = async () => {
-    return await userService.AllUsers();
+    return await userService.allUsers();
   }
   clickEvent = async (socket, name, payload) => {
     const data = await userService.findUser(payload);

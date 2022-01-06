@@ -1,15 +1,11 @@
 import crypto from 'crypto';
 import UserService from '@services/server/userService';
 import JWTMiddleware from '@middlewares/JWT';
-import videoConverter from '@utils/server/video-converter';
 
 class Users {
-  constructor() {
-    this.VideoConverter = new videoConverter({ deleteOriginalVideo: true });
-  }
   usersList = async (req, res) => {
     //const { id, start, end } = req.body; //→接受前端來的資料
-    const userData = await UserService.AllUsers(req.auth.id);
+    const userData = await UserService.allUsers(req.auth.id);
     if ((userData || []).length === 0) {
       res.status(200).json('查無資料');
     }
@@ -31,10 +27,12 @@ class Users {
 
   loginUser = async (req, res) => {
     // const { account, password } = req.query;
-    const { account, password } = req.body;
+    const { account } = req.body;
+    console.log(req);
+    const password = crypto.createHash('sha1').update(req.body.password).digest('hex');
     const userData = await UserService.findUser({
       account,
-      password: crypto.createHash('sha1').update(password).digest('hex')
+      password
     }, true);
 
     if ((userData || []).length === 0) {
@@ -69,26 +67,12 @@ class Users {
       ...payload, avater: req.avater, file: req.file, video: req.video
     });
   }
-  videoUpload = (req, res) => {
-    const { body: payload } = req;
-    const { videoOptionList: videoOptionListJSON } = payload;
-    const videoOptionList = JSON.parse(videoOptionListJSON);
-    const videoUploadList = req.file || req.files;
-    // console.log(req.record);
-
-    this.VideoConverter.convert(videoUploadList, videoOptionList);
-
-    // res.status(200).json({
-    //   ...payload, videoUploadList, videoOptionList
-    // });
-    res.status(200).send('檔案上傳成功！開始轉檔...');
-  }
 
   // usersListSocket = async (packet, next) => {
   //     const userData = await userList.findAll();
   //     if (packet.doge === true) return next();
   //     next(new Error('Not a doge error'));
-  //     return await UserService.AllUsers();
+  //     return await UserService.allUsers();
   // }
 }
 

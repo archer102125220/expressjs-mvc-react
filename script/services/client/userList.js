@@ -18,7 +18,7 @@ export function POST_userLogin(payload = {}) {
 }
 
 export function POST_videoUploadTest(payload = {}, token, onUploadProgress = () => { }) {
-  return fetch('POST', '/users/video_upload_test', payload, {
+  return fetch('POST', '/videos/upload', payload, {
     headers: {
       'Content-Type': 'multipart/form-data',
       // eslint-disable-next-line no-useless-escape

@@ -58,7 +58,7 @@
       "get": {
         "tags": [
           "api",
-          "users"
+          "api/users"
         ],
         "description": "",
         "parameters": [],
@@ -69,7 +69,7 @@
       "post": {
         "tags": [
           "api",
-          "users"
+          "api/users"
         ],
         "description": "",
         "parameters": [],
@@ -80,18 +80,18 @@
       "post": {
         "tags": [
           "api",
-          "users"
+          "api/users"
         ],
         "description": "",
         "parameters": [],
         "responses": {}
       }
     },
-    "/api/users/video_upload_test": {
+    "/api/videos/upload": {
       "post": {
         "tags": [
           "api",
-          "users"
+          "videos/upload"
         ],
         "description": "Upload video and subtitle.",
         "consumes": [
@@ -113,6 +113,13 @@
               "type": "file"
             },
             "description": "Upload video and subtitle."
+          },
+          {
+            "name": "account_Id",
+            "in": "formData",
+            "type": "txt",
+            "description": "user UUID.",
+            "example": "5fa503d3-75d3-4577-bfb1-d9bd995541a9"
           }
         ],
         "responses": {
@@ -133,7 +140,7 @@
       "get": {
         "tags": [
           "api",
-          "users"
+          "api/users"
         ],
         "description": "Query a user.",
         "parameters": [
@@ -162,7 +169,7 @@
       "post": {
         "tags": [
           "api",
-          "users"
+          "api/users"
         ],
         "description": "",
         "parameters": [],

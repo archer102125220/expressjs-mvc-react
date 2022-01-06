@@ -1,6 +1,7 @@
 import Express from 'express';
 import indexController from '@server/controllers/index';
 import usersController from '@server/controllers/users';
+import videosController from '@server/controllers/videos';
 import uploader from '@middlewares/uploader';
 import IndexPage from '@views';
 import ErrorPage from '@views/Error';
@@ -68,10 +69,10 @@ class ExpressRouterConstructor {
         #swagger.path = '/api/users/img_upload_test'
       */
       uploader.singleImg(), usersController.imgUploadTest);
-    routesApi.post('/users/video_upload_test',
+    routesApi.post('/videos/upload',
       /*
-        #swagger.tags = ['api', 'api/users']
-        #swagger.path = '/api/users/video_upload_test'
+        #swagger.tags = ['api', 'videos/upload']
+        #swagger.path = '/api/videos/upload'
         #swagger.method = 'post'
         #swagger.description = 'Upload video and subtitle.'
         #swagger.consumes = 'multipart/form-data'
@@ -87,14 +88,20 @@ class ExpressRouterConstructor {
           items: { type: 'file' },
           description: 'Upload video and subtitle.'
         }
+        #swagger.parameters['account_Id'] = {
+          in: 'formData',
+          type: 'txt',
+          description: 'user UUID.',
+          example: '5fa503d3-75d3-4577-bfb1-d9bd995541a9'
+        }
         #swagger.responses[200] = {
           description: 'Upload complete and convert start.',
           schema: '檔案上傳成功！開始轉檔...',
         }
       */
-      uploader.arrayVideo(), usersController.videoUpload);
+      uploader.arrayVideo(), videosController.videoUpload);
 
-    // this.post('/users/video_upload_test', uploader.singleVideo(), usersController.videoUpload);
+    // this.post('/videos/upload', uploader.singleVideo(), videosController.videoUpload);
     routesApi.get('/users/account/:name',
       /*
         #swagger.tags = ['api', 'api/users']

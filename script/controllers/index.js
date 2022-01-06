@@ -6,7 +6,7 @@ class Index {
     return { title: 'Express MVC-React' };
   }
   homePage = /*async */(req, res) => {
-    // Socket.io.emit('testEvent', await userService.AllUsers());
+    // Socket.io.emit('testEvent', await userService.allUsers());
     res.render('Index', this.homePageData());
   }
   homePageAPI = (req, res) => {
