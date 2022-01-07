@@ -40,35 +40,40 @@ class ExpressRouterConstructor {
       /*
         #swagger.tags = ['web']
       */
-      indexController.player);
+      videosController.videosListPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {
     const routesApi = Express.Router();
+
     routesApi.get('/',
       /*
         #swagger.tags = ['api']
         #swagger.path = '/api'
       */
       indexController.homePageAPI);
+
     routesApi.get('/users',
       /*
         #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users'
       */
       usersController.usersList);
+
     routesApi.post('/users/registered',
       /*
         #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/registered'
       */
       uploader.avater(), usersController.createUser);
+
     routesApi.post('/users/img_upload_test',
       /*
         #swagger.tags = ['api', 'api/users']
         #swagger.path = '/api/users/img_upload_test'
       */
       uploader.singleImg(), usersController.imgUploadTest);
+
     routesApi.post('/videos/upload',
       /*
         #swagger.tags = ['api', 'videos/upload']
@@ -124,6 +129,15 @@ class ExpressRouterConstructor {
         #swagger.path = '/api/users/login'
       */
       usersController.loginUser);
+
+
+    routesApi.get('/videos',
+      /*
+        #swagger.tags = ['api', 'api/videos']
+        #swagger.path = '/api/videos'
+      */
+      videosController.videosListAPI);
+
     this.routesApi = routesApi;
   }
 

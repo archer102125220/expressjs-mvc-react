@@ -33,13 +33,16 @@ const db = {
 };
 Object.keys(pluginBatabases).forEach((modelName) => {
   db[modelName] = _sequelize.import(modelName, pluginBatabases[modelName]);
-});
-
-Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
+
+// Object.keys(db).forEach((modelName) => {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
 db.sequelize = _sequelize;
 db.Sequelize = _Sequelize;

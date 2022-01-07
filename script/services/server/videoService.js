@@ -2,32 +2,19 @@ import Models from '@models/server';
 const { videoList, userList, sequelize } = Models;
 
 class videoService {
-  constructor() {
-    const rootPath = process.cwd();
-    const publicPath = rootPath + ((process.env.NODE_ENV !== 'production') ? '/script' : '/dist') + '/public';
-    this.publicPath = publicPath;
-  }
 
-  allVideo = async () => {
-    return await videoList.findAll({
-      attributes: {
-        include: {
-          model: userList,
-          required: true
-        }
-      }
+  allVideos = async () => {
+    const video = await videoList.findAll({
+      include: [userList]
     });
+    return video;
   }
   findVideo = async (payload = {}) => {
-    return await videoList.findAll({
+    const video = await videoList.findAll({
       where: payload, // where 條件
-      attributes: {
-        include: {
-          model: userList,
-          required: true
-        }
-      }
+      include: [userList]
     });
+    return video;
   }
   uploadVideo = async (videoName = '', account_Id = '') => {
     if (typeof (process.env.UPLOAD_VIDEO) !== 'string' || process.env.UPLOAD_VIDEO === '') throw 'ERROR:can not fint UPLOAD_VIDEO';
@@ -35,7 +22,7 @@ class videoService {
     return await videoList.create({
       owner: account_Id,
       videoName,
-      video: this.publicPath + '/' + process.env.UPLOAD_VIDEO + '/' + videoName
+      video: '/' + process.env.UPLOAD_VIDEO + '/' + videoName
     });
   }
 }

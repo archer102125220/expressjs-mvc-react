@@ -1,10 +1,37 @@
 import fs from 'fs';
 import videoConverter from '@utils/server/video-converter';
 import videoService from '@services/server/videoService';
+import UserService from '@services/server/userService';
 
 class Videos {
   constructor() {
     this.VideoConverter = new videoConverter({ deleteOriginalVideo: true });
+  }
+
+  videosListPage = async (req, res) => {
+    const videos = await this.videosList(req, res);
+    console.log(JSON.parse(JSON.stringify(videos)));
+    res.render('Video_Player', { videoList: JSON.parse(JSON.stringify(videos)) });
+  }
+  videosListAPI = async (req, res) => {
+    const videos = await this.videosList(req, res);
+    if ((videoList || []).length === 0) {
+      res.status(200).json('查無資料');
+    }
+    res.status(200).json(videos);
+  }
+  videosList = async (req, res) => {
+    return await videoService.allVideos();
+  }
+
+  findVideo = async (req, res) => {
+    const { account_Id, videoName } = req.payload;
+    const owner = typeof (account_Id) === 'string' ? await UserService.findUser({ account_Id })[0].id : account_Id;
+    const video = await UserService.findUser({ owner, videoName });
+    if ((video || []).length === 0) {
+      res.status(200).json('查無資料');
+    }
+    res.status(200).json(video);
   }
 
   videoUpload = async (req, res) => {
@@ -21,7 +48,9 @@ class Videos {
       return res.status(501).send('影片上傳成功，但儲存失敗！');
     }
     this.VideoConverter.setEvent('onStart', async (video) => {
-      await videoService.uploadVideo(video.output, req.auth.id);
+      const videoOutput = video.output.split('/');
+      const videoName = videoOutput[videoOutput.length - 1];
+      await videoService.uploadVideo(videoName, req.auth.id);
     });
 
 

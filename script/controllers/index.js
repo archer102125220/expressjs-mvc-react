@@ -15,9 +15,6 @@ class Index {
   login = (req, res) => {
     res.render('Login');
   }
-  player = (req, res) => {
-    res.render('Video_Player');
-  }
 }
 
 export default new Index();

@@ -1,8 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize';
+
+export default (sequelize, DataTypes) => {
   class videoList extends Model {
     /**
      * Helper method for defining associations.
@@ -11,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.videoList.hasOne(models.userList, { foreignKey: 'id' });
+      models.userList.hasMany(models.videoList, { foreignKey: 'owner' });
     }
   };
   videoList.init({
@@ -18,23 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     video: DataTypes.STRING,
     owner: {
       type: DataTypes.INTEGER,
-      references: {
+      references: { //外來鍵 https://itbilu.com/nodejs/npm/EJarwPD8W.html
         model: 'userLists',
         key: 'id'
       },
       allowNull: false
     },
-    // userId: {
-    //   type: Sequelize.DataTypes.INTEGER,
-    //   references: {
-    //     model: {
-    //       tableName: 'users',
-    //       schema: 'schema'
-    //     },
-    //     key: 'id'
-    //   },
-    //   allowNull: false
-    // },
   }, {
     sequelize,
     modelName: 'videoList',

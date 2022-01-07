@@ -67,6 +67,7 @@ class pageRender {
         if (WrappedComponent) {
           const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
           Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+          Page.defaultProps = Page.WrappedComponent.defaultProps;
           serverProps = Page.WrappedComponent.defaultProps;
         } else {
           const defaultProps = Page?.defaultProps || {};

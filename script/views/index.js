@@ -17,7 +17,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   GET_UserList: (payload, callback, loading) => dispatch({ type: 'userList/GET_UserList', payload, callback, loading }),
-  POST_VideoUploadTest: (payload, onUploadProgress, callback, loading) => dispatch({ type: 'userList/POST_VideoUploadTest', payload, callback, loading, onUploadProgress }),
+  POST_VideoUploadTest: (payload, onUploadProgress, callback, loading) => dispatch({ type: 'videoList/POST_VideoUploadTest', payload, callback, loading, onUploadProgress }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
