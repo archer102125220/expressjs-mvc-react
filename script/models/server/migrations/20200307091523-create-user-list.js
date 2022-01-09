@@ -39,7 +39,7 @@ export default {
       }
     });
   },
-  down: (queryInterface) => {
-    return queryInterface.dropTable('userLists');
+  down: async (queryInterface) => {
+    return await queryInterface.dropTable('userLists');
   }
 };

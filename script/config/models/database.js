@@ -1,11 +1,13 @@
+'use strict';
 import '@babel/register';
 import userList from '@models/server/userlist';
 import videoList from '@models/server/videolist';
-'use strict';
+import videoJurisdiction from '@models/server/videojurisdiction';
 
 export const pluginBatabases = {
   userList,
-  videoList
+  videoList,
+  videoJurisdiction
 };
 
 const nodeEnv = process.env.NODE_ENV || 'development';

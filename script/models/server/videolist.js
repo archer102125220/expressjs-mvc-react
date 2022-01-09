@@ -8,10 +8,10 @@ export default (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ userList, videoList }) {
       // define association here
-      models.videoList.hasOne(models.userList, { foreignKey: 'id' });
-      models.userList.hasMany(models.videoList, { foreignKey: 'owner' });
+      videoList.hasOne(userList, { foreignKey: 'id' });
+      userList.hasMany(videoList, { foreignKey: 'owner' });
     }
   };
   videoList.init({
@@ -23,7 +23,6 @@ export default (sequelize, DataTypes) => {
         model: 'userLists',
         key: 'id'
       },
-      allowNull: false
     },
   }, {
     sequelize,

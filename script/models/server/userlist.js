@@ -23,9 +23,9 @@ export default (sequelize, DataTypes) => {
   }, {
     // tableName: 'userList',
   });
-  // userList.associate = function (models) {
+  // userList.associate = function ({ userList, videoList }) {
   //   // associations can be defined here
-  //   // models.userList.hasMany(models.videoList, { foreignKey: 'owner' });
+  //   // userList.hasMany(videoList, { foreignKey: 'owner' });
   // };
 
   return userList;

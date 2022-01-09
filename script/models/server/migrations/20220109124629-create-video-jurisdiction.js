@@ -2,26 +2,34 @@
 
 export default {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('videoLists', {
+    await queryInterface.createTable('videoJurisdictions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      videoName: {
-        type: Sequelize.STRING
+      videoId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'videoLists',
+          key: 'id'
+        },
+        allowNull: false
       },
-      video: {
-        type: Sequelize.STRING
-      },
-      owner: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'userLists',
           key: 'id'
         },
         allowNull: false
+      },
+      watch: {
+        type: Sequelize.BOOLEAN
+      },
+      download: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -34,6 +42,6 @@ export default {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('videoLists');
+    await queryInterface.dropTable('videoJurisdictions');
   }
 };
