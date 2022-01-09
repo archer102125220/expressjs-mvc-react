@@ -63,7 +63,7 @@ class pageRender {
         const newDefaultProps = await Page.getInitialProps({ serverData: options, settings, res, req, reduxStore: store, isServer: true });
 
         if (typeof (newDefaultProps) === 'object' && newDefaultProps !== null) {
-          delete newDefaultProps.reduxStore;
+          if (typeof (newDefaultProps.reduxStore) === 'object' && newDefaultProps.reduxStore !== null) delete newDefaultProps.reduxStore;
           // settings = {};
           const WrappedComponent = Page?.WrappedComponent;
           if (WrappedComponent) {
