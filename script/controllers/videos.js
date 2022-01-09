@@ -10,7 +10,6 @@ class Videos {
 
   videosListPage = async (req, res) => {
     const videos = await this.videosList(req, res);
-    console.log(JSON.parse(JSON.stringify(videos)));
     res.render('Video_Player', { videoList: JSON.parse(JSON.stringify(videos)) });
   }
   videosListAPI = async (req, res) => {

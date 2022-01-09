@@ -61,20 +61,23 @@ class pageRender {
       let serverProps = {};
       if (typeof (Page.getInitialProps) === 'function') {
         const newDefaultProps = await Page.getInitialProps({ serverData: options, settings, res, req, reduxStore: store, isServer: true });
-        delete newDefaultProps.reduxStore;
-        // settings = {};
-        const WrappedComponent = Page?.WrappedComponent;
-        if (WrappedComponent) {
-          const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
-          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
-          Page.defaultProps = Page.WrappedComponent.defaultProps;
-          serverProps = Page.WrappedComponent.defaultProps;
-        } else {
-          const defaultProps = Page?.defaultProps || {};
-          Page.defaultProps = { ...defaultProps, ...newDefaultProps };
-          serverProps = Page.defaultProps;
+
+        if (typeof (newDefaultProps) === 'object' && newDefaultProps !== null) {
+          delete newDefaultProps.reduxStore;
+          // settings = {};
+          const WrappedComponent = Page?.WrappedComponent;
+          if (WrappedComponent) {
+            const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+            Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+            Page.defaultProps = Page.WrappedComponent.defaultProps;
+            serverProps = Page.WrappedComponent.defaultProps;
+          } else {
+            const defaultProps = Page?.defaultProps || {};
+            Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+            serverProps = Page.defaultProps;
+          }
+          serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
         }
-        serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       } else {
         // settings = {};
         serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };

@@ -30,7 +30,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     static getInitialProps({ serverData, isServer, reduxStore }) {
       if (isServer === true) {
-        return { ...serverData };
+        reduxStore.dispatch({ type: 'videoList/SAVE_video_list', payload: [...serverData.videoList] });
       } else {
         try {
           reduxStore.dispatch({ type: 'videoList/GET_VideoList' });
