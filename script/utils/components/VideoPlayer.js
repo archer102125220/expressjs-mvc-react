@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Plyr from 'plyr-react';
@@ -29,6 +29,7 @@ export default withStyles(styles)(
       this.state = {
       };
       // this.videoNode = React.createRef();
+      this.videoPlayer = createRef();
     }
 
     // componentDidMount = () => {
@@ -68,14 +69,40 @@ export default withStyles(styles)(
     //   }
     // }
 
+    componentDidMount = () => {
+      console.log(this.videoPlayer);
+      console.log(this.videoPlayer.current);
+      console.log(this.videoPlayer.current.plyr);
+    }
 
     render() {
       const { props } = this;
       const {
         classes,
         src,
-        videoPlayerClassName
+        videoPlayerClassName,
+        debug,
+        controls: propControls
       } = props;
+      const controls = [
+        'play-large', // The large play button in the center
+        'restart', // Restart playback
+        'rewind', // Rewind by the seek time (default 10 seconds)
+        'play', // Play/pause playback
+        'fast-forward', // Fast forward by the seek time (default 10 seconds)
+        'progress', // The progress bar and scrubber for playback and buffering
+        'current-time', // The current time of playback
+        'duration', // The full duration of the media
+        'mute', // Toggle mute
+        'volume', // Volume control
+        'captions', // Toggle captions
+        'settings', // Settings menu
+        'pip', // Picture-in-picture (currently Safari only)
+        'airplay', // Airplay (currently Safari only)
+        // 'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
+        'fullscreen', // Toggle fullscreen
+        ...propControls
+      ];
       return (
         <div className={videoPlayerClassName || classes.VideoPlayer} >
           <Plyr
@@ -89,10 +116,13 @@ export default withStyles(styles)(
             }}
             options={
               {
-                debug: process.env.NODE_ENV !== 'production' && this.props.debug === 'true'
+                debug: process.env.NODE_ENV !== 'production' && debug == true,
+                controls: Array.from(new Set(controls))
               }
             }
             {...props}
+            ref={this.videoPlayer}
+          // ref={(player) => (this.videoPlayer.current = player)}
           />
           {/* <VideoReact
             playsInline
@@ -119,11 +149,13 @@ export default withStyles(styles)(
       hlsConfig: PropTypes.object,
       src: PropTypes.string.isRequired,
       poster: PropTypes.string,
+      controls: PropTypes.array
     };
 
     static defaultProps = {
       debug: 'false',
       poster: '',
+      controls: []
     }
   }
 );

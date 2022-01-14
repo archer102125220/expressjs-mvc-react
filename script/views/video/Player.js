@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import VideoPlayer from '@views/components/VideoPlayer';
+import VideoPlayer from '@utils/components/VideoPlayer';
 
 
 const styles = {
@@ -39,14 +39,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
         }
       }
     }
+
     render() {
       const { videoList } = this.props;
       return (
         <div>
           {
             videoList
-              .map((video, index) =>
-                <VideoPlayer key={index} src={video.video} />
+              .map(
+                (video, index) =>
+                  <VideoPlayer key={index} src={video.video} controls={['download']} />
               )
           }
           {/* <VideoPlayer src='/video/video-[Kamigami&VCB-Studio] Yahari Ore no Seishun Lovecome wa Machigatte Iru. Zoku [OVA][Ma10p_1080p][x265_flac]-parker-1626973814647.mp4' />
