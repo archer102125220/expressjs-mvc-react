@@ -25,7 +25,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     constructor(props) {
       super(props);
       this.state = {
-        title: 'state',
         uploadVideoList: [],
         videoOptionList: [],
         uploadSubtitleList: [],
@@ -36,8 +35,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     static getInitialProps({ serverData, isServer, reduxStore }) {
       if (isServer === true) {
-        // reduxStore.dispatch({ type: 'userList/TEST_UserList', payload: [1] });
-        return { ...serverData };
+        reduxStore.dispatch({ type: 'system/SAVE_title', payload: serverData.title });
       } else {
         try {
           reduxStore.dispatch({ type: 'system/GET_HomePage' });
