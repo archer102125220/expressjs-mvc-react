@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
      */
     static associate({ videoList, userList, videoJurisdiction }) {
       // define association here
+      // https://sequelize.org/master/manual/assocs.html
       videoList.belongsToMany(userList, { through: videoJurisdiction });
     }
   };
