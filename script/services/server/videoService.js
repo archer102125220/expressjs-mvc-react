@@ -5,14 +5,28 @@ class videoService {
 
   allVideos = async () => {
     const video = await videoList.findAll({
-      include: [userList]
+      include: [
+        {
+          model: userList,
+          attributes: {
+            exclude: ['password'],
+          }
+        }
+      ]
     });
     return video;
   }
   findVideo = async (payload = {}) => {
     const video = await videoList.findAll({
       where: payload, // where 條件
-      include: [userList]
+      include: [
+        {
+          model: userList,
+          attributes: {
+            exclude: ['password'],
+          }
+        }
+      ]
     });
     return video;
   }
