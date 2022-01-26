@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import Button from '@utils/components/Button';
 
 //https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app
-const styles = {
+const useStyles = makeStyles({
   title: {
     fontSize: '2.5rem',
     fontWeight: 'normal',
@@ -33,9 +33,10 @@ const styles = {
       marginTop: '1em',
     },
   },
-};
+});
 
-function LoginForm({ classes, children, POST_UserLogin, POST_UserRegistered, loginCallback }) {
+function LoginForm({ children, POST_UserLogin, POST_UserRegistered, loginCallback }) {
+  const classes = useStyles();
   const [account, setAccount] = useState('');
   const [accountError, setAccountError] = useState(false);
   const [password, setPassword] = useState('');
@@ -142,17 +143,15 @@ function LoginForm({ classes, children, POST_UserLogin, POST_UserRegistered, log
 
 LoginForm.propTypes = {
   children: PropTypes.node,
-  classes: PropTypes.object,
   POST_UserLogin: PropTypes.func,
   POST_UserRegistered: PropTypes.func,
   loginCallback: PropTypes.func
 };
 
 LoginForm.defaultProps = {
-  classes: {},
   POST_UserLogin: () => { },
   POST_UserRegistered: () => { },
   loginCallback: () => { }
 };
 
-export default withStyles(styles)(LoginForm);
+export default LoginForm;

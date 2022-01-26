@@ -69,15 +69,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     render() {
       const { props } = this;
-      const { children, Message_reset, message/*, history*/ } = props;
-      // const { location } = history;
-      // const { pathname } = location;
+      const { children, Message_reset, message, history } = props;
+      const { location } = history;
+      const { pathname } = location;
       return (
         <ThemeProvider theme={theme}>
           {
-            <GlobalLayout {...props}>
-              <Switch {...props}>{children}</Switch>
-            </GlobalLayout>
+            /\/video\/screenshot\??.?/.test(pathname)?
+              (<Switch {...props}>{children}</Switch>)
+              :
+              (<GlobalLayout {...props}>
+                <Switch {...props}>{children}</Switch>
+              </GlobalLayout>)
           }
           <Message messageText={message.text} messageType={message.type} onClose={Message_reset} />
         </ThemeProvider>

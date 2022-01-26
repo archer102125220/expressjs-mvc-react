@@ -7,6 +7,7 @@ import IndexPage from '@views';
 import ErrorPage from '@views/Error';
 import LoginPage from '@views/Login';
 import Player from '@views/video/Player';
+import VideoScreenshotPage from '@views/video/Screenshot';
 
 class ExpressRouterConstructor {
   constructor() {
@@ -21,7 +22,8 @@ class ExpressRouterConstructor {
     'Index': IndexPage,
     'Error': ErrorPage,
     'Login': LoginPage,
-    'Video_Player': Player
+    'Video_Player': Player,
+    'Video_Screenshot': VideoScreenshotPage
   }
 
   createRoutesWeb = () => {
@@ -41,6 +43,11 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web']
       */
       videosController.videosListPage);
+    routesWeb.get('/video/screenshot',
+      /*
+        #swagger.tags = ['web']
+      */
+        videosController.videoScreenPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {

@@ -33,8 +33,8 @@ class uploader {
   }
 
   filename = (req, file, cb) => {
-    const userName = req.auth ? '-' + req.auth.account : '';
-    cb(null, file.fieldname + '-' + path.basename(file.originalname, path.extname(file.originalname)) + userName + '-' + Date.now() + path.extname(file.originalname));
+    const userName = req.auth ? '_-_' + req.auth.account : '';
+    cb(null, file.fieldname + '_-_' + path.basename(file.originalname, path.extname(file.originalname)) + userName + '_-_' + Date.now() + path.extname(file.originalname));
   }
 
   videoFilename = (req, file, cb) => {
@@ -52,8 +52,8 @@ class uploader {
       req.record.push(videoOptionList[index].timestamp);
     }
     const newName = videoOptionList[index].newName || path.basename(file.originalname, path.extname(file.originalname));
-    const userName = req.auth ? '-' + req.auth.account : '';
-    cb(null, file.fieldname + '-' + newName + userName + '-' + videoOptionList[index].timestamp + path.extname(file.originalname));
+    const userName = req.auth ? '_-_' + req.auth.account : '';
+    cb(null, file.fieldname + '_-_' + newName + userName + '_-_' + videoOptionList[index].timestamp + path.extname(file.originalname));
   }
 
   creater = (dir, videoMode = false) => {

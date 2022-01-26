@@ -75,12 +75,12 @@ export default withStyles(styles)(
 
     getUploadVideo = (e) => {
       const fileList = e.target.files;
-      console.log({ fileList });
       const { uploadVideoList, videoPlayerOptionList, videoOptionList } = this.state;
       for (let i = 0; i < fileList.length; i++) {
         uploadVideoList.push(fileList[i]);
       }
       uploadVideoList.forEach((uploadVideo, key) => {
+
         videoPlayerOptionList[key] = {
           type: 'video',
           sources: [

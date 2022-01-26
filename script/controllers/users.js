@@ -28,7 +28,6 @@ class Users {
   loginUser = async (req, res) => {
     // const { account, password } = req.query;
     const { account } = req.body;
-    console.log(req);
     const password = crypto.createHash('sha1').update(req.body.password).digest('hex');
     const userData = await UserService.findUser({
       account,
