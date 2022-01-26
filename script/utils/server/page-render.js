@@ -80,6 +80,17 @@ class pageRender {
         }
       } else {
         // settings = {};
+        const WrappedComponent = Page?.WrappedComponent;
+        if (WrappedComponent) {
+          const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...options };
+          Page.defaultProps = Page.WrappedComponent.defaultProps;
+          serverProps = Page.WrappedComponent.defaultProps;
+        } else {
+          const defaultProps = Page?.defaultProps || {};
+          Page.defaultProps = { ...defaultProps, ...options };
+          serverProps = Page.defaultProps;
+        }
         serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       }
       const sheets = new ServerStyleSheets();
@@ -87,7 +98,7 @@ class pageRender {
         sheets.collect(
           <MemoryRouter initialEntries={[{ pathname: pageName }]}>
             <Provider store={store}>
-              <LayoutSwitch><Page /></LayoutSwitch>
+              <LayoutSwitch history={{ location: { pathname: req.url } }}><Page /></LayoutSwitch>
             </Provider>
           </MemoryRouter>
         )
