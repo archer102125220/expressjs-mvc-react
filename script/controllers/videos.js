@@ -53,7 +53,7 @@ class Videos {
     this.VideoConverter.setEvent('onStart', async (video) => {
       const videoOutput = video.output.split('/');
       const videoName = videoOutput[videoOutput.length - 1];
-      // await videoService.uploadVideo(videoName, req.auth.id);
+      await videoService.uploadVideo(videoName, req.auth.id);
     });
     const videoPathList = [];
     this.VideoConverter.setEvent('onComplete', async (video) => {

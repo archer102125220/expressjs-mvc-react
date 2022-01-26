@@ -8,7 +8,6 @@ export default class ScreenshotPage extends Component {
 
   render() {
     const { videoList } = this.props;
-    console.log('ScreenshotPage');
     return (videoList.map((video, index) =>
       typeof (video) === 'string' && video !== '' ?
         <Fragment key={index}>
