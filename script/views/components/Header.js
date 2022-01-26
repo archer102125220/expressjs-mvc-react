@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
 import SearchBar from '@views/components/SearchBar';
+import VideoList from '@views/components/VideoList';
 
 const styles = {
   Header: {
@@ -66,7 +68,17 @@ const styles = {
   }
 };
 
-function Header({ classes, className, logoClassName, contxtClassNameHeader, searchSubmit, isMobile }) {
+const useStyles = makeStyles(styles);
+
+function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit, isMobile, videoList }) {
+  const classes = useStyles();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const toggleDrawer = (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerOpen(!drawerOpen);
+  };
   return (
     <header className={[className || classes.Header, isMobile ? classes.HeaderMobile : ''].join(' ')}>
       <Link to='/' >
@@ -74,28 +86,35 @@ function Header({ classes, className, logoClassName, contxtClassNameHeader, sear
       </Link>
       <div className={[contxtClassNameHeader || classes.HeaderContxt, isMobile ? classes.HeaderContxtMobile : ''].join(' ')}>
         <SearchBar width={`calc(85% - ${styles.MenuTrigger.marginRight})`} onSubmit={(searchText) => searchSubmit(searchText)} />
-        <div className={[classes.MenuTrigger, isMobile ? classes.MenuTriggerMobile : ''].join(' ')} />
+        {videoList.length > 0 && <div className={[classes.MenuTrigger, isMobile ? classes.MenuTriggerMobile : ''].join(' ')} onClick={toggleDrawer} />}
       </div>
-    </header>
+      {
+        videoList.length > 0 && (
+          <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer}>
+            <VideoList videoList={videoList} />
+          </Drawer>
+        )
+      }
+    </header >
   );
 }
 
 Header.propTypes = {
-  classes: PropTypes.object,
   className: PropTypes.string,
   logoClassName: PropTypes.string,
   contxtClassNameHeader: PropTypes.string,
   searchSubmit: PropTypes.func,
   isMobile: PropTypes.bool,
+  videoList: PropTypes.array,
 };
 
 Header.defaultProps = {
-  classes: {},
   className: '',
   logoClassName: '',
   contxtClassNameHeader: '',
   searchSubmit: () => { },
-  isMobile: false
+  isMobile: false,
+  videoList: []
 };
 
-export default withStyles(styles)(Header);
+export default Header;

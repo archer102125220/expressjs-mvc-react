@@ -9,6 +9,7 @@ import Footer from '@views/components/Footer';
 const mapStateToProps = (state) => ({
   users: state.userList?.userList || [],
   isMobile: state.system?.isMobile || false,
+  videoList: state.videoList?.videoList || [],
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -16,7 +17,8 @@ const mapDispatchToProps = (dispatch) => ({
   goToRoute: (path, callback) => {
     dispatch(BrowserHistory.push(path));
     if (callback) { callback(); }
-  }
+  },
+  GET_VideoList: (payload, callback, loading) => dispatch({ type: 'videoList/GET_VideoList', payload, callback, loading })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -25,15 +27,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     componentDidMount() {
-      // this.props.GET_UserList();
+      this.props.GET_VideoList();
     }
 
     render() {
-      const { children, isMobile } = this.props;
+      const { children, isMobile, videoList } = this.props;
 
       return (
         <Typography component='div'>
-          <Header searchSubmit={(searchText) => console.log({ searchText })} isMobile={isMobile} />
+          <Header
+            searchSubmit={(searchText) => console.log({ searchText })}
+            isMobile={isMobile}
+            videoList={videoList}
+          />
           {children}
           <Footer />
         </Typography>
@@ -43,7 +49,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     static propTypes = {
       children: PropTypes.node,
       GET_UserList: PropTypes.func,
-      isMobile: PropTypes.bool
+      isMobile: PropTypes.bool,
+      GET_VideoList: PropTypes.func,
+      videoList: PropTypes.array
     }
   }
 );

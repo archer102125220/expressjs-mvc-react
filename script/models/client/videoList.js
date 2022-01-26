@@ -6,7 +6,7 @@ export default {
   namespace: 'videoList',
 
   state: {
-    videoList: undefined //[]
+    videoList: []
   },
 
   effects: {

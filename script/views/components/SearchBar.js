@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@utils/components/Button';
 
 const styles = {
@@ -15,7 +15,10 @@ const styles = {
   }
 };
 
-function SearchBar({ classes, width, input, placeholder, onSubmit }) {
+const useStyles = makeStyles(styles);
+
+function SearchBar({ width, input, placeholder, onSubmit }) {
+  const classes = useStyles();
   const [searchInput, setSearchInput] = useState(input || '');
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', width: width || '100%' }}>
@@ -35,7 +38,6 @@ function SearchBar({ classes, width, input, placeholder, onSubmit }) {
 }
 
 SearchBar.propTypes = {
-  classes: PropTypes.object,
   width: PropTypes.string,
   input: PropTypes.string,
   placeholder: PropTypes.string,
@@ -43,11 +45,10 @@ SearchBar.propTypes = {
 };
 
 SearchBar.defaultProps = {
-  classes: {},
   width: '',
   input: '',
   placeholder: '搜尋',
   onSubmit: () => { }
 };
 
-export default withStyles(styles)(SearchBar);
+export default SearchBar;
