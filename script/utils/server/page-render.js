@@ -98,9 +98,9 @@ class pageRender {
         sheets.collect(
           <MemoryRouter initialEntries={[{ pathname: pageName }]}>
             <Provider store={store}>
-              <LayoutSwitch history={{ location: { pathname: req.url } }}><Page /></LayoutSwitch>
+              <LayoutSwitch history={{ location: { pathname: req.url } }}><Page match={{ params: req.params, url: req.url, path: req.route.path }} /></LayoutSwitch>
             </Provider>
-          </MemoryRouter>
+          </MemoryRouter >
         )
       );
       const cssString = sheets.toString();
