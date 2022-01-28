@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
   imageList: {
     width: 500,
-    height: 450,
+    // height: 450,
     paddingLeft: '10px',
-    paddingRight: '10px'
+    paddingRight: '10px',
+    paddingBottom: '10px'
   },
   item: {
     flexShrink: 'unset',
@@ -41,35 +42,30 @@ function VideoList({ videoList }) {
   return (
     <List>
       {
-        videoList.map((video, index) => (
-          typeof (video.video) === 'string' &&
-          <ImageList rowHeight={180} className={classes.imageList} key={index}>
-            {
-              videoList.map((video) => {
-                const fileName = video.videoName.split('.')[0];
-                const videoName = fileName.split('_-_')[1];
-                const userName = video.userList.account;
-
-                return (
-                  <Link key={fileName} to={`/video/player/${video.id}`} className={classes.item}>
-                    <ImageListItem className={classes.item}>
-                      <img src={`/video/screenshot/${fileName}.png`} alt={videoName} />
-                      <ImageListItemBar
-                        title={videoName}
-                        subtitle={<span>by: {userName}</span>}
-                      // actionIcon={
-                      //   <IconButton aria-label={`info about ${videoName}`} className={classes.icon}>
-                      //     <InfoIcon />
-                      //   </IconButton>
-                      // }
-                      />
-                    </ImageListItem>
-                  </Link>
-                );
-              })
-            }
-          </ImageList>
-        ))
+        videoList.map((video, index) => {
+          const fileName = video.videoName.split('.')[0];
+          const videoName = fileName.split('_-_')[1];
+          const userName = video.userList?.account;
+          return (
+            typeof (video.video) === 'string' &&
+            <ImageList rowHeight={180} className={classes.imageList} key={index}>
+              <Link key={fileName} to={`/video/${video.id}`} className={classes.item}>
+                <ImageListItem className={classes.item}>
+                  <img src={`/video/screenshot/${fileName}.png`} alt={videoName} />
+                  <ImageListItemBar
+                    title={videoName}
+                    subtitle={<span>by: {userName || ''}</span>}
+                  // actionIcon={
+                  //   <IconButton aria-label={`info about ${videoName}`} className={classes.icon}>
+                  //     <InfoIcon />
+                  //   </IconButton>
+                  // }
+                  />
+                </ImageListItem>
+              </Link>
+            </ImageList>
+          );
+        })
       }
     </List>
   );

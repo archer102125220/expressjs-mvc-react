@@ -14,7 +14,7 @@ class Videos {
 
   videosListPage = async (req, res) => {
     const videos = await this.videosList(req, res);
-    res.render('Video_Player', { videoList: JSON.parse(JSON.stringify(videos)) });
+    res.render('Video_List', { videoList: JSON.parse(JSON.stringify(videos)) });
   }
   videosListAPI = async (req, res) => {
     const videos = await this.videosList(req, res);
@@ -25,6 +25,22 @@ class Videos {
   }
   videosList = async (req, res) => {
     return await videoService.allVideos();
+  }
+
+  videosPage = async (req, res) => {
+    const videos = await this.videos(req, res);
+    res.render('Video_Player', { videoInfo: JSON.parse(JSON.stringify(videos)) });
+  }
+  videosAPI = async (req, res) => {
+    const videos = await this.videos(req, res);
+    // if ((videos || []).length === 0) {
+    //   res.status(200).json('查無資料');
+    // }
+    res.status(200).json(videos);
+  }
+  videos = async (req, res) => {
+    const { id } = req.params;
+    return await videoService.findVideo({ id });
   }
 
   findVideo = async (req, res) => {

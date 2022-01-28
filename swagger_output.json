@@ -34,7 +34,34 @@
         "responses": {}
       }
     },
-    "/video/player": {
+    "/video": {
+      "get": {
+        "tags": [
+          "web"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/video/{id}": {
+      "get": {
+        "tags": [
+          "web"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/video/screenshot": {
       "get": {
         "tags": [
           "web"
@@ -170,6 +197,28 @@
         "tags": [
           "api",
           "api/users"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/videos": {
+      "get": {
+        "tags": [
+          "api",
+          "api/videos"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/videos/:id": {
+      "get": {
+        "tags": [
+          "api",
+          "api/videos/:id"
         ],
         "description": "",
         "parameters": [],

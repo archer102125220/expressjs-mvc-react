@@ -7,6 +7,9 @@ import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { routeComponent, redirectComponent } from '@config/router/reactRouter';
 import { store } from '@utils/client/reduxInit';
 
+
+const paramsRoute = routeComponent.filter(({ path }) => path.includes(':'));
+
 function setServerDate() {
   if (typeof (window) !== 'object') return;
   const __EXPRESS_MVC_REACT_DATA__ = document.getElementById('__EXPRESS_MVC_REACT_DATA__');
@@ -28,29 +31,57 @@ class Root extends Component {
 
   static propTypes = {
     history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     children: PropTypes.node
   };
 
   async shouldComponentUpdate(nextProps) {
-    const { history } = nextProps;
+    const { history, match } = nextProps;
     const location = history.location || {};
-    const Page = routeComponent.find(page => page.path === location.pathname)?.component || {};
-    if (typeof (Page?.getInitialProps) === 'function') {
+    const pathname = location.pathname.split('/');
+    const Page = (
+      routeComponent.find(({ path }) => path === location.pathname)
+      ||
+      paramsRoute
+        .filter((page) => {
+          if (page.exact === true && page.path.length !== location.pathname.length) return false;
+          const path = page.path.split('/');
+          const match = path.filter((element, key) => {
+            return element.includes(':') || element === pathname[key];
+          });
+          return path.length === match.length;
+        })[0]
+      ||
+      {}
+    );
+    const PageComponent = Page?.component;
+    const PagePath = Page?.path;
+    const PageParams = {};
+    const path = PagePath.split('/');
+    pathname.map((element, key) => {
+      if (path[key].includes(':')) {
+        const params = path[key].split('=');
+        PageParams[params[0].substring(1)] = element;
+      }
+    });
+    if (typeof (PageComponent?.getInitialProps) === 'function') {
       try {
-        const newDefaultProps = await Page.getInitialProps({ ...history, isServer: false, reduxStore: store });
-        const defaultProps = Page.defaultProps || {};
-        const WrappedComponent = Page?.WrappedComponent;
-        if (WrappedComponent) {
-          const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
-          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
-        } else {
-          Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+        const newDefaultProps = await PageComponent.getInitialProps({ ...history, match: { ...match, pagePath: PagePath, pageParams: PageParams }, isServer: false, reduxStore: store });
+        if (newDefaultProps !== undefined && newDefaultProps !== null) {
+          const defaultProps = PageComponent.defaultProps || {};
+          const WrappedComponent = PageComponent?.WrappedComponent;
+          if (WrappedComponent) {
+            const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+            PageComponent.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+          } else {
+            PageComponent.defaultProps = { ...defaultProps, ...newDefaultProps };
+          }
+          this.forceUpdate();
+          return false;
         }
-        this.forceUpdate();
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') console.log(error);
       }
-      return false;
     }
     return true;
   }

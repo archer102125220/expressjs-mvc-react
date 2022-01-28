@@ -8,8 +8,16 @@ export function GET_videoList(payload = {}, token) {
     }
   });
 }
+export function GET_video(payload = '', token) {
+  return fetch('GET', `/videos/${payload}`, null, {
+    headers: {
+      // eslint-disable-next-line no-useless-escape
+      Authorization: token.replace(/\"/g, '')
+    }
+  });
+}
 
-export function POST_videoUploadTest(payload = {}, token, onUploadProgress = () => { }) {
+export function POST_videoUpload(payload = {}, token, onUploadProgress = () => { }) {
   return fetch('POST', '/videos/upload', payload, {
     headers: {
       'Content-Type': 'multipart/form-data',

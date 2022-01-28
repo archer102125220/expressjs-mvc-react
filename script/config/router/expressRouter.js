@@ -6,7 +6,8 @@ import uploader from '@middlewares/uploader';
 import IndexPage from '@views';
 import ErrorPage from '@views/Error';
 import LoginPage from '@views/Login';
-import Player from '@views/video/Player';
+import Player from '@views/video/_id';
+import VideoList from '@views/video';
 import VideoScreenshotPage from '@views/video/Screenshot';
 
 class ExpressRouterConstructor {
@@ -23,6 +24,7 @@ class ExpressRouterConstructor {
     'Error': ErrorPage,
     'Login': LoginPage,
     'Video_Player': Player,
+    'Video_List': VideoList,
     'Video_Screenshot': VideoScreenshotPage
   }
 
@@ -38,16 +40,21 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web']
       */
       indexController.login);
-    routesWeb.get('/video/player',
+    routesWeb.get('/video',
       /*
         #swagger.tags = ['web']
       */
       videosController.videosListPage);
+    routesWeb.get('/video/:id',
+      /*
+        #swagger.tags = ['web']
+      */
+      videosController.videosPage);
     routesWeb.get('/video/screenshot',
       /*
         #swagger.tags = ['web']
       */
-        videosController.videoScreenPage);
+      videosController.videoScreenPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {
@@ -144,6 +151,12 @@ class ExpressRouterConstructor {
         #swagger.path = '/api/videos'
       */
       videosController.videosListAPI);
+    routesApi.get('/videos/:id',
+      /*
+        #swagger.tags = ['api', 'api/videos/:id']
+        #swagger.path = '/api/videos/:id'
+      */
+      videosController.videosAPI);
 
     this.routesApi = routesApi;
   }

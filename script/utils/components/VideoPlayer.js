@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Plyr from 'plyr-react';
@@ -28,8 +28,6 @@ export default withStyles(styles)(
       super(props);
       this.state = {
       };
-      // this.videoNode = React.createRef();
-      this.videoPlayer = createRef();
     }
 
     // componentDidMount = () => {
@@ -68,12 +66,6 @@ export default withStyles(styles)(
     //     this.player.dispose();
     //   }
     // }
-
-    componentDidMount = () => {
-      console.log(this.videoPlayer);
-      console.log(this.videoPlayer.current);
-      console.log(this.videoPlayer.current.plyr);
-    }
 
     render() {
       const { props } = this;
@@ -121,8 +113,6 @@ export default withStyles(styles)(
               }
             }
             {...props}
-            ref={this.videoPlayer}
-          // ref={(player) => (this.videoPlayer.current = player)}
           />
           {/* <VideoReact
             playsInline

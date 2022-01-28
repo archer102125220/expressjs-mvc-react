@@ -57,10 +57,11 @@ class pageRender {
       const req = _.cloneDeep(options.req);
       delete options.res;
       delete options.req;
-      let serverPageProps = {};
       let serverProps = {};
+      const match = { params: req.params, url: req.url, path: req.route.path };
+
       if (typeof (Page.getInitialProps) === 'function') {
-        const newDefaultProps = await Page.getInitialProps({ serverData: options, settings, res, req, reduxStore: store, isServer: true });
+        const newDefaultProps = await Page.getInitialProps({ serverData: options, match, settings, res, req, reduxStore: store, isServer: true });
 
         if (typeof (newDefaultProps) === 'object' && newDefaultProps !== null) {
           if (typeof (newDefaultProps.reduxStore) === 'object' && newDefaultProps.reduxStore !== null) delete newDefaultProps.reduxStore;
@@ -68,37 +69,47 @@ class pageRender {
           const WrappedComponent = Page?.WrappedComponent;
           if (WrappedComponent) {
             const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
-            Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps };
+            Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...newDefaultProps, match };
             Page.defaultProps = Page.WrappedComponent.defaultProps;
             serverProps = Page.WrappedComponent.defaultProps;
           } else {
             const defaultProps = Page?.defaultProps || {};
-            Page.defaultProps = { ...defaultProps, ...newDefaultProps };
+            Page.defaultProps = { ...defaultProps, ...newDefaultProps, match };
             serverProps = Page.defaultProps;
           }
-          serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
+        } else {
+          const WrappedComponent = Page?.WrappedComponent;
+          if (WrappedComponent) {
+            const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
+            Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, match };
+            Page.defaultProps = Page.WrappedComponent.defaultProps;
+            serverProps = Page.WrappedComponent.defaultProps;
+          } else {
+            const defaultProps = Page?.defaultProps || {};
+            Page.defaultProps = { ...defaultProps, match };
+            serverProps = Page.defaultProps;
+          }
         }
       } else {
         // settings = {};
         const WrappedComponent = Page?.WrappedComponent;
         if (WrappedComponent) {
           const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
-          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...options };
+          Page.WrappedComponent.defaultProps = { ...WrappedComponentDefaultProps, ...options, match };
           Page.defaultProps = Page.WrappedComponent.defaultProps;
           serverProps = Page.WrappedComponent.defaultProps;
         } else {
           const defaultProps = Page?.defaultProps || {};
-          Page.defaultProps = { ...defaultProps, ...options };
+          Page.defaultProps = { ...defaultProps, ...options, match };
           serverProps = Page.defaultProps;
         }
-        serverPageProps = { serverData: options, res: {}, req: {}, settings, isServer: false };
       }
       const sheets = new ServerStyleSheets();
       const content = renderToString(
         sheets.collect(
           <MemoryRouter initialEntries={[{ pathname: pageName }]}>
             <Provider store={store}>
-              <LayoutSwitch history={{ location: { pathname: req.url } }}><Page match={{ params: req.params, url: req.url, path: req.route.path }} /></LayoutSwitch>
+              <LayoutSwitch history={{ location: { pathname: req.url } }}><Page /></LayoutSwitch>
             </Provider>
           </MemoryRouter >
         )
@@ -155,7 +166,7 @@ class pageRender {
         domStyle[i].remove();
       }
 
-      serverData = { ...serverData, serverPageData: serverPageProps, reduxStore: store.getState(), serverProps };
+      serverData = { ...serverData, reduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? '/index.js' : '/javascripts/index.js';
       const reactModulesPath = process.env.NODE_ENV !== 'production' ? '/modules.js' : '/javascripts/modules.js';
       const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/javascripts/styles.css';

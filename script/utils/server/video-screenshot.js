@@ -24,7 +24,7 @@ export default class videoScreenshot {
     if (videoList.length <= 0) throw 'video list is null';
     const nightmare = this.nightmare;
     const videoScreenshotURL = this.videoScreenshotURL;
-    console.log({ token });
+
     const videoScreenshotList = await nightmare
       .goto(
         `http://${'127.0.0.1:' + (process.env.APP_PORT || 80) + videoScreenshotURL + '?videoList=' + encodeURI(videoList.concat(','))}`,
