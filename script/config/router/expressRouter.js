@@ -54,7 +54,7 @@ class ExpressRouterConstructor {
       /*
         #swagger.tags = ['web']
       */
-      videosController.videosPage);
+      videosController.videoListPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {
@@ -107,10 +107,10 @@ class ExpressRouterConstructor {
           items: { type: 'file' },
           description: 'Upload video and subtitle.'
         }
-        #swagger.parameters['account_Id'] = {
+        #swagger.parameters['user_Id'] = {
           in: 'formData',
           type: 'txt',
-          description: 'user UUID.',
+          description: 'user id.',
           example: '5fa503d3-75d3-4577-bfb1-d9bd995541a9'
         }
         #swagger.responses[200] = {
@@ -156,7 +156,7 @@ class ExpressRouterConstructor {
         #swagger.tags = ['api', 'api/videos/:id']
         #swagger.path = '/api/videos/:id'
       */
-      videosController.videosAPI);
+      videosController.videoListAPI);
 
     this.routesApi = routesApi;
   }

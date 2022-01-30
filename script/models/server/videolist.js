@@ -10,19 +10,29 @@ export default (sequelize, DataTypes) => {
      */
     static associate({ userList, videoList }) {
       // define association here
-      videoList.belongsTo(userList, { foreignKey: 'owner' });
-      userList.hasMany(videoList, { foreignKey: 'id' });
+      videoList.belongsTo(userList, { foreignKey: 'owner', targetKey: 'id' });
+      userList.hasMany(videoList, { foreignKey: 'id', targetKey: 'owner' });
     }
   };
   videoList.init({
     videoName: DataTypes.STRING,
+    videoScreenshot: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
     video: DataTypes.STRING,
     owner: {
       type: DataTypes.INTEGER,
-      references: { //外來鍵 https://itbilu.com/nodejs/npm/EJarwPD8W.html
-        model: 'userLists',
-        key: 'id'
-      },
+      references: [
+        { //外來鍵 https://itbilu.com/nodejs/npm/EJarwPD8W.html
+          model: 'userLists',
+          key: 'id'
+        },
+        {
+          model: 'videoJurisdictions',
+          key: 'videoListId'
+        }
+      ],
     },
   }, {
     sequelize,

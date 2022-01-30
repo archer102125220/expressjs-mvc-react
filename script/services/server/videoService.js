@@ -1,40 +1,63 @@
 import Models from '@models/server';
-const { videoList, userList, sequelize } = Models;
+const { videoList, userList, videoJurisdiction, sequelize } = Models;
 
 class videoService {
 
   allVideos = async () => {
     const video = await videoList.findAll({
-      include: [
-        {
-          model: userList,
-          attributes: {
-            exclude: ['password'],
-          }
-        }
-      ]
+      include: {
+        model: userList,
+        attributes: {
+          exclude: ['password', 'email', 'id'],
+        },
+        // through: {
+        //   attributes: [],
+        // }
+      },
     });
     return video;
   }
-  findVideo = async (payload = {}) => {
+  findVideoList = async (payload = {}) => {
     const video = await videoList.findAll({
       where: payload, // where 條件
       include: [
         {
           model: userList,
           attributes: {
-            exclude: ['password'],
-          }
-        }
+            exclude: ['password', 'email', 'id'],
+          },
+          // through: {
+          //   attributes: [],
+          // }
+        },
+        videoJurisdiction
       ]
     });
     return video;
   }
-  uploadVideo = async (videoName = '', account_Id = '') => {
+  findVideo = async (payload = {}) => {
+    const video = await videoList.find({
+      where: payload, // where 條件
+      include: [
+        {
+          model: userList,
+          attributes: {
+            exclude: ['password', 'email', 'id'],
+          },
+          // through: {
+          //   attributes: [],
+          // }
+        },
+        videoJurisdiction
+      ]
+    });
+    return video;
+  }
+  uploadVideo = async (videoName = '', user_Id = '') => {
     if (typeof (process.env.UPLOAD_VIDEO) !== 'string' || process.env.UPLOAD_VIDEO === '') throw 'ERROR:can not fint UPLOAD_VIDEO';
 
     return await videoList.create({
-      owner: account_Id,
+      owner: user_Id,
       videoName,
       video: '/' + process.env.UPLOAD_VIDEO + '/' + videoName
     });

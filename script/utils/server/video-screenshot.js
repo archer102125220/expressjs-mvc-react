@@ -12,7 +12,7 @@ export default class videoScreenshot {
     this.nightmareConfig = nightmareConfig;
   }
 
-  getVideoScreenshop = async (videoList = [], token) => {
+  getVideoScreent = async (videoList = [], token) => {
     if (videoList.length <= 0) throw 'video list is null';
     const nightmare = Nightmare({
       show: false,

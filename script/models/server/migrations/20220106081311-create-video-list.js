@@ -12,8 +12,16 @@ export default {
       videoName: {
         type: Sequelize.STRING
       },
+      videoScreenshot: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       video: {
         type: Sequelize.STRING
+      },
+      video_Id: {
+        // type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       owner: {
         type: Sequelize.INTEGER,

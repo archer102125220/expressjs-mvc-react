@@ -17,7 +17,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   GET_UserList: (payload, callback, loading) => dispatch({ type: 'userList/GET_UserList', payload, callback, loading }),
-  POST_VideoUploadTest: (payload, onUploadProgress, callback, loading) => dispatch({ type: 'videoList/POST_VideoUploadTest', payload, callback, loading, onUploadProgress }),
+  POST_VideoUpload: (payload, onUploadProgress, callback, loading) => dispatch({ type: 'videoList/POST_VideoUpload', payload, callback, loading, onUploadProgress }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -74,7 +74,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       }
       const loading = bool => this.setState({ loading: bool });
       // console.log(debugLogData, this.onUploadProgress, this.onUploaded, loading);
-      this.props.POST_VideoUploadTest(formData, this.onUploadProgress, this.onUploaded, loading);
+      this.props.POST_VideoUpload(formData, this.onUploadProgress, this.onUploaded, loading);
     }
 
     onUploaded = () => {
@@ -113,7 +113,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       children: PropTypes.node,
       history: PropTypes.any,
       title: PropTypes.string,
-      POST_VideoUploadTest: PropTypes.func
+      POST_VideoUpload: PropTypes.func
     };
 
     static defaultProps = {

@@ -23,7 +23,7 @@ export default {
       }
       if (typeof (loading) === 'function') { loading(false); }
     },
-    *POST_VideoUploadTest({ payload, onUploadProgress, callback, loading }, { call, put, select }) {
+    *POST_VideoUpload({ payload, onUploadProgress, callback, loading }, { call, put, select }) {
       try {
         if (typeof (loading) === 'function') { loading(true); }
         const token = yield select(state => state.userList?.userToken || '');

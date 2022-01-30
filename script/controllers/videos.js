@@ -28,26 +28,26 @@ class Videos {
     return await videoService.allVideos();
   }
 
-  videosPage = async (req, res) => {
-    const videos = await this.videos(req, res);
+  videoListPage = async (req, res) => {
+    const videos = await this.videoList(req, res);
     res.render('Video_Player', { videoInfo: JSON.parse(JSON.stringify(videos)) });
   }
-  videosAPI = async (req, res) => {
-    const videos = await this.videos(req, res);
+  videoListAPI = async (req, res) => {
+    const videos = await this.videoList(req, res);
     // if ((videos || []).length === 0) {
     //   res.status(200).json('查無資料');
     // }
     res.status(200).json(videos);
   }
-  videos = async (req, res) => {
+  videoList = async (req, res) => {
     const { id } = req.params;
-    return await videoService.findVideo({ id });
+    return await videoService.findVideoList({ id });
   }
 
   findVideo = async (req, res) => {
-    const { account_Id, videoName } = req.payload;
-    const owner = typeof (account_Id) === 'string' ? await UserService.findUser({ account_Id })[0].id : account_Id;
-    const video = await videoService.findUser({ owner, videoName });
+    const { user_Id, videoName } = req.payload;
+    const owner = typeof (user_Id) === 'string' ? await UserService.findUser({ account_Id: user_Id })[0].id : user_Id;
+    const video = await videoService.findVideo({ owner, videoName });
     if ((video || []).length === 0) {
       res.status(200).json('查無資料');
     }
@@ -72,7 +72,11 @@ class Videos {
       await videoService.uploadVideo(videoName, req.auth.id);
     });
     this.VideoConverter.setEvent('onComplete', async (video) => {
-      await this.VideoScreenshot.getVideoScreenshop(['/video/' + path.basename(video.output)], this.userToken);
+      const videoOutput = video.output.split('/');
+      const videoName = videoOutput[videoOutput.length - 1];
+      const videoData = await videoService.findVideo({ videoName });
+      await this.VideoScreenshot.getVideoScreent(['/' + process.env.UPLOAD_VIDEO + '/' + path.basename(video.output)], this.userToken);
+      await videoData.update({ videoScreenshot: '/' + process.env.UPLOAD_VIDEO + '/screenshot/' + path.basename(video.output, path.extname(video.output)) + '.png' });
     });
 
 

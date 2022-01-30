@@ -48,10 +48,10 @@ function VideoList({ videoList }) {
           const userName = video.userList?.account;
           return (
             typeof (video.video) === 'string' &&
-            <ImageList rowHeight={180} className={classes.imageList} key={index}>
-              <Link key={fileName} to={`/video/player/${video.id}`} className={classes.item}>
+            <ImageList rowHeight={180} className={classes.imageList} key={fileName}>
+              <Link to={`/video/player/${video.id}`} className={classes.item}>
                 <ImageListItem className={classes.item}>
-                  <img src={`/video/screenshot/${fileName}.png`} alt={videoName} />
+                  <img src={video.videoScreenshot} alt={videoName} />
                   <ImageListItemBar
                     title={videoName}
                     subtitle={<span>by: {userName || ''}</span>}
