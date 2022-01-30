@@ -10,8 +10,8 @@ export default (sequelize, DataTypes) => {
      */
     static associate({ userList, videoList }) {
       // define association here
-      videoList.hasOne(userList, { foreignKey: 'id' });
-      userList.hasMany(videoList, { foreignKey: 'owner' });
+      videoList.belongsTo(userList, { foreignKey: 'owner' });
+      userList.hasMany(videoList, { foreignKey: 'id' });
     }
   };
   videoList.init({

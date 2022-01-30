@@ -9,7 +9,7 @@ export default {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      videoId: {
+      videoListId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'videoLists',
@@ -17,7 +17,7 @@ export default {
         },
         allowNull: false
       },
-      userId: {
+      userListId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'userLists',

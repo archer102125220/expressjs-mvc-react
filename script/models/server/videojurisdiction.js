@@ -11,18 +11,19 @@ export default (sequelize, DataTypes) => {
     static associate({ videoList, userList, videoJurisdiction }) {
       // define association here
       // https://sequelize.org/master/manual/assocs.html
-      videoList.belongsToMany(userList, { through: videoJurisdiction });
+      videoList.belongsToMany(userList, { through: videoJurisdiction, targetKey: 'id' });
+      userList.belongsToMany(videoList, { through: videoJurisdiction, targetKey: 'ownider' });
     }
   };
   videoJurisdiction.init({
-    videoId: {
+    videoListId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'videoLists',
         key: 'id'
       },
     },
-    userId: {
+    userListId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'userLists',

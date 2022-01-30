@@ -49,7 +49,7 @@ function VideoList({ videoList }) {
           return (
             typeof (video.video) === 'string' &&
             <ImageList rowHeight={180} className={classes.imageList} key={index}>
-              <Link key={fileName} to={`/video/${video.id}`} className={classes.item}>
+              <Link key={fileName} to={`/video/player/${video.id}`} className={classes.item}>
                 <ImageListItem className={classes.item}>
                   <img src={`/video/screenshot/${fileName}.png`} alt={videoName} />
                   <ImageListItemBar

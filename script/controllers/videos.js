@@ -10,6 +10,7 @@ class Videos {
   constructor() {
     this.VideoConverter = new videoConverter({ deleteOriginalVideo: true });
     this.VideoScreenshot = new videoScreenshot('/video/screenshot');
+    UserService.findUser({ account: 'admin' }).then(account => this.userToken = JWTMiddleware.encode(account[0].dataValues));
   }
 
   videosListPage = async (req, res) => {
@@ -58,7 +59,6 @@ class Videos {
     const { videoOptionList: videoOptionListJSON } = payload;
     const videoOptionList = JSON.parse(videoOptionListJSON);
     const videoUploadList = req.file || req.files;
-    // console.log(req.record);
 
     if (typeof (process.env.UPLOAD_VIDEO) !== 'string' || process.env.UPLOAD_VIDEO === '') {
       videoUploadList.forEach(element => {
@@ -71,15 +71,8 @@ class Videos {
       const videoName = videoOutput[videoOutput.length - 1];
       await videoService.uploadVideo(videoName, req.auth.id);
     });
-    const videoPathList = [];
     this.VideoConverter.setEvent('onComplete', async (video) => {
-      videoPathList.push('/video/' + path.basename(video.output));
-      if (videoUploadList.length === videoPathList.length) {
-        const account = await UserService.findUser({ account: 'admin' });
-        const token = JWTMiddleware.encode(account[0].dataValues);
-        console.log({ videoPathList });
-        await this.VideoScreenshot.getVideoScreenshop(videoPathList, token);
-      }
+      await this.VideoScreenshot.getVideoScreenshop(['/video/' + path.basename(video.output)], this.userToken);
     });
 
 

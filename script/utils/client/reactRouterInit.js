@@ -38,7 +38,7 @@ class Root extends Component {
   async shouldComponentUpdate(nextProps) {
     const { history, match } = nextProps;
     const location = history.location || {};
-    const pathname = location.pathname.split('/');
+    const pathname = location.pathname.split('?')[0].split('/');
     const Page = (
       routeComponent.find(({ path }) => path === location.pathname)
       ||

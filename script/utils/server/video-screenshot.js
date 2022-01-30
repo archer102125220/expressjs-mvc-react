@@ -3,26 +3,25 @@ import path from 'path';
 import Nightmare from 'nightmare';
 
 export default class videoScreenshot {
-  constructor(videoScreenshotURL = '', NightmareConfig = {}) {
+  constructor(videoScreenshotURL = '', nightmareConfig = {}) {
     if (typeof (videoScreenshotURL) !== 'string' || videoScreenshotURL === '') throw 'init Error';
     const rootPath = process.cwd();
     const publicPath = rootPath + ((process.env.NODE_ENV !== 'production') ? '/script' : '/dist') + '/public';
     this.publicPath = publicPath;
     this.videoScreenshotURL = videoScreenshotURL;
+    this.nightmareConfig = nightmareConfig;
+  }
 
-    this.nightmare = Nightmare({
+  getVideoScreenshop = async (videoList = [], token) => {
+    if (videoList.length <= 0) throw 'video list is null';
+    const nightmare = Nightmare({
       show: false,
       // openDevTools: {
       //   mode: 'detach'
       // },
       waitTimeout: 24 * 60 * 60 * 1000,
-      ...NightmareConfig
+      ...this.nightmareConfig
     });
-  }
-
-  getVideoScreenshop = async (videoList = [], token) => {
-    if (videoList.length <= 0) throw 'video list is null';
-    const nightmare = this.nightmare;
     const videoScreenshotURL = this.videoScreenshotURL;
 
     const videoScreenshotList = await nightmare
@@ -35,15 +34,11 @@ export default class videoScreenshot {
         console.log('evaluate');
         const videoScreenshotList = [];
         const createVideoScreenshot = (video, key) => {
-          // const scale = 0.25;
           const canvas = document.createElement('canvas');
           const canvasFill = canvas.getContext('2d');
-          // canvas.width = video.videoWidth * scale;
-          // canvas.height = video.videoHeight * scale;
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
           canvasFill.drawImage(video, 0, 0, canvas.width, canvas.height);
-          console.log({ canvas });
           const videoScreenshot = canvas.toDataURL('image/png');
           videoScreenshotList[key] = videoScreenshot.replace(/^data:image\/\w+;base64,/, '');
 
@@ -58,7 +53,6 @@ export default class videoScreenshot {
 
       }, 'video')
       .end();
-    console.log({ videoScreenshotList });
     videoScreenshotList.forEach((videoScreenshot, index) => {
       const buf = Buffer.from(videoScreenshot, 'base64');
       const videoName = path.basename(videoList[index], path.extname(videoList[index]));

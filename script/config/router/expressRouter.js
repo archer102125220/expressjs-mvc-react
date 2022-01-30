@@ -40,21 +40,21 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web']
       */
       indexController.login);
-    routesWeb.get('/video',
+    routesWeb.get('/video/player',
       /*
         #swagger.tags = ['web']
       */
       videosController.videosListPage);
-    routesWeb.get('/video/:id',
-      /*
-        #swagger.tags = ['web']
-      */
-      videosController.videosPage);
     routesWeb.get('/video/screenshot',
       /*
         #swagger.tags = ['web']
       */
       videosController.videoScreenPage);
+    routesWeb.get('/video/player/:id',
+      /*
+        #swagger.tags = ['web']
+      */
+      videosController.videosPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {
