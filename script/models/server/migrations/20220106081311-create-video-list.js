@@ -2,6 +2,8 @@
 
 export default {
   up: async (queryInterface, Sequelize) => {
+    const { dialectOptions } = queryInterface.sequelize.config;
+    const { charset } = dialectOptions, { collate } = dialectOptions;
     await queryInterface.createTable('videoLists', {
       id: {
         allowNull: false,
@@ -39,6 +41,9 @@ export default {
         allowNull: false,
         type: Sequelize.DATE
       }
+    }, {
+      charset: charset || 'utf8',
+      collate: collate || 'utf8_general_ci',
     });
   },
   down: async (queryInterface, Sequelize) => {
