@@ -42,6 +42,14 @@ class Users {
       res.status(200).send(token);
     }
   }
+  getUserData = async (req, res) => {
+    if (req.auth) {
+      res.status(200).send(req.auth);
+    } else {
+      res.cookie('token', '', { httpOnly: true });
+      res.status(401);
+    }
+  }
 
   createUser = async (req, res) => {
     const { body: payload } = req;

@@ -24,12 +24,13 @@ const mapDispatchToProps = (dispatch) => ({
   Message_reset: (callback) => dispatch({ type: 'system/message_reset', callback }),
   enquireScreen: (payload, callback) => dispatch({ type: 'system/enquireScreen', payload, callback }),
   SAVE_userToken: (payload, callback) => dispatch({ type: 'userList/SAVE_user_token', payload, callback }),
+  GET_UserData: (payload, callback) => dispatch({ type: 'userList/GET_UserData', payload, callback }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   class LayoutSwitch extends Component {
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
       // const { SOCKET_UserList } = this.props;
 
       // const socketEvents = [
@@ -37,6 +38,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       //   { name: 'clickEvent', event: (clickEvent) => console.log({ clickEvent }) }
       // ];
       // Socket.eventInit(socketEvents);
+      await this.props.GET_UserData();
 
       const rememberMe = localStorage.getItem('rememberMe');
       const token = localStorage.getItem('token');
@@ -75,7 +77,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       return (
         <ThemeProvider theme={theme}>
           {
-            /\/video\/screenshot\??.?/.test(pathname)?
+            /\/video\/screenshot\??.?/.test(pathname) ?
               (<Switch {...props}>{children}</Switch>)
               :
               (<GlobalLayout {...props}>
@@ -94,6 +96,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       isMobile: PropTypes.bool,
       message: PropTypes.object,
       Message_reset: PropTypes.func,
+      GET_UserData: PropTypes.func,
       // SOCKET_UserList: PropTypes.func,
     };
   }

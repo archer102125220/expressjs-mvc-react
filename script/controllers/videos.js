@@ -46,6 +46,8 @@ class Videos {
 
   findVideo = async (req, res) => {
     const { user_Id, videoName } = req.payload;
+    // const { id } = req.params;
+    // const user_Id = req.auth.id;
     const owner = typeof (user_Id) === 'string' ? await UserService.findUser({ account_Id: user_Id })[0].id : user_Id;
     const video = await videoService.findVideo({ owner, videoName });
     if ((video || []).length === 0) {

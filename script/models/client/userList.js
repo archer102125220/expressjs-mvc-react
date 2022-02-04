@@ -1,4 +1,4 @@
-import { GET_userList, POST_userRegistered, POST_userLogin } from '@services/client/userList';
+import { GET_userList, POST_userRegistered, POST_userLogin, GET_userData } from '@services/client/userList';
 
 export default {
 
@@ -6,7 +6,8 @@ export default {
 
   state: {
     userToken: '',
-    userList: []
+    userList: [],
+    userData: {}
   },
 
   effects: {
@@ -56,6 +57,18 @@ export default {
       // const data = yield call(GET_userList, 'testEvent', payload, token);
       yield put({ type: 'SAVE_user_list', payload: payload });
     },
+    *GET_UserData({ payload }, { call, put, select }) {
+      try {
+        const token = yield select(state => state.userList?.userToken || '');
+        const data = yield call(GET_userData, payload, token);
+        yield put({ type: 'SAVE_user_data', payload: data });
+      } catch (error) {
+        localStorage.setItem('token', '');
+        yield put({ type: 'SAVE_user_token', payload: '' });
+        if (process.env.NODE_ENV !== 'production') console.log(error);
+        console.log('get user data error');
+      }
+    },
   },
 
   reducers: {
@@ -66,8 +79,8 @@ export default {
     SAVE_user_list(state, { payload }) {
       return { ...state, userList: payload };
     },
-    SAVE_test(state, { payload }) {
-      return { ...state, test: payload };
+    SAVE_user_data(state, { payload }) {
+      return { ...state, userData: payload };
     },
   },
 

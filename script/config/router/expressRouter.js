@@ -144,6 +144,12 @@ class ExpressRouterConstructor {
       */
       usersController.loginUser);
 
+    routesApi.get('/users/data',
+      /*
+        #swagger.tags = ['api', 'api/users']
+        #swagger.path = '/api/users/data'
+      */
+      usersController.getUserData);
 
     routesApi.get('/videos',
       /*
@@ -157,6 +163,7 @@ class ExpressRouterConstructor {
         #swagger.path = '/api/videos/:id'
       */
       videosController.videoListAPI);
+
 
     this.routesApi = routesApi;
   }

@@ -5,6 +5,9 @@ class videoService {
 
   allVideos = async () => {
     const video = await videoList.findAll({
+      // attributes: {
+      //   exclude: ['video'],
+      // },
       include: {
         model: userList,
         attributes: {
@@ -20,22 +23,22 @@ class videoService {
   findVideoList = async (payload = {}) => {
     const video = await videoList.findAll({
       where: payload, // where 條件
-      include: [
-        {
-          model: userList,
-          attributes: {
-            exclude: ['password', 'email', 'id'],
-          },
-          // through: {
-          //   attributes: [],
-          // }
+      // attributes: {
+      //   exclude: ['video'],
+      // },
+      include: {
+        model: userList,
+        attributes: {
+          exclude: ['password', 'email', 'id'],
         },
-        videoJurisdiction
-      ]
+        // through: {
+        //   attributes: [],
+        // }
+      }
     });
     return video;
   }
-  findVideo = async (payload = {}) => {
+  findVideo = async (payload = {}, userId = 0) => {
     const video = await videoList.find({
       where: payload, // where 條件
       include: [
@@ -48,7 +51,10 @@ class videoService {
           //   attributes: [],
           // }
         },
-        videoJurisdiction
+        {
+          model: videoJurisdiction,
+          where: { userListId: userId }
+        }
       ]
     });
     return video;

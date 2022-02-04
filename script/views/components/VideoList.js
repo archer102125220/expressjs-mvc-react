@@ -42,12 +42,12 @@ function VideoList({ videoList }) {
   return (
     <List>
       {
-        videoList.map((video, index) => {
+        videoList.map((video) => {
           const fileName = video.videoName.split('.')[0];
           const videoName = fileName.split('_-_')[1];
           const userName = video.userList?.account;
           return (
-            typeof (video.video) === 'string' &&
+            (typeof (video) === 'object' && video !== null) &&
             <ImageList rowHeight={180} className={classes.imageList} key={fileName}>
               <Link to={`/video/player/${video.id}`} className={classes.item}>
                 <ImageListItem className={classes.item}>
