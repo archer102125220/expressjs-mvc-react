@@ -57,8 +57,14 @@ export default class videoScreenshot {
       const buf = Buffer.from(videoScreenshot, 'base64');
       const videoName = path.basename(videoList[index], path.extname(videoList[index]));
       const dirname = path.dirname(videoList[index]);
-      console.log(this.publicPath + dirname + '/screenshot/' + videoName + '.png');
-      fs.writeFileSync(this.publicPath + dirname + '/screenshot/' + videoName + '.png', buf);
+      const subDirName = this.publicPath + dirname + '/screenshot/';
+      if (fs.existsSync(this.publicPath + dirname) === false) {
+        fs.mkdirSync(this.publicPath + dirname);
+      }
+      if (fs.existsSync(subDirName) === false) {
+        fs.mkdirSync(subDirName);
+      }
+      fs.writeFileSync(subDirName + videoName + '.png', buf);
     });
   }
 

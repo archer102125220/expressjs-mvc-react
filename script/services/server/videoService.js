@@ -48,7 +48,7 @@ class videoService {
   }
   findVideo = async (payload = {}, userId = 0) => {
     try {
-      const video = await videoList.find({
+      const video = await videoList.findOne({
         where: payload, // where 條件
         include: [
           {
@@ -86,7 +86,7 @@ class videoService {
   }
   saveScreenshot = async (videoName, videoScreenshot) => {
     try {
-      const video = await videoList.find({
+      const video = await videoList.findOne({
         where: { videoName }, // where 條件
         include: [
           {

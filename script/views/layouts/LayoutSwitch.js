@@ -38,7 +38,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       //   { name: 'clickEvent', event: (clickEvent) => console.log({ clickEvent }) }
       // ];
       // Socket.eventInit(socketEvents);
-      await this.props.GET_UserData();
+      const { history } = this.props;
+      const { pathname } = history.location;
+      if (/\/video\/screenshot\??.?/.test(pathname) === 'false') {
+        await this.props.GET_UserData();
+      }
 
       const rememberMe = localStorage.getItem('rememberMe');
       const token = localStorage.getItem('token');
