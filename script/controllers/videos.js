@@ -51,9 +51,9 @@ class Videos {
   }
   playVideoAPI = async (req, res) => {
     const video = await this.playVideo(req, res);
-    if (typeof (video) !== 'object' || video === null) {
-      res.status(200).json('查無資料');
-    }
+    // if (typeof (video) !== 'object' || video === null) {
+    //   res.status(200).json('查無資料');
+    // }
     res.status(200).json(video);
   }
   playVideo = async (req, res) => {
