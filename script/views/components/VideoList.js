@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoList({ videoList }) {
+function VideoList({ videoList, onLinkClick }) {
   const classes = useStyles();
 
   return (
@@ -49,7 +49,7 @@ function VideoList({ videoList }) {
           return (
             (typeof (video) === 'object' && video !== null) &&
             <ImageList rowHeight={180} className={classes.imageList} key={fileName}>
-              <Link to={`/video/player/${video.id}`} className={classes.item}>
+              <Link to={`/video/player/${video.id}`} className={classes.item} onClick={onLinkClick}>
                 <ImageListItem className={classes.item}>
                   <img src={video.videoScreenshot} alt={videoName} />
                   <ImageListItemBar
@@ -73,6 +73,7 @@ function VideoList({ videoList }) {
 
 VideoList.propTypes = {
   videoList: PropTypes.array,
+  onLinkClick: PropTypes.func,
 };
 
 export default VideoList;

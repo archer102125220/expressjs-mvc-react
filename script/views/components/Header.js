@@ -91,7 +91,7 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
       {
         videoList.length > 0 && (
           <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer}>
-            <VideoList videoList={videoList} />
+            <VideoList videoList={videoList} onLinkClick={toggleDrawer} />
           </Drawer>
         )
       }
