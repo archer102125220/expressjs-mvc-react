@@ -7,7 +7,7 @@ export default {
 
   state: {
     videoList: [],
-    videoInfo: []
+    videoInfo: {}
   },
 
   effects: {

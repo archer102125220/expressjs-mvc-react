@@ -1,14 +1,15 @@
 import Models from '@models/server';
-const { videoList, userList, videoJurisdiction, sequelize } = Models;
+import videoJurisdictionService from '@services/server/videoJurisdictionService';
+const { videoList, userList, sequelize } = Models;
 
 class videoService {
 
   allVideos = async () => {
     try {
       const video = await videoList.findAll({
-        // attributes: {
-        //   exclude: ['video'],
-        // },
+        attributes: {
+          exclude: ['video'],
+        },
         include: {
           model: userList,
           attributes: {
@@ -28,9 +29,9 @@ class videoService {
     try {
       const video = await videoList.findAll({
         where: payload, // where 條件
-        // attributes: {
-        //   exclude: ['video'],
-        // },
+        attributes: {
+          exclude: ['video'],
+        },
         include: {
           model: userList,
           attributes: {
@@ -59,14 +60,12 @@ class videoService {
             // through: {
             //   attributes: [],
             // }
-          },
-          {
-            model: videoJurisdiction,
-            where: { userListId: userId }
           }
         ]
       });
-      return video;
+      const jurisdiction = await videoJurisdictionService.findJurisdiction({ userListId: userId, videoListId: video.id });
+      if (video.owner === userId || jurisdiction.watch === true) return { ...(JSON.parse(JSON.stringify(video))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
+      return null
     } catch (error) {
       console.log(error);
     }

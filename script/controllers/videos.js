@@ -30,7 +30,7 @@ class Videos {
 
   videoListPage = async (req, res) => {
     const videos = await this.videoList(req, res);
-    res.render('Video_Player', { videoInfo: JSON.parse(JSON.stringify(videos)) });
+    res.render('Video_List', { videoInfo: JSON.parse(JSON.stringify(videos)) });
   }
   videoListAPI = async (req, res) => {
     const videos = await this.videoList(req, res);
@@ -44,16 +44,24 @@ class Videos {
     return await videoService.findVideoList({ id });
   }
 
-  findVideo = async (req, res) => {
-    const { user_Id, videoName } = req.payload;
-    // const { id } = req.params;
-    // const user_Id = req.auth.id;
-    const owner = typeof (user_Id) === 'string' ? await UserService.findUser({ account_Id: user_Id })[0].id : user_Id;
-    const video = await videoService.findVideo({ owner, videoName });
-    if ((video || []).length === 0) {
+
+  playVideoPage = async (req, res) => {
+    const video = await this.playVideo(req, res);
+    res.render('Video_Player', { videoInfo: JSON.parse(JSON.stringify(video)) });
+  }
+  playVideoAPI = async (req, res) => {
+    const video = await this.playVideo(req, res);
+    if (typeof (video) !== 'object' || video === null) {
       res.status(200).json('查無資料');
     }
     res.status(200).json(video);
+  }
+  playVideo = async (req, res) => {
+    // const { user_Id, videoName } = req.payload;
+    const { id } = req.params;
+    const user_Id = req.query.user_Id || req.auth.id;
+    const owner = typeof (user_Id) === 'string' ? await UserService.findUser({ account_Id: user_Id })[0].id : user_Id;
+    return await videoService.findVideo({ id }, owner);
   }
 
   videoUpload = async (req, res) => {

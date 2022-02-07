@@ -27,7 +27,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     static getInitialProps({ serverData, isServer, reduxStore, match }) {
       if (isServer === true) {
-        reduxStore.dispatch({ type: 'videoList/SAVE_video_info', payload: [...serverData.videoInfo] });
+        reduxStore.dispatch({ type: 'videoList/SAVE_video_info', payload: serverData.videoInfo });
       } else {
         try {
           reduxStore.dispatch({ type: 'videoList/GET_VideoInfo', payload: match.pageParams.id });
@@ -41,14 +41,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       const { videoInfo } = this.props;
       return (
         <div>
-          {videoInfo[0]?.video && <VideoPlayer src={videoInfo[0].video} controls={['download']} />}
+          {videoInfo?.video && <VideoPlayer src={videoInfo.video} controls={['download']} />}
         </div>
       );
     }
 
     static propTypes = {
       classes: PropTypes.object,
-      videoInfo: PropTypes.array,
+      videoInfo: PropTypes.object,
       GET_VideoInfo: PropTypes.func,
       match: PropTypes.object,
     };

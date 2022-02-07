@@ -54,7 +54,7 @@ class ExpressRouterConstructor {
       /*
         #swagger.tags = ['web']
       */
-      videosController.videoListPage);
+      videosController.playVideoPage);
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {
@@ -162,7 +162,7 @@ class ExpressRouterConstructor {
         #swagger.tags = ['api', 'api/videos/:id']
         #swagger.path = '/api/videos/:id'
       */
-      videosController.videoListAPI);
+      videosController.playVideoAPI);
 
 
     this.routesApi = routesApi;
