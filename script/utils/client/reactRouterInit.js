@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import LayoutSwitch from '@views/layouts/LayoutSwitch';
-import { routeComponent, redirectComponent } from '@config/router/reactRouter';
+import { routeComponent, redirectComponent, ErrorPage } from '@config/router/reactRouter';
 import { store } from '@utils/client/reduxInit';
 
 
@@ -12,10 +12,13 @@ const paramsRoute = routeComponent.filter(({ path }) => path.includes(':'));
 
 function setServerDate() {
   if (typeof (window) !== 'object') return;
+
   const __EXPRESS_MVC_REACT_DATA__ = document.getElementById('__EXPRESS_MVC_REACT_DATA__');
-  if (typeof (__EXPRESS_MVC_REACT_DATA__) === 'object' && __EXPRESS_MVC_REACT_DATA__ !== null) {
-    const serverData = JSON.parse(__EXPRESS_MVC_REACT_DATA__.textContent);
-    const Page = routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
+  const serverData = JSON.parse(__EXPRESS_MVC_REACT_DATA__?.textContent || '{}') || {};
+  if (typeof (serverData) === 'object' && serverData !== null) {
+    const Page = serverData.pageName === 'Error' ?
+      ErrorPage :
+      routeComponent.find(page => page.pageName === serverData.pageName)?.component || {};
     const WrappedComponent = Page?.WrappedComponent;
     if (WrappedComponent) {
       const WrappedComponentDefaultProps = WrappedComponent?.defaultProps || {};
@@ -106,13 +109,16 @@ const RouterRoot = withRouter(Root);
 
 const renderRoutes = (r, props) => {
   const { key, exact, path, component: Component } = r;
+
+  const __EXPRESS_MVC_REACT_DATA__ = document.getElementById('__EXPRESS_MVC_REACT_DATA__');
+  const serverData = JSON.parse(__EXPRESS_MVC_REACT_DATA__?.textContent || '{}') || {};
   return (
     <Route
       {...props}
       key={`route-${key}`}
       exact={exact}
       path={path}
-      render={(props) => <Component {...props} />}
+      render={(props) => serverData.pageName === 'Error' ? <ErrorPage {...props} /> : <Component {...props} />}
     />
   );
 };

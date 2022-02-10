@@ -14,6 +14,10 @@ import swaggerFile from '@swagger_output'; // swagger-autogen輸出的 JSON
 class App extends Express {
   constructor(porps) {
     super(porps);
+    this.errorHandlers = [
+      this.notFoundHandler,
+      this.errorHandler
+    ];
 
     this.createRenderFunction();
     this.setSetting();
@@ -43,7 +47,7 @@ class App extends Express {
         '/api/users/login'
       ]
     }),
-    ['/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile)]
+    ['/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile)],
   ]
 
   setting = {
@@ -51,6 +55,8 @@ class App extends Express {
     'view engine': 'js',
     'trust proxy': true
   }
+
+  errorHandlers = []
 
   createRenderFunction = () => {
     const pageRender = new page_render(this);
@@ -94,40 +100,49 @@ class App extends Express {
   }
 
   setErrorHandler = () => {
-
-    // catch 404 and forward to error handler
-    this.use(function (req, res, next) {
-      // console.log(req.originalUrl);
-      next(createError(404));
-    });
-
-    // error handler
-    this.use(function (err, req, res) {
-      let message = err.message;
-      let payload = {};
-      let status = err.status || 500;
-      if (err.name === 'UnauthorizedError') {
-        status = 401;
-        message = 'invalid token';
-      } else {
-        console.log(err.status);
-        console.log(err.stack);
-      }
-      // console.log(req.originalUrl);
-
-      if (req.originalUrl.includes('/api')) {
-        res.status(status).send(message);
-      } else {
-        // set locals, only providing error in development
-        if (process.env.NODE_ENV !== 'production') {
-          payload = { message, error: err };
-        } else {
-          payload = { message };
-        }
-        res.status(status);
-        res.render('Error', payload);
+    this.errorHandlers.forEach(element => {
+      if (typeof (element) !== 'undefined') {
+        this.use(element);
       }
     });
+  }
+
+  // catch 404 and forward to error handler
+  notFoundHandler = (req, res, next) => {
+    // console.log(req.originalUrl);
+    next(createError(404));
+  }
+
+  // error handler
+  errorHandler = (err, req, res, next) => {
+    if (!err) next();
+    let message = err.message;
+    let payload = {};
+    let status = err.status || 500;
+    if (err.name === 'UnauthorizedError') {
+      if (req.originalUrl.includes('/api') === false && (typeof (req.auth) === 'undefined' || req.auth === null)) {
+        return res.redirect('/login');
+      }
+      status = 401;
+      message = 'invalid token';
+    } else {
+      console.log(err.status);
+      console.log(err.stack);
+    }
+    // console.log(req.originalUrl);
+
+    if (req.originalUrl.includes('/api')) {
+      res.status(status).send(message);
+    } else {
+      // set locals, only providing error in development
+      if (process.env.NODE_ENV !== 'production') {
+        payload = { message, error: { ...err, err: err.toString() } };
+      } else {
+        payload = { message };
+      }
+      res.status(status);
+      res.render('Error', payload);
+    }
   }
 
 }

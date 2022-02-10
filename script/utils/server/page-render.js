@@ -58,7 +58,7 @@ class pageRender {
       delete options.res;
       delete options.req;
       let serverProps = {};
-      const match = { params: req.params, url: req.url, path: req.route.path };
+      const match = { params: req.params, url: req.url, path: req.route?.path };
 
       if (typeof (Page.getInitialProps) === 'function') {
         const newDefaultProps = await Page.getInitialProps({ serverData: options, match, settings, res, req, reduxStore: store, isServer: true });
