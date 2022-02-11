@@ -43,9 +43,12 @@ function VideoList({ videoList, onLinkClick }) {
     <List>
       {
         videoList.map((video) => {
-          const fileName = video.videoName.split('.')[0];
+          const videoNameArray = video.videoName.split('.');
+          const extname = videoNameArray[videoNameArray.length - 1];
+          const fileName = video.videoName.replace(new RegExp(`.${extname}$`), '');
           const videoName = fileName.split('_-_')[1];
           const userName = video.userList?.account;
+          console.log({ fileName, videoName, extname, RegExp: new RegExp(`.${extname}$`) });
           return (
             (typeof (video) === 'object' && video !== null) &&
             <ImageList rowHeight={180} className={classes.imageList} key={fileName}>
@@ -56,7 +59,7 @@ function VideoList({ videoList, onLinkClick }) {
                     title={videoName}
                     subtitle={<span>by: {userName || ''}</span>}
                   // actionIcon={
-                  //   <IconButton aria-label={`info about ${videoName}`} className={classes.icon}>
+                  //   <IconButton aria-label={`info about ${ videoName }`} className={classes.icon}>
                   //     <InfoIcon />
                   //   </IconButton>
                   // }
