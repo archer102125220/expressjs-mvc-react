@@ -5,5 +5,6 @@ const apiConfig = {
   API_PROTOCOL: process.env.API_PROTOCOL || 'http'
 };
 
-export const api = apiConfig.API_PROTOCOL + '://' + apiConfig.API_HOST + ':' + apiConfig.API_PORT + '/' + apiConfig.API_PREFIX;
+export const baseURL = apiConfig.API_PROTOCOL + '://' + apiConfig.API_HOST + ':' + apiConfig.API_PORT;
+export const api = baseURL + '/' + apiConfig.API_PREFIX;
 export const socket = apiConfig.API_PROTOCOL + '://' + apiConfig.API_HOST + ':' + apiConfig.API_PORT;

@@ -48,7 +48,7 @@ function VideoList({ videoList, onLinkClick }) {
           const fileName = video.videoName.replace(new RegExp(`.${extname}$`), '');
           const videoName = fileName.split('_-_')[1];
           const userName = video.userList?.account;
-          console.log({ fileName, videoName, extname, RegExp: new RegExp(`.${extname}$`) });
+
           return (
             (typeof (video) === 'object' && video !== null) &&
             <ImageList rowHeight={180} className={classes.imageList} key={fileName}>

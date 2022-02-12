@@ -12,7 +12,6 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Plyr from 'plyr-react';
 import CreateIcon from '@material-ui/icons/Create';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -20,6 +19,7 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import TitleIcon from '@material-ui/icons/Title';
 import Chip from '@material-ui/core/Chip';
+import Plyr from 'plyr';
 
 const playerStyle = {
   '& > .plyr': {
@@ -53,6 +53,40 @@ export default withStyles(styles)(
         uploadSubtitleList: new Array(),
         tempRename: ''
       };
+      this.videoNodeList = [];
+      this.playerList = [];
+      this.defaultPlayerStates = {
+        currentTime: 0,
+        playing: false,
+        volume: 1,
+        muted: false,
+        speed: 1,
+        loop: false
+      };
+      this.playerStates = [this.defaultPlayerStates];
+    }
+
+    setVideoNodeRef = (key, element) => {
+      this.videoNodeList[key] = element;
+      this.instantiatePlyrJs(key);
+    }
+    // instantiate plyr.js
+    instantiatePlyrJs = (index) => {
+      if (typeof (this.videoNodeList[index]) === 'object') {
+        this.playerList[index] = new Plyr(this.videoNodeList[index]);
+        this.playerList[index].on('timeupdate', (...arg) => this.onTimeupdate(index, ...arg));
+      }
+    }
+    onTimeupdate = (index) => {
+      const plyr = this.playerList[index];
+      this.playerStates[index] = {
+        currentTime: plyr.currentTime,
+        playing: plyr.playing,
+        volume: plyr.volume,
+        muted: plyr.muted,
+        speed: plyr.speed,
+        loop: plyr.loop
+      };
     }
 
 
@@ -72,6 +106,7 @@ export default withStyles(styles)(
       }
       return true;
     }
+
 
     getUploadVideo = (e) => {
       const fileList = e.target.files;
@@ -171,7 +206,7 @@ export default withStyles(styles)(
                 (uploadVideo, index) => (
                   this.renderAccordin(
                     videoOptionList[index]?.newName || uploadVideo.name,
-                    <Plyr source={videoPlayerOptionList[index]} />,
+                    <video src={videoPlayerOptionList[index].sources[0].src} ref={(...arg) => this.setVideoNodeRef(index, ...arg)} />,
                     index,
                     tempRename
                   )
