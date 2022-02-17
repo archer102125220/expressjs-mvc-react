@@ -34,7 +34,7 @@
         "responses": {}
       }
     },
-    "/video": {
+    "/video/player": {
       "get": {
         "tags": [
           "web"
@@ -44,7 +44,17 @@
         "responses": {}
       }
     },
-    "/video/{id}": {
+    "/video/screenshot": {
+      "get": {
+        "tags": [
+          "web"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/video/player/{id}": {
       "get": {
         "tags": [
           "web"
@@ -58,16 +68,6 @@
             "type": "string"
           }
         ],
-        "responses": {}
-      }
-    },
-    "/video/screenshot": {
-      "get": {
-        "tags": [
-          "web"
-        ],
-        "description": "",
-        "parameters": [],
         "responses": {}
       }
     },
@@ -142,10 +142,10 @@
             "description": "Upload video and subtitle."
           },
           {
-            "name": "account_Id",
+            "name": "user_Id",
             "in": "formData",
             "type": "txt",
-            "description": "user UUID.",
+            "description": "user id.",
             "example": "5fa503d3-75d3-4577-bfb1-d9bd995541a9"
           }
         ],
@@ -194,6 +194,17 @@
     },
     "/api/users/login": {
       "post": {
+        "tags": [
+          "api",
+          "api/users"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/users/data": {
+      "get": {
         "tags": [
           "api",
           "api/users"
