@@ -7,7 +7,6 @@ import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import VideoPlayer from '@utils/components/VideoPlayer';
 
-
 const styles = {
   videoPlayerClassName: {
     '& > .plyr': {
@@ -58,15 +57,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     render() {
       const { videoInfo, classes, isMobile } = this.props;
-      const videoNameArray = videoInfo.videoName.split('.');
+      const videoNameArray = videoInfo?.videoName?.split('.') || [];
       const extname = videoNameArray[videoNameArray.length - 1];
-      const fileName = videoInfo.videoName.replace(new RegExp(`.${extname}$`), '');
-      const videoName = fileName.split('_-_')[1];
+      const fileName = videoInfo?.videoName?.replace(new RegExp(`.${extname}$`), '');
+      const videoName = fileName?.split('_-_')[1];
       return (
         videoInfo?.video ?
           <VideoPlayer videoPlayerClassName={isMobile === true ? classes.videoPlayerClassName : null} src={videoInfo.video} controls={['download']} />
           :
-          <ImageList rowHeight={180} className={classes.videoScreenshot} style={{ margin: 'auto' }} key={fileName}>
+          <ImageList rowHeight={180} className={isMobile === false ? classes.videoScreenshot : null} style={{ margin: 'auto' }} key={fileName}>
             <ImageListItem className={classes.item}>
               <img src={videoInfo.videoScreenshot} alt={videoName} />
               <ImageListItemBar

@@ -34,9 +34,9 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      use: ['file-loader', {
+      use: {
         loader: 'css-loader'
-      }],
+      },
     }],
   },
   plugins: [
@@ -49,6 +49,7 @@ module.exports = {
           globOptions: {
             ignore: [
               '**/video/*',
+              '**/stylesheets/*',
             ],
           },
         }

@@ -72,21 +72,23 @@ export default withStyles(styles)(
     }
     // instantiate plyr.js
     instantiatePlyrJs = (index) => {
-      if (typeof (this.videoNodeList[index]) === 'object') {
+      if (typeof (this.videoNodeList[index]) === 'object' && this.videoNodeList[index] !== null) {
         this.playerList[index] = new Plyr(this.videoNodeList[index]);
         this.playerList[index].on('timeupdate', (...arg) => this.onTimeupdate(index, ...arg));
       }
     }
     onTimeupdate = (index) => {
       const plyr = this.playerList[index];
-      this.playerStates[index] = {
-        currentTime: plyr.currentTime,
-        playing: plyr.playing,
-        volume: plyr.volume,
-        muted: plyr.muted,
-        speed: plyr.speed,
-        loop: plyr.loop
-      };
+      if (typeof (plyr) === 'object' && plyr !== null) {
+        this.playerStates[index] = {
+          currentTime: plyr?.currentTime,
+          playing: plyr?.playing,
+          volume: plyr?.volume,
+          muted: plyr?.muted,
+          speed: plyr?.speed,
+          loop: plyr?.loop
+        };
+      }
     }
 
 

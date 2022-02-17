@@ -69,7 +69,7 @@ class videoService {
       }
       const noJurisdiction = JSON.parse(JSON.stringify(video));
       noJurisdiction.video = null;
-      return { ...(JSON.parse(JSON.stringify(noJurisdiction))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };;
+      return { ...(JSON.parse(JSON.stringify(noJurisdiction))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
     } catch (error) {
       console.log(error);
     }

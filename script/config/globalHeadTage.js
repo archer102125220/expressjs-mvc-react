@@ -2,7 +2,6 @@ const globalHeadTage = {
   defaultPageTitle: 'Cloud video',
   pageTitleTemplate: 'Cloud video - {{title}}', // or function (title) => { return title; }
   clientLinkTagList: [
-    { rel: 'stylesheet', href: '/stylesheets/index.css' },
     { rel: 'shortcut icon', href: '/assets/favicon.ico' },
   ],
   clientScriptTagList: [],

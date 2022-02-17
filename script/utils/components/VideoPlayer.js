@@ -93,12 +93,12 @@ export default withStyles(styles)(
       // console.log({ plyr });
       // console.log('onTimeupdate', { currentTime: plyr.currentTime, seeking: plyr.seeking });
       this.playerStates = {
-        currentTime: plyr.currentTime,
-        playing: plyr.playing,
-        volume: plyr.volume,
-        muted: plyr.muted,
-        speed: plyr.speed,
-        loop: plyr.loop
+        currentTime: plyr?.currentTime || 0,
+        playing: plyr?.playing || false,
+        volume: plyr?.volume || 1,
+        muted: plyr?.muted || false,
+        speed: plyr?.speed || 1,
+        loop: plyr?.loop || false
       };
     }
 

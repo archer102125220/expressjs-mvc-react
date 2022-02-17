@@ -32,12 +32,12 @@ module.exports = {
     path.resolve(__dirname, 'script/reactApp.js')
   ],
   output: {
-    path: path.resolve(__dirname, 'dist/public/javascripts'),
+    path: path.resolve(__dirname, 'dist/public'),
     // filename: 'index.js',
     // filename: '[name].js',
     // chunkFilename: '[name].js',
     filename: (pathData) => {
-      return pathData.chunk.name === 'main' ? 'index.js' : '[name].js';
+      return pathData.chunk.name === 'main' ? 'javascripts/index.js' : 'javascripts/[name].js';
     }
   },
   resolve: {
@@ -122,7 +122,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: (pathData) => {
-        return pathData.chunk.name === 'main' ? 'styles.css' : '[name].css';
+        return pathData.chunk.name === 'main' ? 'stylesheets/styles.css' : 'stylesheets/[name].css';
       },
     }),
   ],

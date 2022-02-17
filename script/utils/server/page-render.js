@@ -169,13 +169,11 @@ class pageRender {
       serverData = { ...serverData, reduxStore: store.getState(), serverProps };
       const reactAppPath = process.env.NODE_ENV !== 'production' ? '/index.js' : '/javascripts/index.js';
       const reactModulesPath = process.env.NODE_ENV !== 'production' ? '/modules.js' : '/javascripts/modules.js';
-      const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/javascripts/styles.css';
-      const reactModuleStylesPath = process.env.NODE_ENV !== 'production' ? '/modules.css' : '/javascripts/modules.css';
+      const reactStylePath = process.env.NODE_ENV !== 'production' ? '/styles.css' : '/stylesheets/styles.css';
       callback(null, `
         <html>
           <title>${pageTitle || ''}</title>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-          <link rel="stylesheet" type="text/css" href="${reactModuleStylesPath}" />
           <script src="${reactModulesPath}" async></script>
           <script id="__EXPRESS_MVC_REACT_DATA__" type="application/json">${JSON.stringify(serverData)}</script>
           <link rel="stylesheet" type="text/css" href="${reactStylePath}" />
