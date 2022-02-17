@@ -6,11 +6,16 @@ import VideoPlayer from '@utils/components/VideoPlayer';
 
 
 const styles = {
-
+  videoPlayerClassName: {
+    '& > .plyr': {
+      width: '100vw',
+    }
+  }
 };
 
 const mapStateToProps = (state) => ({
   videoInfo: state.videoList?.videoInfo,
+  isMobile: state.system?.isMobile,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -38,10 +43,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoInfo } = this.props;
+      const { videoInfo, classes, isMobile } = this.props;
+
       return (
         <div>
-          {videoInfo?.video && <VideoPlayer src={videoInfo.video} controls={['download']} />}
+          {videoInfo?.video && <VideoPlayer videoPlayerClassName={isMobile === true ? classes.videoPlayerClassName : null} src={videoInfo.video} controls={['download']} />}
         </div>
       );
     }
@@ -51,6 +57,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       videoInfo: PropTypes.object,
       GET_VideoInfo: PropTypes.func,
       match: PropTypes.object,
+      isMobile: PropTypes.bool
     };
 
     static defaultProps = {
