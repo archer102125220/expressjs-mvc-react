@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { BrowserHistory } from '@utils/client/reduxInit';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import Header from '@views/components/Header';
 import Footer from '@views/components/Footer';
+
+const styles = {
+  body: {
+    height: '85vh',
+  }
+};
 
 const mapStateToProps = (state) => ({
   users: state.userList?.userList || [],
@@ -21,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
   GET_VideoList: (payload, callback, loading) => dispatch({ type: 'videoList/GET_VideoList', payload, callback, loading })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
   class GlobalLayout extends Component {
     state = {
     }
@@ -31,7 +38,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     render() {
-      const { children, isMobile, videoList } = this.props;
+      const { children, isMobile, videoList, classes } = this.props;
 
       return (
         <Typography component='div'>
@@ -40,7 +47,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             isMobile={isMobile}
             videoList={videoList}
           />
-          {children}
+          <div className={classes.body} >
+            {children}
+          </div>
           <Footer />
         </Typography>
       );
@@ -51,7 +60,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       GET_UserList: PropTypes.func,
       isMobile: PropTypes.bool,
       GET_VideoList: PropTypes.func,
-      videoList: PropTypes.array
+      videoList: PropTypes.array,
+      classes: PropTypes.object,
     }
   }
-);
+));
