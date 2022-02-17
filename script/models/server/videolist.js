@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
       videoList.belongsTo(userList, { foreignKey: 'owner', targetKey: 'id' });
       userList.hasMany(videoList, { foreignKey: 'id', targetKey: 'owner' });
     }
-  };
+  }
   videoList.init({
     videoName: DataTypes.STRING,
     videoScreenshot: {

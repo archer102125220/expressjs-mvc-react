@@ -38,7 +38,7 @@ export default (sequelize, DataTypes) => {
       userList.hasMany(videoJurisdiction, { foreignKey: { name: 'id' }, targetKey: 'userListId' });
       videoJurisdiction.belongsTo(userList, { foreignKey: { name: 'userListId', allowNull: true }, targetKey: 'id' });
     }
-  };
+  }
   videoJurisdiction.init({
     id: {
       type: DataTypes.INTEGER,

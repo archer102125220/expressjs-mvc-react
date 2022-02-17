@@ -24,7 +24,7 @@ class Videos {
     // }
     res.status(200).json(videos);
   }
-  videosList = async (req, res) => {
+  videosList = async () => {
     return await videoService.allVideos();
   }
 
@@ -39,7 +39,7 @@ class Videos {
     // }
     res.status(200).json(videos);
   }
-  videoList = async (req, res) => {
+  videoList = async (req) => {
     const { id } = req.params;
     return await videoService.findVideoList({ id });
   }
@@ -56,7 +56,7 @@ class Videos {
     // }
     res.status(200).json(video);
   }
-  playVideo = async (req, res) => {
+  playVideo = async (req) => {
     // const { user_Id, videoName } = req.payload;
     const { id } = req.params;
     const user_Id = req.query.user_Id || req.auth.id;

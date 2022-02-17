@@ -1,5 +1,5 @@
 import Models from '@models/server';
-const { videoList, userList, videoJurisdiction, sequelize } = Models;
+const { videoList, userList, videoJurisdiction, /*sequelize*/ } = Models;
 
 class videoJurisdictionService {
 

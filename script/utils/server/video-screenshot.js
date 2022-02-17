@@ -45,7 +45,7 @@ export default class videoScreenshot {
           if (videoScreenshotList.length === document.querySelectorAll('video').length) {
             done(null, videoScreenshotList);
           }
-        }
+        };
 
         document.querySelectorAll(selector).forEach((videoElement, index) => {
           videoElement.onloadeddata = (e) => setTimeout(createVideoScreenshot(e.target, index), 1000);

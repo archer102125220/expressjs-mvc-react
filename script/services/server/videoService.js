@@ -1,6 +1,6 @@
 import Models from '@models/server';
 import videoJurisdictionService from '@services/server/videoJurisdictionService';
-const { videoList, userList, sequelize } = Models;
+const { videoList, userList, /*sequelize*/ } = Models;
 
 class videoService {
 
@@ -64,8 +64,10 @@ class videoService {
         ]
       });
       const jurisdiction = await videoJurisdictionService.findJurisdiction({ userListId: userId, videoListId: video.id });
-      if (video.owner === userId || jurisdiction?.watch === true) return { ...(JSON.parse(JSON.stringify(video))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
-      return null
+      if (video.owner === userId || jurisdiction?.watch === true) {
+        return { ...(JSON.parse(JSON.stringify(video))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
+      }
+      return null;
     } catch (error) {
       console.log(error);
     }
