@@ -30,14 +30,14 @@ class Videos {
 
   videoListPage = async (req, res) => {
     const videos = await this.videoList(req, res);
-    res.render('Video_List', { videoInfo: JSON.parse(JSON.stringify(videos)) });
+    res.render('Video_List', { videoListInfo: JSON.parse(JSON.stringify(videos)) });
   }
   videoListAPI = async (req, res) => {
     const videos = await this.videoList(req, res);
     // if ((videos || []).length === 0) {
     //   res.status(200).json('查無資料');
     // }
-    res.status(200).json(videos);
+    res.status(200).json({ videoListInfo: JSON.parse(JSON.stringify(videos)) });
   }
   videoList = async (req) => {
     const { id } = req.params;

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import ImageList from '@material-ui/core/ImageList';
+import ImageListItem from '@material-ui/core/ImageListItem';
+import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import VideoPlayer from '@utils/components/VideoPlayer';
 
 
@@ -10,7 +13,18 @@ const styles = {
     '& > .plyr': {
       width: '100vw',
     }
-  }
+  },
+  videoScreenshot: {
+    width: 500,
+    // margin: 'auto',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    paddingBottom: '10px'
+  },
+  item: {
+    flexShrink: 'unset',
+    flexGrow: 1
+  },
 };
 
 const mapStateToProps = (state) => ({
@@ -44,11 +58,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     render() {
       const { videoInfo, classes, isMobile } = this.props;
-
+      const videoNameArray = videoInfo.videoName.split('.');
+      const extname = videoNameArray[videoNameArray.length - 1];
+      const fileName = videoInfo.videoName.replace(new RegExp(`.${extname}$`), '');
+      const videoName = fileName.split('_-_')[1];
       return (
-        <div>
-          {videoInfo?.video && <VideoPlayer videoPlayerClassName={isMobile === true ? classes.videoPlayerClassName : null} src={videoInfo.video} controls={['download']} />}
-        </div>
+        videoInfo?.video ?
+          <VideoPlayer videoPlayerClassName={isMobile === true ? classes.videoPlayerClassName : null} src={videoInfo.video} controls={['download']} />
+          :
+          <ImageList rowHeight={180} className={classes.videoScreenshot} style={{ margin: 'auto' }} key={fileName}>
+            <ImageListItem className={classes.item}>
+              <img src={videoInfo.videoScreenshot} alt={videoName} />
+              <ImageListItemBar
+                title={videoName}
+                subtitle={<span>by: {videoInfo?.userList?.account || ''}</span>}
+              />
+            </ImageListItem>
+          </ImageList>
+
       );
     }
 
