@@ -12,8 +12,8 @@ export default class videoScreenshot {
     this.nightmareConfig = nightmareConfig;
   }
 
-  getVideoScreent = async (videoList = [], token) => {
-    if (videoList.length <= 0) throw 'video list is null';
+  getVideoScreent = async (videoList = [], sreenshotNameList = [], token) => {
+    if (videoList.length <= 0 || sreenshotNameList.length <= 0) throw 'video list is null';
     const nightmare = Nightmare({
       show: false,
       // openDevTools: {
@@ -55,7 +55,7 @@ export default class videoScreenshot {
       .end();
     videoScreenshotList.forEach((videoScreenshot, index) => {
       const buf = Buffer.from(videoScreenshot, 'base64');
-      const videoName = path.basename(videoList[index], path.extname(videoList[index]));
+      const videoScreenshotName = (typeof (sreenshotNameList[index]) === 'string' && sreenshotNameList[index] !== '') ? sreenshotNameList[index] : path.basename(videoList[index], path.extname(videoList[index]));
       const dirname = path.dirname(videoList[index]);
       const subDirName = this.publicPath + dirname + '/screenshot/';
       if (fs.existsSync(this.publicPath + dirname) === false) {
@@ -64,7 +64,7 @@ export default class videoScreenshot {
       if (fs.existsSync(subDirName) === false) {
         fs.mkdirSync(subDirName);
       }
-      fs.writeFileSync(subDirName + videoName + '.png', buf);
+      fs.writeFileSync(subDirName + videoScreenshotName + '.png', buf);
     });
   }
 

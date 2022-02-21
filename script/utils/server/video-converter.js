@@ -75,7 +75,7 @@ export default class videoConverter {
   }
 
   handbrakeOption = (video = {}, convertOptionList = [], index = 0) => {
-    const videoFilename = video.filename || '_';
+    const videoFilename = video.filename || '_.';
     const filename = videoFilename.substring(0, videoFilename.lastIndexOf('.')) + '.mp4';
     const ssaFilePath = (video.path || '').substring(0, (video.path || '').lastIndexOf('/originalVideo')) + '/subtitle/';
 

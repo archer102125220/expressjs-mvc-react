@@ -84,8 +84,10 @@ class Videos {
     this.VideoConverter.setEvent('onComplete', async (video) => {
       const videoOutput = video.output.split('/');
       const videoName = videoOutput[videoOutput.length - 1];
-      await this.VideoScreenshot.getVideoScreent(['/' + process.env.UPLOAD_VIDEO + '/' + path.basename(video.output)], this.userToken);
-      await videoService.saveScreenshot(videoName, '/' + process.env.UPLOAD_VIDEO + '/screenshot/' + path.basename(video.output, path.extname(video.output)) + '.png');
+      const videoNameArray = videoName.split('_-_');
+      const videoScreenshotName = videoNameArray[0] + '_-_' + videoNameArray[1] + '_-_' + Date.now();
+      await this.VideoScreenshot.getVideoScreent(['/' + process.env.UPLOAD_VIDEO + '/' + path.basename(video.output)], [videoScreenshotName], this.userToken);
+      await videoService.saveScreenshot(videoName, '/' + process.env.UPLOAD_VIDEO + '/screenshot/' + videoScreenshotName + '.png');
     });
 
 
