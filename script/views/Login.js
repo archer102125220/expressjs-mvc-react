@@ -10,21 +10,28 @@ import LoginForm from '@views/components/LoginForm';
 
 //https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app
 const styles = {
-  normal: {
+  LoginPage: {
     fontFamily: 'Georgia, sans-serif',
     textAlign: 'center',
     backgroundImage: 'linear-gradient(343deg , #69EACB 0%, #EACCF8 48%, #6654F1 100%)',
-    height: '100vh',
-    paddingTop: '3em'
+    paddingTop: '3em',
+    minHeight: '78vh'
+  },
+  LoginPageMobile: {
+    paddingTop: '1em',
   }
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  isMobile: state.system?.isMobile || false
+});
+
 
 const mapDispatchToProps = (dispatch) => ({
   POST_UserLogin: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserLogin', payload, callback, loading }),
   POST_UserRegistered: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserRegistered', payload, callback, loading }),
   goToRoute: (path, callback) => {
+    console.log({ BrowserHistory });
     BrowserHistory.push(path);
     if (callback) { callback(); }
   },
@@ -46,14 +53,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { classes, POST_UserLogin, goToRoute, POST_UserRegistered } = this.props;
+      const { classes, POST_UserLogin, goToRoute, POST_UserRegistered, isMobile } = this.props;
       return (
-        <div className={classes.normal} >
+        <div className={[classes.LoginPage, isMobile ? classes.LoginPageMobile : ''].join(' ')} >
           <Head>
             <title>登入</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           </Head>
-          <LoginForm POST_UserLogin={POST_UserLogin} loginCallback={() => goToRoute('/')} POST_UserRegistered={POST_UserRegistered} >
+          <LoginForm POST_UserLogin={POST_UserLogin} loginCallback={() => goToRoute('/')} POST_UserRegistered={POST_UserRegistered} isMobile={isMobile} >
             <Button component={Link} to='/' >返回</Button>
           </LoginForm>
         </div >);
@@ -65,6 +72,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       POST_UserLogin: PropTypes.func,
       Message_information: PropTypes.func,
       POST_UserRegistered: PropTypes.func,
+      isMobile: PropTypes.bool,
     };
 
     static defaultProps = {

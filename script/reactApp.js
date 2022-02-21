@@ -9,6 +9,7 @@ import { store, BrowserHistory } from '@utils/client/reduxInit';
 import Router from '@utils/client/reactRouterInit';
 import reportWebVitals from '@utils/client/reportWebVitals';
 import '@server/public/stylesheets/index.css';
+import '@server/public/stylesheets/animista.css';
 
 ReactDOM.render(
   // https://stackoverflow.com/questions/61220424/material-ui-drawer-finddomnode-is-deprecated-in-strictmode

@@ -32,10 +32,25 @@ const useStyles = makeStyles({
     '& > *': {
       marginTop: '1em',
     },
+    '& > button:first-of-type': {
+      marginRight: '0.2em',
+    },
+  },
+  loginBlockMobile: {
+    width: 'unset',
+    paddingRight: '1em',
+    paddingLeft: '1em',
+    '& > button:first-of-type': {
+      marginRight: 'unset',
+    },
+  },
+  loginMobile: {
+    width: '50vw',
+    padding: '2em'
   },
 });
 
-function LoginForm({ children, POST_UserLogin, POST_UserRegistered, loginCallback }) {
+function LoginForm({ children, POST_UserLogin, POST_UserRegistered, loginCallback, isMobile }) {
   const classes = useStyles();
   const [account, setAccount] = useState('');
   const [accountError, setAccountError] = useState(false);
@@ -76,7 +91,7 @@ function LoginForm({ children, POST_UserLogin, POST_UserRegistered, loginCallbac
   };
 
   return (
-    <div className={classes.login}>
+    <div className={[classes.login, isMobile ? classes.loginMobile : ''].join(' ')}>
       <div>
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>註冊</Grid>
@@ -93,7 +108,7 @@ function LoginForm({ children, POST_UserLogin, POST_UserRegistered, loginCallbac
       <div className={classes.title}>
         {login === true ? '登入' : '註冊'}
       </div>
-      <div className={classes.loginBlock}>
+      <div className={[classes.loginBlock, isMobile ? classes.loginBlockMobile : ''].join(' ')}>
         <TextField
           label="帳號"
           autoComplete="username"
@@ -145,7 +160,8 @@ LoginForm.propTypes = {
   children: PropTypes.node,
   POST_UserLogin: PropTypes.func,
   POST_UserRegistered: PropTypes.func,
-  loginCallback: PropTypes.func
+  loginCallback: PropTypes.func,
+  isMobile: PropTypes.bool
 };
 
 LoginForm.defaultProps = {

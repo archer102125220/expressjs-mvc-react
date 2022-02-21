@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 // import ListItem from '@material-ui/core/ListItem';
-// import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
@@ -21,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper
   },
   imageList: {
-    width: 500,
+    width: '30em',
     // height: 450,
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    paddingBottom: '10px'
+    paddingLeft: '0.5em',
+    paddingRight: '0.5em',
+    paddingBottom: '0.5em'
   },
   item: {
     flexShrink: 'unset',
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoList({ videoList, onLinkClick }) {
+function VideoList({ videoList, onLinkClick, isMobile }) {
   const classes = useStyles();
 
   return (
@@ -51,7 +50,7 @@ function VideoList({ videoList, onLinkClick }) {
 
           return (
             (typeof (video) === 'object' && video !== null) &&
-            <ImageList rowHeight={180} className={classes.imageList} key={fileName}>
+            <ImageList rowHeight={180} className={[classes.imageList, isMobile ? 'scale-up-center' : ''].join(' ')} key={fileName}>
               <Link to={`/video/player/${video.id}`} className={classes.item} onClick={onLinkClick}>
                 <ImageListItem className={classes.item}>
                   <img src={video.videoScreenshot} alt={videoName} />
@@ -77,6 +76,7 @@ function VideoList({ videoList, onLinkClick }) {
 VideoList.propTypes = {
   videoList: PropTypes.array,
   onLinkClick: PropTypes.func,
+  isMobile: PropTypes.bool,
 };
 
 export default VideoList;

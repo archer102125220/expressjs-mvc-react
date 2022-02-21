@@ -2,28 +2,36 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import VideoPlayer from '@utils/components/VideoPlayer';
 
+const mobileVideoStyle = {
+  width: '100vw',
+};
+
 const styles = {
-  videoPlayerClassName: {
-    '& > .plyr': {
-      width: '100vw',
-    }
+  videoPlayerMobileClassName: {
+    '& > .plyr': mobileVideoStyle
   },
   videoScreenshot: {
-    width: 500,
+    width: '30em',
     // margin: 'auto',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    paddingBottom: '10px'
+    paddingLeft: '0.5em',
+    paddingRight: '0.5em',
+    paddingBottom: '0.5em'
   },
   item: {
-    flexShrink: 'unset',
-    flexGrow: 1
+    position: 'relative',
+    width: '50vw',
+    height: '50vh',
+    '& > img': {
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      backgroundColor: '#000000'
+    }
   },
+  itemMobileClassName: mobileVideoStyle
 };
 
 const mapStateToProps = (state) => ({
@@ -63,17 +71,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       const videoName = fileName?.split('_-_')[1];
       return (
         videoInfo?.video ?
-          <VideoPlayer videoPlayerClassName={isMobile === true ? classes.videoPlayerClassName : null} src={videoInfo.video} controls={['download']} />
+          <VideoPlayer videoPlayerClassName={isMobile ? classes.videoPlayerMobileClassName : null} src={videoInfo.video} controls={['download']} />
           :
-          <ImageList rowHeight={180} className={isMobile === false ? classes.videoScreenshot : null} style={{ margin: 'auto' }} key={fileName}>
-            <ImageListItem className={classes.item}>
-              <img src={videoInfo.videoScreenshot} alt={videoName} />
-              <ImageListItemBar
-                title={videoName}
-                subtitle={<span>by: {videoInfo?.userList?.account || ''}</span>}
-              />
-            </ImageListItem>
-          </ImageList>
+          <div className={[classes.item, isMobile ? classes.itemMobileClassName : ''].join(' ')}>
+            <img src={videoInfo.videoScreenshot} alt={videoName} />
+            <ImageListItemBar
+              title={videoName}
+              subtitle={<span>by: {videoInfo?.userList?.account || ''}</span>}
+            />
+          </div>
 
       );
     }

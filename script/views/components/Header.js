@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Divider from '@material-ui/core/Divider';
 import SearchBar from '@views/components/SearchBar';
 import VideoList from '@views/components/VideoList';
 
@@ -73,7 +74,10 @@ const useStyles = makeStyles(styles);
 function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit, isMobile, videoList }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const toggleDrawer = (event) => {
+  const toggleDrawer = (event, payload) => {
+    if (typeof (payload) === 'boolean') {
+      return setDrawerOpen(payload);
+    }
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -90,9 +94,10 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
       </div>
       {
         videoList.length > 0 && (
-          <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer}>
-            <VideoList videoList={videoList} onLinkClick={toggleDrawer} />
-          </Drawer>
+          <SwipeableDrawer anchor='right' open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
+            <Divider />
+            <VideoList isMobile={isMobile} videoList={videoList} onLinkClick={toggleDrawer} />
+          </SwipeableDrawer>
         )
       }
     </header >

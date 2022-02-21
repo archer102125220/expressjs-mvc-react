@@ -9,7 +9,7 @@ import Footer from '@views/components/Footer';
 
 const styles = {
   body: {
-    height: '85vh',
+    minHeight: '85vh',
   }
 };
 
