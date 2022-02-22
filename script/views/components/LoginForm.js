@@ -14,14 +14,14 @@ const useStyles = makeStyles({
   title: {
     fontSize: '2.5rem',
     fontWeight: 'normal',
-    letterSpacing: '-1px',
+    letterSpacing: '-0.063em',
   },
   login: {
     padding: '3em',
     backgroundColor: '#ffffff',
     margin: 'auto',
     width: 'calc(50vw - 3em)',
-    borderRadius: '10px'
+    borderRadius: '0.625em'
   },
   loginBlock: {
     width: '15vw',

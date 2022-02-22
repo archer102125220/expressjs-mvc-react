@@ -11,17 +11,17 @@ const styles = {
   Header: {
     height: '10vh',
     display: 'grid',
-    gridTemplateColumns: '173px calc(100vw - 173px)',
+    gridTemplateColumns: '10.813em calc(100vw - 10.813em)',
     alignItems: 'center'
   },
   HeaderMobile: {
-    gridTemplateColumns: '50px calc(100vw - 50px)',
+    gridTemplateColumns: '3.125em calc(100vw - 3.125em)',
   },
   Logo: {
     margin: 'auto',
-    marginTop: '10px',
-    // paddingTop: '20px',
-    paddingRight: '20px',
+    marginTop: '0.625em',
+    // paddingTop: '1.250em',
+    paddingRight: '1.250em',
     backgroundImage: 'url("/assets/icon/logo.png")',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -31,7 +31,7 @@ const styles = {
     cursor: 'pointer'
   },
   LogoMobile: {
-    padding: '0px 10px 0 0px',
+    padding: '0 0.625em 0 0',
     backgroundPosition: 'unset',
   },
   HeaderContxt: {
@@ -49,11 +49,11 @@ const styles = {
   },
   MenuTrigger: {
     width: '10%',
-    marginRight: '10px',
+    marginRight: '0.625em',
     backgroundImage: 'url("/assets/icon/menu.png")',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    backgroundSize: '40px',
+    backgroundSize: '2.500em',
     height: '100%',
     cursor: 'pointer'
   },
