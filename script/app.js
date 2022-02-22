@@ -25,14 +25,12 @@ class App extends Express {
     this.setRoutes();
     this.setErrorHandler();
   }
+  staticAccessProtect = [/^.*video_-_/]
 
   middlewares = [
     logger('dev'),//將執行途中的狀態(如：errorMessage、warning等)console出來  https://andy6804tw.github.io/2017/12/27/middleware-tutorial/
-    Express.json(),
     Express.urlencoded({ extended: false }),
     cookieParser(),//將cookie塞進controller的req物件裡面  http://expressjs.com/en/resources/middleware/cookie-parser.html
-    Express.static(path.join(__dirname, 'public')), // https://expressjs.com/zh-tw/starter/static-files.html
-    cors(),
     JWTMiddleware.unless({
       path: [
         '/',
@@ -47,6 +45,12 @@ class App extends Express {
         '/api/users/login'
       ]
     }),
+    Express.json(),
+    [
+      JWTMiddleware.staticAccessProtect(this.staticAccessProtect),
+      Express.static(path.join(__dirname, 'public'), { redirect: true }), // https://expressjs.com/zh-tw/starter/static-files.html
+    ],
+    cors(),
     ['/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile)],
   ]
 
@@ -115,6 +119,9 @@ class App extends Express {
 
   // error handler
   errorHandler = (err, req, res, next) => {
+    if (this.staticAccessProtect.find(path => req.originalUrl.match(path))) {
+      return res.redirect('/');
+    }
     if (!err) next();
     let message = err.message;
     let payload = {};
