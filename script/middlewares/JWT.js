@@ -38,7 +38,7 @@ class JWTMiddleware {
         // const extname = videoNameArray[videoNameArray.length - 1];
         try {
           const video = await videoService.findVideo({ videoName: decodeURI(videoName) }, userId);
-          if (video.video === null) {
+          if (typeof (video) !== 'object' || video === null || video.video === null) {
             next(createError(401));
           }
         } catch (error) {

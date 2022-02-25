@@ -25,7 +25,7 @@ class App extends Express {
     this.setRoutes();
     this.setErrorHandler();
   }
-  staticAccessProtect = [/^.*video_-_/]
+  staticAccessProtect = [/^.*video_-_.*\.mp4/]
 
   middlewares = [
     logger('dev'),//將執行途中的狀態(如：errorMessage、warning等)console出來  https://andy6804tw.github.io/2017/12/27/middleware-tutorial/
