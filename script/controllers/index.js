@@ -15,6 +15,9 @@ class Index {
   login = (req, res) => {
     res.render('Login');
   }
+  homePageRedirect = (req, res) => {
+    res.redirect('/');
+  }
 }
 
 export default new Index();

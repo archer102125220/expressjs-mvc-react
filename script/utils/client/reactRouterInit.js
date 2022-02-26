@@ -58,17 +58,17 @@ class Root extends Component {
       {}
     );
     const PageComponent = Page?.component;
-    const PagePath = Page?.path;
-    const PageParams = {};
-    const path = PagePath.split('/');
-    pathname.map((element, key) => {
-      if (path[key].includes(':')) {
-        const params = path[key].split('=');
-        PageParams[params[0].substring(1)] = element;
-      }
-    });
     if (typeof (PageComponent?.getInitialProps) === 'function') {
       try {
+        const PagePath = Page?.path;
+        const PageParams = {};
+        const path = PagePath.split('/');
+        pathname.map((element, key) => {
+          if (path[key].includes(':')) {
+            const params = path[key].split('=');
+            PageParams[params[0].substring(1)] = element;
+          }
+        });
         const newDefaultProps = await PageComponent.getInitialProps({ ...history, match: { ...match, pagePath: PagePath, pageParams: PageParams }, isServer: false, reduxStore: store });
         if (newDefaultProps !== undefined && newDefaultProps !== null) {
           const defaultProps = PageComponent.defaultProps || {};
@@ -108,10 +108,20 @@ class Root extends Component {
 const RouterRoot = withRouter(Root);
 
 const renderRoutes = (r, props) => {
-  const { key, exact, path, component: Component } = r;
+  const { key, exact, path, component: Component, needToken, redirect, checkToken } = r;
 
   const __EXPRESS_MVC_REACT_DATA__ = document.getElementById('__EXPRESS_MVC_REACT_DATA__');
   const serverData = JSON.parse(__EXPRESS_MVC_REACT_DATA__?.textContent || '{}') || {};
+  if (needToken === true && typeof (redirect) === 'string') {
+    const token = localStorage.getItem('token');
+    if (typeof (token) === 'string' && token.includes('Bearer ') === true) {//  reduxStore: store
+      let invalidToken = false;
+      if (typeof (checkToken) === 'function') {
+        invalidToken = checkToken({ reduxStore: store, token });
+      }
+      if (invalidToken === true) return <Redirect {...props} key={`redirect-${key}`} exact={exact} from={path} to={redirect} />;
+    }
+  }
   return (
     <Route
       {...props}

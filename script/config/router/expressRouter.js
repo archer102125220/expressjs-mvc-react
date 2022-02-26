@@ -35,6 +35,11 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web']
       */
       indexController.homePage);
+    routesWeb.get('/index',
+      /*
+        #swagger.tags = ['web']
+      */
+      indexController.homePageRedirect);
     routesWeb.get('/login',
       /*
         #swagger.tags = ['web']
