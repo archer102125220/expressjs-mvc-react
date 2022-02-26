@@ -9,6 +9,7 @@ import LayoutSwitch from '@views/layouts/LayoutSwitch';
 import { store } from '@utils/client/reduxInit';
 import { pageList } from '@config/router/expressRouter';
 import { clientLinkTagList, clientScriptTagList, defaultPageTitle, clientMetaTagList, pageTitleTemplate } from '@config/globalHeadTage';
+import { routeComponent } from '@config/router/reactRouter';
 
 
 class pageRender {
@@ -107,7 +108,7 @@ class pageRender {
       const sheets = new ServerStyleSheets();
       const content = renderToString(
         sheets.collect(
-          <MemoryRouter initialEntries={[{ pathname: pageName }]}>
+          <MemoryRouter initialEntries={[{ pathname: routeComponent.find(page => page.pageName === pageName)?.path || '' }]}>
             <Provider store={store}>
               <LayoutSwitch history={{ location: { pathname: req.url } }}><Page /></LayoutSwitch>
             </Provider>
