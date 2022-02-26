@@ -25,7 +25,7 @@ export default {
         type: process.env.BUFFER_IMAGE ? Sequelize.BLOB : Sequelize.STRING,
         allowNull: false
       },
-      account_Id: {
+      account_id: {
         // type: Sequelize.INTEGER
         type: Sequelize.UUID
       },

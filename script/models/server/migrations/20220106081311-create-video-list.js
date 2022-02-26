@@ -21,7 +21,7 @@ export default {
       video: {
         type: Sequelize.STRING
       },
-      video_Id: {
+      video_id: {
         // type: Sequelize.INTEGER
         type: Sequelize.UUID
       },
