@@ -63,12 +63,15 @@ class videoService {
           }
         ]
       });
-      const jurisdiction = await videoJurisdictionService.findJurisdiction({ userListId: userId, videoListId: video.id });
-      if (video.owner === userId || jurisdiction?.watch === true) {
-        return { ...(JSON.parse(JSON.stringify(video))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
+      let jurisdiction = null;
+      if (video !== null) {
+        jurisdiction = await videoJurisdictionService.findJurisdiction({ userListId: userId, videoListId: video.id });
+        if (video.owner === userId || jurisdiction?.watch === true) {
+          return { ...(JSON.parse(JSON.stringify(video))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
+        }
       }
       const noJurisdiction = JSON.parse(JSON.stringify(video));
-      noJurisdiction.video = null;
+      if (noJurisdiction) noJurisdiction.video = null;
       return { ...(JSON.parse(JSON.stringify(noJurisdiction))), jurisdiction: JSON.parse(JSON.stringify(jurisdiction)) };
     } catch (error) {
       console.log(error);
