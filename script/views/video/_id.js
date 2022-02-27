@@ -4,12 +4,31 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import VideoPlayer from '@utils/components/VideoPlayer';
+import Head from '@utils/components/Head';
 
 const mobileVideoStyle = {
   width: '100vw',
 };
 
+const videoStyle = {
+  // width: '80vw',
+  margin: 'auto',
+  height: '50%'
+};
+
 const styles = {
+  title: {
+    fontSize: '1.5em',
+    padding: '0.625em'
+  },
+  videoPlayerClassName: {
+    ...videoStyle,
+    '& > .plyr': {
+      width: '100%',
+      // height: 'auto',
+      height: '100%'
+    }
+  },
   videoPlayerMobileClassName: {
     '& > .plyr': mobileVideoStyle
   },
@@ -21,8 +40,8 @@ const styles = {
     paddingBottom: '0.5em'
   },
   item: {
+    ...videoStyle,
     position: 'relative',
-    width: '50vw',
     height: '50vh',
     '& > img': {
       width: '100%',
@@ -31,12 +50,16 @@ const styles = {
       backgroundColor: '#000000'
     }
   },
-  itemMobileClassName: mobileVideoStyle
+  itemMobileClassName: mobileVideoStyle,
+  owner: {
+    padding: '0.625em'
+  }
 };
 
 const mapStateToProps = (state) => ({
   videoInfo: state.videoList?.videoInfo,
   isMobile: state.system?.isMobile,
+  userData: state.userList?.userData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -64,23 +87,49 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoInfo, classes, isMobile } = this.props;
+      const { videoInfo, classes, isMobile, userData } = this.props;
       const videoNameArray = videoInfo?.videoName?.split('.') || [];
       const extname = videoNameArray[videoNameArray.length - 1];
       const fileName = videoInfo?.videoName?.replace(new RegExp(`.${extname}$`), '');
       const videoName = fileName?.split('_-_')[1];
-      return (
-        videoInfo?.video ?
-          <VideoPlayer videoPlayerClassName={isMobile ? classes.videoPlayerMobileClassName : null} src={videoInfo.video} controls={['download']} />
-          :
-          <div className={[classes.item, isMobile ? classes.itemMobileClassName : ''].join(' ')}>
-            <img src={videoInfo.videoScreenshot} alt={videoName} />
-            <ImageListItemBar
-              title={videoName}
-              subtitle={<span>by: {videoInfo?.userList?.account || ''}</span>}
-            />
-          </div>
+      const download = userData.id === videoInfo.owner || videoInfo.download;
+      const controls = [
+        'play-large',
+        isMobile === false ? 'restart' : '',
+        isMobile === false ? 'rewind' : '',
+        'play',
+        isMobile === false ? 'fast-forward' : '',
+        'progress',
+        'current-time',
+        'duration',
+        'mute',
+        'volume',
+        'captions',
+        'settings',
+        'pip',
+        'airplay',
+        download === true ? 'download' : '',
+        'fullscreen',
+      ];
 
+      return (
+        <div>
+          <Head><title>{videoName}</title></Head>
+          <p className={classes.title}>{videoName}</p>
+          {
+            videoInfo?.video ?
+              <VideoPlayer videoPlayerClassName={isMobile ? classes.videoPlayerMobileClassName : classes.videoPlayerClassName} src={videoInfo.video} controls={controls} />
+              :
+              <div className={[classes.item, isMobile ? classes.itemMobileClassName : ''].join(' ')}>
+                <img src={videoInfo.videoScreenshot} alt={videoName} />
+                <ImageListItemBar
+                  title={videoName}
+                  subtitle={<span>by: {videoInfo?.userList?.account || ''}</span>}
+                />
+              </div>
+          }
+          <p className={classes.owner}>擁有者：{videoInfo?.userList?.account || ''}</p>
+        </div>
       );
     }
 
@@ -89,7 +138,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       videoInfo: PropTypes.object,
       GET_VideoInfo: PropTypes.func,
       match: PropTypes.object,
-      isMobile: PropTypes.bool
+      isMobile: PropTypes.bool,
+      userData: PropTypes.object
     };
 
     static defaultProps = {

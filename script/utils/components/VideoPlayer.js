@@ -49,7 +49,7 @@ export default withStyles(styles)(
     }
 
     instantiatePlyrJs = ({ debug, propControls, props }) => {
-      const controls = [
+      const controls = propControls || [
         'play-large', // The large play button in the center
         'restart', // Restart playback
         'rewind', // Rewind by the seek time (default 10 seconds)
@@ -66,7 +66,6 @@ export default withStyles(styles)(
         'airplay', // Airplay (currently Safari only)
         // 'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
         'fullscreen', // Toggle fullscreen
-        ...propControls
       ];
       // instantiate Plyr.js
       this.player = new Plyr(this.videoNode.current, {
@@ -75,6 +74,7 @@ export default withStyles(styles)(
         controls: Array.from(new Set(controls)),
       });
 
+      console.log(this.player);
       this.player.on('error', this.onPlayerError);
       this.player.on('timeupdate', this.onTimeupdate);
     }
@@ -131,7 +131,7 @@ export default withStyles(styles)(
       //   ...propControls
       // ];
       return (
-        <div className={videoPlayerClassName || classes.VideoPlayer} >
+        <div className={[videoPlayerClassName, classes.VideoPlayer].join(' ')} >
           <video src={src} ref={this.videoNode} />
           {/* <Plyr
             source={{
@@ -180,7 +180,8 @@ export default withStyles(styles)(
     static defaultProps = {
       debug: 'false',
       poster: '',
-      controls: []
+      controls: [],
+      videoPlayerClassName: ''
     }
   }
 );

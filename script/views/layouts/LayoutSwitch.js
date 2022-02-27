@@ -40,7 +40,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       // Socket.eventInit(socketEvents);
       const { history } = this.props;
       const { pathname } = history.location;
-      if (/\/video\/screenshot\??.?/.test(pathname) === 'false') {
+      if (/\/video\/screenshot\??.?/.test(pathname) === false) {
         await this.props.GET_UserData();
       }
 
