@@ -69,7 +69,15 @@ class Root extends Component {
             PageParams[params[0].substring(1)] = element;
           }
         });
-        const newDefaultProps = await PageComponent.getInitialProps({ ...history, match: { ...match, pagePath: PagePath, pageParams: PageParams }, isServer: false, reduxStore: store });
+        const PageQuerys = {};
+        const queryString = location.search?.split('?') || [];
+        const queryArray = queryString[1]?.split('&') || [];
+        queryArray.map((element) => {
+          const query = element.split('=');
+          PageQuerys[query[0]] = query[1];
+        });
+
+        const newDefaultProps = await PageComponent.getInitialProps({ ...history, match: { ...match, pagePath: PagePath, pageParams: PageParams, pageQuerys: PageQuerys }, isServer: false, reduxStore: store });
         if (newDefaultProps !== undefined && newDefaultProps !== null) {
           const defaultProps = PageComponent.defaultProps || {};
           const WrappedComponent = PageComponent?.WrappedComponent;

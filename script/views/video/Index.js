@@ -2,19 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import VideoPlayer from '@utils/components/VideoPlayer';
-
+import VideoList from '@views/components/VideoList';
 
 const styles = {
-
+  listRootClassName: {
+    width: '90%',
+    margin: 'auto'
+  },
+  imageListClassName: {
+    width: '100%'
+  }
 };
 
 const mapStateToProps = (state) => ({
-  videoList: state.videoList?.videoList,
+  videSearch: state.videoList?.videSearch,
+  isMobile: state.system?.isMobile,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  GET_VideoList: (payload, callback, loading) => dispatch({ type: 'videoList/GET_VideoList', payload, callback, loading }),
+  GET_VideoSearch: (payload, callback, loading) => dispatch({ type: 'videoList/GET_VideoSearch', payload, callback, loading }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
@@ -28,12 +34,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     componentDidMount = () => {
     }
 
-    static getInitialProps({ serverData, isServer, reduxStore }) {
+    static getInitialProps({ serverData, isServer, reduxStore, match }) {
       if (isServer === true) {
-        reduxStore.dispatch({ type: 'videoList/SAVE_video_list', payload: [...serverData.videoList] });
+        reduxStore.dispatch({ type: 'videoList/SAVE_video_search', payload: [...serverData.videoList] });
       } else {
         try {
-          reduxStore.dispatch({ type: 'videoList/GET_VideoList' });
+          reduxStore.dispatch({ type: 'videoList/GET_VideoSearch', payload: { videoName: match.pageQuerys.videoName } });
         } catch (error) {
           if (process.env.NODE_ENV !== 'production') console.log(error);
         }
@@ -41,28 +47,20 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoList } = this.props;
+      const { videSearch, classes, isMobile } = this.props;
 
       return (
         <div>
-          {
-            videoList
-              .map(
-                (video, index) =>
-                  <VideoPlayer key={index} src={video.video} controls={['download']} />
-              )
-          }
-          {/* <VideoPlayer src='/video/video-[Kamigami&VCB-Studio] Yahari Ore no Seishun Lovecome wa Machigatte Iru. Zoku [OVA][Ma10p_1080p][x265_flac]-parker-1626973814647.mp4' />
-          <VideoPlayer src='/video/video-[WMSUB][Digimon Adventure][LAST EVOLUTION-Kizuna][BDRip][Childhood translation][BIG5][1080P]-parker-1626973814647.mp4' />
-          <VideoPlayer src='/video/video-Yuru Camp 01 [BD 1920x1080 HEVC-10bit AAC ASSx2]-parker-1626973814647.mp4' /> */}
+          <VideoList isMobile={isMobile} videoList={videSearch} listRootClassName={classes.listRootClassName} imageListClassName={classes.imageListClassName} />
         </div>
       );
     }
 
     static propTypes = {
       classes: PropTypes.object,
-      videoList: PropTypes.array,
-      GET_VideoList: PropTypes.func,
+      videSearch: PropTypes.array,
+      GET_VideoSearch: PropTypes.func,
+      isMobile: PropTypes.bool
     };
 
     static defaultProps = {

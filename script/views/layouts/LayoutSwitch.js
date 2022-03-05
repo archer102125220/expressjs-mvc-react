@@ -40,7 +40,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       // Socket.eventInit(socketEvents);
       const { history } = this.props;
       const { pathname } = history.location;
-      if (/\/video\/screenshot\??.?/.test(pathname) === false) {
+      if (/\/videos\/screenshot\??.?/.test(pathname) === false) {
         await this.props.GET_UserData();
       }
 
@@ -81,7 +81,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       return (
         <ThemeProvider theme={theme}>
           {
-            /\/video\/screenshot\??.?/.test(pathname) ?
+            /\/videos\/screenshot\??.?/.test(pathname) ?
               (<Switch {...props}>{children}</Switch>)
               :
               (<GlobalLayout {...props}>

@@ -71,9 +71,10 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit, isMobile, videoList }) {
+function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit, isMobile, videoList, searchText }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
   const toggleDrawer = (event, payload) => {
     if (typeof (payload) === 'boolean') {
       return setDrawerOpen(payload);
@@ -89,7 +90,7 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
         <div className={[logoClassName || classes.Logo, isMobile ? classes.LogoMobile : ''].join(' ')} />
       </Link>
       <div className={[contxtClassNameHeader || classes.HeaderContxt, isMobile ? classes.HeaderContxtMobile : ''].join(' ')}>
-        <SearchBar width={`calc(85% - ${styles.MenuTrigger.marginRight})`} onSubmit={(searchText) => searchSubmit(searchText)} />
+        <SearchBar width={`calc(85% - ${styles.MenuTrigger.marginRight})`} onSubmit={searchSubmit} input={searchText} />
         {videoList.length > 0 && <div className={[classes.MenuTrigger, isMobile ? classes.MenuTriggerMobile : ''].join(' ')} onClick={toggleDrawer} />}
       </div>
       {
@@ -111,6 +112,7 @@ Header.propTypes = {
   searchSubmit: PropTypes.func,
   isMobile: PropTypes.bool,
   videoList: PropTypes.array,
+  searchText: PropTypes.string
 };
 
 Header.defaultProps = {

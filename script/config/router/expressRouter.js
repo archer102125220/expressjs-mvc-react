@@ -45,19 +45,19 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web']
       */
       indexController.login);
-    routesWeb.get('/video/player',
+    routesWeb.get('/videos',
       /*
-        #swagger.tags = ['web']
+        #swagger.tags = ['web', 'video']
       */
       videosController.videosListPage);
-    routesWeb.get('/video/screenshot',
+    routesWeb.get('/videos/screenshot',
       /*
-        #swagger.tags = ['web']
+        #swagger.tags = ['web', 'video']
       */
       videosController.videoScreenPage);
-    routesWeb.get('/video/player/:id',
+    routesWeb.get('/videos/player/:id',
       /*
-        #swagger.tags = ['web']
+        #swagger.tags = ['web', 'video']
       */
       videosController.playVideoPage);
     this.routesWeb = routesWeb;
@@ -164,7 +164,7 @@ class ExpressRouterConstructor {
       videosController.videosListAPI);
     routesApi.get('/videos/:id',
       /*
-        #swagger.tags = ['api', 'api/videos/:id']
+        #swagger.tags = ['api', 'api/videos']
         #swagger.path = '/api/videos/:id'
       */
       videosController.playVideoAPI);

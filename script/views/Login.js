@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch) => ({
   POST_UserLogin: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserLogin', payload, callback, loading }),
   POST_UserRegistered: (payload, callback, loading) => dispatch({ type: 'userList/POST_UserRegistered', payload, callback, loading }),
   goToRoute: (path, callback) => {
-    console.log({ BrowserHistory });
+    // console.log({ BrowserHistory });
     BrowserHistory.push(path);
     if (callback) { callback(); }
   },

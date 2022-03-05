@@ -7,7 +7,8 @@ export default {
 
   state: {
     videoList: [],
-    videoInfo: {}
+    videoInfo: {},
+    videSearch: []
   },
 
   effects: {
@@ -50,6 +51,18 @@ export default {
       }
       if (typeof (loading) === 'function') { loading(false); }
     },
+    *GET_VideoSearch({ payload, loading }, { call, put, select }) {
+      try {
+        if (typeof (loading) === 'function') { loading(true); }
+        const token = yield select(state => state.userList?.userToken || '');
+        const data = yield call(GET_videoList, payload, token);
+        yield put({ type: 'SAVE_video_search', payload: data });
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') console.log(error);
+        console.log('get video list error');
+      }
+      if (typeof (loading) === 'function') { loading(false); }
+    },
   },
 
   reducers: {
@@ -58,6 +71,9 @@ export default {
     },
     SAVE_video_info(state, { payload }) {
       return { ...state, videoInfo: payload };
+    },
+    SAVE_video_search(state, { payload }) {
+      return { ...state, videSearch: payload };
     },
   },
 

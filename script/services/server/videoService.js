@@ -1,6 +1,7 @@
 import Models from '@models/server';
 import videoJurisdictionService from '@services/server/videoJurisdictionService';
-const { videoList, userList, /*sequelize*/ } = Models;
+const { videoList, userList, sequelize } = Models;
+const { Op } = sequelize;
 
 class videoService {
 
@@ -25,10 +26,28 @@ class videoService {
       console.log(error);
     }
   }
-  findVideoList = async (payload = {}) => {
+  findVideoList = async (videoName) => {
     try {
       const video = await videoList.findAll({
-        where: payload, // where 條件
+        where: {
+          [Op.or]: [
+            {
+              videoName: {
+                [Op.like]: '%' + videoName + '%',
+              }
+            },
+            {
+              videoName: {
+                [Op.like]: videoName + '%',
+              }
+            },
+            {
+              videoName: {
+                [Op.like]: '%' + videoName,
+              }
+            }
+          ]
+        },
         attributes: {
           exclude: ['video'],
         },

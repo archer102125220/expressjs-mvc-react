@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoList({ videoList, onLinkClick, isMobile }) {
+function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listRootClassName }) {
   const classes = useStyles();
 
   return (
-    <List>
+    <List className={[listRootClassName].join(' ')}>
       {
         videoList.map((video) => {
           const videoNameArray = video.videoName.split('.');
@@ -50,8 +50,8 @@ function VideoList({ videoList, onLinkClick, isMobile }) {
 
           return (
             (typeof (video) === 'object' && video !== null) &&
-            <ImageList rowHeight={180} className={[classes.imageList, isMobile ? 'scale-up-center' : ''].join(' ')} key={fileName}>
-              <Link to={`/video/player/${video.id}`} className={classes.item} onClick={onLinkClick}>
+            <ImageList rowHeight={180} className={[classes.imageList, isMobile ? 'scale-up-center' : '', imageListClassName].join(' ')} key={fileName}>
+              <Link to={`/videos/player/${video.id}`} className={classes.item} onClick={onLinkClick}>
                 <ImageListItem className={classes.item}>
                   <img src={video.videoScreenshot} alt={videoName} />
                   <ImageListItemBar
@@ -77,6 +77,8 @@ VideoList.propTypes = {
   videoList: PropTypes.array,
   onLinkClick: PropTypes.func,
   isMobile: PropTypes.bool,
+  imageListClassName: PropTypes.string,
+  listRootClassName: PropTypes.string,
 };
 
 export default VideoList;

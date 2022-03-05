@@ -25,12 +25,14 @@ class App extends Express {
     this.setRoutes();
     this.setErrorHandler();
   }
+  // eslint-disable-next-line no-useless-escape
   staticAccessProtect = [/^![\/screenshot|\?\=].*video_-_.*\.mp4/]
 
   middlewares = [
     logger('dev'),//將執行途中的狀態(如：errorMessage、warning等)console出來  https://andy6804tw.github.io/2017/12/27/middleware-tutorial/
-    Express.urlencoded({ extended: false }),
     cookieParser(),//將cookie塞進controller的req物件裡面  http://expressjs.com/en/resources/middleware/cookie-parser.html
+    Express.urlencoded({ extended: false }),
+    Express.json(),
     JWTMiddleware.unless({
       path: [
         '/',
@@ -45,7 +47,6 @@ class App extends Express {
         '/api/users/login'
       ]
     }),
-    Express.json(),
     [
       JWTMiddleware.staticAccessProtect(this.staticAccessProtect),
       Express.static(path.join(__dirname, 'public'), { redirect: true }), // https://expressjs.com/zh-tw/starter/static-files.html

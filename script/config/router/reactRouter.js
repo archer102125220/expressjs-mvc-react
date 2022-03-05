@@ -8,9 +8,9 @@ import Error from '@views/Error';
 export const routeComponent = [
   { key: 'root', path: '/', exact: true, component: IndexPage, pageName: 'Index' },
   { key: 'login', path: '/login', component: LoginPage, pageName: 'Login' },
-  { key: 'videoList', path: '/video/player', exact: true, component: VideoList, pageName: 'Video_List', needToken: true, redirect: '/login' },
-  { key: 'player', path: '/video/player/:id', component: Player, pageName: 'Video_Player', needToken: true, redirect: '/login' },
-  { key: 'screenshot', path: '/video/screenshot', component: Screenshot, pageName: 'Video_Screenshot' },
+  { key: 'videoList', path: '/videos', exact: true, component: VideoList, pageName: 'Video_List', needToken: true, redirect: '/login' },
+  { key: 'player', path: '/videos/player/:id', component: Player, pageName: 'Video_Player', needToken: true, redirect: '/login' },
+  { key: 'screenshot', path: '/videos/screenshot', component: Screenshot, pageName: 'Video_Screenshot' },
 ];
 export const redirectComponent = [
   { key: 'root', exact: true, to: '/', From: '/index' },

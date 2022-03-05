@@ -11,7 +11,7 @@ export default {
   },
 
   effects: {
-    *POST_UserLogin({ payload }, { call, put, select }) {
+    *POST_UserLogin({ payload, callback }, { call, put, select }) {
       try {
         const { account, password, rememberMe } = payload;
         const token = yield call(POST_userLogin, { account, password });
@@ -24,6 +24,7 @@ export default {
           }
           const videoList = yield select(state => state.videoList?.videoList) || [];
           if (videoList.length <= 0) yield put({ type: 'videoList/GET_VideoList', payload: token });
+          if (typeof (callback) === 'function') { callback(); }
         } else {
           yield put({ type: 'system/message_error', payload: '帳號或密碼錯誤!' });
         }

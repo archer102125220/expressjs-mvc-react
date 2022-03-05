@@ -9,8 +9,8 @@ import JWTMiddleware from '@middlewares/JWT';
 class Videos {
   constructor() {
     this.VideoConverter = new videoConverter({ deleteOriginalVideo: true });
-    this.VideoScreenshot = new videoScreenshot('/video/screenshot');
-    UserService.findUser({ account: 'admin' }).then(account => this.userToken = JWTMiddleware.encode(account[0].dataValues));
+    this.VideoScreenshot = new videoScreenshot('/videos/screenshot');
+    UserService.findUser({ account: 'admin' }).then(account => this.adminData = account[0].dataValues);
   }
 
   videosListPage = async (req, res) => {
@@ -24,7 +24,11 @@ class Videos {
     // }
     res.status(200).json(videos);
   }
-  videosList = async () => {
+  videosList = async (req) => {
+    const { videoName } = req.query;
+    if (typeof (videoName) === 'string') {
+      return await videoService.findVideoList(videoName);
+    }
     return await videoService.allVideos();
   }
 
@@ -86,7 +90,7 @@ class Videos {
       const videoName = videoOutput[videoOutput.length - 1];
       const videoNameArray = videoName.split('_-_');
       const videoScreenshotName = videoNameArray[0] + '_-_' + videoNameArray[1] + '_-_' + Date.now();
-      await this.VideoScreenshot.getVideoScreent(['/' + process.env.UPLOAD_VIDEO + '/' + path.basename(video.output)], [videoScreenshotName], this.userToken);
+      await this.VideoScreenshot.getVideoScreent(['/' + process.env.UPLOAD_VIDEO + '/' + path.basename(video.output)], [videoScreenshotName], JWTMiddleware.encode(this.adminData));
       await videoService.saveScreenshot(videoName, '/' + process.env.UPLOAD_VIDEO + '/screenshot/' + videoScreenshotName + '.png');
     });
 

@@ -46,7 +46,7 @@ class JWTMiddleware {
         }
       }
       next();
-    }
+    };
   }
 }
 
