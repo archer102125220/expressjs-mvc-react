@@ -3,11 +3,17 @@ import '@babel/register';
 import userList from '@models/server/userlist';
 import videoList from '@models/server/videolist';
 import videoJurisdiction from '@models/server/videojurisdiction';
+import playlist from '@models/server/playlist';
+import friendList from '@models/server/friendList';
+import playlistAssociationVideolist from '@models/server/playlistassociationvideolist';
 
 export const pluginBatabases = {
   userList,
   videoList,
-  videoJurisdiction
+  videoJurisdiction,
+  friendList,
+  playlist,
+  playlistAssociationVideolist
 };
 
 const nodeEnv = process.env.NODE_ENV || 'development';
