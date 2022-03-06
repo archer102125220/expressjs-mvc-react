@@ -44,7 +44,10 @@ class Users {
   }
   getUserData = async (req, res) => {
     if (req.auth) {
-      res.status(200).send(req.auth);
+      const userData = await UserService.findUser({ account_Id: req.auth.account_Id }, true);
+      const token = JWTMiddleware.encode(userData[0].dataValues);
+      res.cookie('token', token, { httpOnly: true });
+      res.status(200).send({ userData: userData[0].dataValues, token });
     } else {
       res.cookie('token', '', { httpOnly: true });
       res.status(401);

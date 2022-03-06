@@ -23,7 +23,8 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-  isMobile: state.system?.isMobile || false
+  isMobile: state.system?.isMobile || false,
+  userToken: state.userList?.userToken
 });
 
 
@@ -42,14 +43,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
   class LoginPage extends Component {
     constructor(props) {
       super(props);
+      const { userToken } = props;
+      this.loginStatusCheck(userToken);
     }
 
-    componentDidMount = () => {
-      const token = localStorage.getItem('token');
+    shouldComponentUpdate(nextProps) {
+      const { userToken } = nextProps;
+      return this.loginStatusCheck(userToken);
+    }
+
+    loginStatusCheck = (token) => {
       if (typeof (token) === 'string' && token !== '') {
-        // this.props.Message_information('偵測到已登入資訊');
-        // this.props.goToRoute('/');
+        this.props.Message_information('偵測到已登入資訊');
+        this.props.goToRoute('/');
+        return false;
       }
+
+      return true;
     }
 
     render() {
@@ -73,6 +83,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       Message_information: PropTypes.func,
       POST_UserRegistered: PropTypes.func,
       isMobile: PropTypes.bool,
+      userToken: PropTypes.string,
     };
 
     static defaultProps = {

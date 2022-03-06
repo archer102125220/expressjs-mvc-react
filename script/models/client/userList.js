@@ -62,7 +62,9 @@ export default {
       try {
         const token = yield select(state => state.userList?.userToken || '');
         const data = yield call(GET_userData, payload, token);
-        yield put({ type: 'SAVE_user_data', payload: data });
+        yield put({ type: 'SAVE_user_data', payload: data.userData });
+        localStorage.setItem('token', data.token);
+        yield put({ type: 'SAVE_user_token', payload: data.token });
       } catch (error) {
         localStorage.setItem('token', '');
         yield put({ type: 'SAVE_user_token', payload: '' });
