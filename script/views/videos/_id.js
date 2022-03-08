@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-  class Video_id extends Component {
+  class Videos_id extends Component {
     constructor(props) {
       super(props);
       this.state = {

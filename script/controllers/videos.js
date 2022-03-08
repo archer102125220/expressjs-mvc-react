@@ -15,7 +15,7 @@ class Videos {
 
   videosListPage = async (req, res) => {
     const videos = await this.videosList(req, res);
-    res.render('Video_List', { videoList: JSON.parse(JSON.stringify(videos)) });
+    res.render('Videos', { videoList: JSON.parse(JSON.stringify(videos)) });
   }
   videosListAPI = async (req, res) => {
     const videos = await this.videosList(req, res);
@@ -34,7 +34,7 @@ class Videos {
 
   videoListPage = async (req, res) => {
     const videos = await this.videoList(req, res);
-    res.render('Video_List', { videoListInfo: JSON.parse(JSON.stringify(videos)) });
+    res.render('Videos', { videoListInfo: JSON.parse(JSON.stringify(videos)) });
   }
   videoListAPI = async (req, res) => {
     const videos = await this.videoList(req, res);
@@ -51,7 +51,7 @@ class Videos {
 
   playVideoPage = async (req, res) => {
     const video = await this.playVideo(req, res);
-    res.render('Video_Player', { videoInfo: JSON.parse(JSON.stringify(video)) });
+    res.render('Videos_id', { videoInfo: JSON.parse(JSON.stringify(video)) });
   }
   playVideoAPI = async (req, res) => {
     const video = await this.playVideo(req, res);
@@ -108,7 +108,7 @@ class Videos {
     const account = await UserService.findUser({ account: 'admin' });
     const token = JWTMiddleware.encode(account[0].dataValues);
     res.cookie('token', token, { httpOnly: true });
-    res.render('Video_Screenshot', { videoList: decodeURI(videoList).split(',') });
+    res.render('Videos_Screenshot', { videoList: decodeURI(videoList).split(',') });
   }
 }
 

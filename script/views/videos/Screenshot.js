@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-export default class ScreenshotPage extends Component {
+export default class VideosScreenshot extends Component {
   constructor(props) {
     super(props);
   }
