@@ -1,8 +1,8 @@
 import IndexPage from '@views';
 import LoginPage from '@views/Login';
-import Player from '@views/video/_id';
-import VideoList from '@views/video';
-import Screenshot from '@views/video/Screenshot';
+import Player from '@views/videos/_id';
+import VideoList from '@views/videos';
+import Screenshot from '@views/videos/Screenshot';
 import Error from '@views/Error';
 
 export const routeComponent = [

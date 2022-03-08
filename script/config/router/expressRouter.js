@@ -6,9 +6,9 @@ import uploader from '@middlewares/uploader';
 import IndexPage from '@views';
 import ErrorPage from '@views/Error';
 import LoginPage from '@views/Login';
-import Player from '@views/video/_id';
-import VideoList from '@views/video';
-import VideoScreenshotPage from '@views/video/Screenshot';
+import Player from '@views/videos/_id';
+import VideoList from '@views/videos';
+import VideoScreenshotPage from '@views/videos/Screenshot';
 
 class ExpressRouterConstructor {
   constructor() {
