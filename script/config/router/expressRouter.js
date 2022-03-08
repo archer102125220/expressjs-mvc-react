@@ -6,7 +6,7 @@ import uploader from '@middlewares/uploader';
 import IndexPage from '@views';
 import ErrorPage from '@views/Error';
 import LoginPage from '@views/Login';
-import Player from '@views/videos/_id';
+import Video_id from '@views/videos/_id';
 import VideoList from '@views/videos';
 import VideoScreenshotPage from '@views/videos/Screenshot';
 
@@ -23,7 +23,7 @@ class ExpressRouterConstructor {
     'Index': IndexPage,
     'Error': ErrorPage,
     'Login': LoginPage,
-    'Video_Player': Player,
+    'Video_Player': Video_id,
     'Video_List': VideoList,
     'Video_Screenshot': VideoScreenshotPage
   }
