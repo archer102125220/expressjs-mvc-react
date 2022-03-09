@@ -11,26 +11,26 @@ export default (sequelize, DataTypes) => {
     static associate({ videoList, userList, videoJurisdiction }) {
       // define association here
       // https://sequelize.org/master/manual/assocs.html
-      videoList.belongsToMany(
-        userList,
-        {
-          through: {
-            model: videoJurisdiction,
-          },
-          foreignKey: 'videoListId',
-          targetKey: 'id'
-        }
-      );
-      userList.belongsToMany(
-        videoList,
-        {
-          through: {
-            model: videoJurisdiction,
-          },
-          foreignKey: 'userListId',
-          targetKey: 'id'
-        }
-      );
+      // videoList.belongsToMany(
+      //   userList,
+      //   {
+      //     through: {
+      //       model: videoJurisdiction,
+      //     },
+      //     foreignKey: 'videoListId',
+      //     targetKey: 'id'
+      //   }
+      // );
+      // userList.belongsToMany(
+      //   videoList,
+      //   {
+      //     through: {
+      //       model: videoJurisdiction,
+      //     },
+      //     foreignKey: 'userListId',
+      //     targetKey: 'id'
+      //   }
+      // );
 
       videoList.hasMany(videoJurisdiction, { foreignKey: { name: 'id' }, targetKey: 'videoListId' });
       videoJurisdiction.belongsTo(videoList, { foreignKey: { name: 'videoListId', allowNull: true }, targetKey: 'id' });

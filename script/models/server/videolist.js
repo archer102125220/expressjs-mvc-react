@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) => {
     static associate({ userList, videoList }) {
       // define association here
       videoList.belongsTo(userList, { foreignKey: 'owner', targetKey: 'id' });
-      userList.hasMany(videoList, { foreignKey: 'id', targetKey: 'owner' });
+      userList.hasMany(videoList, { foreignKey: 'owner', targetKey: 'id' });
     }
   }
   videoList.init({

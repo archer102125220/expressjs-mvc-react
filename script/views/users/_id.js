@@ -17,6 +17,7 @@ const styles = {
 const mapStateToProps = (state) => ({
   videoSearch: state.videoList?.videoSearch,
   isMobile: state.system?.isMobile,
+  userDetailed: state.userList?.userDetailed,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -24,7 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-  class VideoIndex extends Component {
+  class Users_id extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -36,10 +37,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
     static getInitialProps({ serverData, isServer, reduxStore, match }) {
       if (isServer === true) {
-        reduxStore.dispatch({ type: 'videoList/SAVE_video_search', payload: [...serverData.videoList] });
+        reduxStore.dispatch({ type: 'userList/SAVE_user_detailed', payload: serverData.userDetailed });
+        reduxStore.dispatch({ type: 'videoList/SAVE_video_search', payload: serverData.videoSearch });
       } else {
         try {
-          reduxStore.dispatch({ type: 'videoList/GET_VideoSearch', payload: { videoName: match.pageQuerys.videoName } });
+          reduxStore.dispatch({ type: 'userList/GET_UserDetailed', payload: match.pageParams.id });
         } catch (error) {
           if (process.env.NODE_ENV !== 'production') console.log(error);
         }
@@ -47,11 +49,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoSearch, classes, isMobile } = this.props;
+      const { videoSearch, userDetailed } = this.props;
 
       return (
         <div>
-          <VideoList isMobile={isMobile} videoList={videoSearch} listRootClassName={classes.listRootClassName} imageListClassName={classes.imageListClassName} />
+          {userDetailed.account}
+          <VideoList videoList={videoSearch} />
         </div>
       );
     }
@@ -59,8 +62,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     static propTypes = {
       classes: PropTypes.object,
       videoSearch: PropTypes.array,
-      GET_VideoSearch: PropTypes.func,
-      isMobile: PropTypes.bool
+      isMobile: PropTypes.bool,
+      userDetailed: PropTypes.object
     };
 
     static defaultProps = {

@@ -136,7 +136,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     static propTypes = {
       classes: PropTypes.object,
       videoInfo: PropTypes.object,
-      GET_VideoInfo: PropTypes.func,
       match: PropTypes.object,
       isMobile: PropTypes.bool,
       userData: PropTypes.object

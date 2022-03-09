@@ -8,7 +8,7 @@ export default {
   state: {
     videoList: [],
     videoInfo: {},
-    videSearch: []
+    videoSearch: []
   },
 
   effects: {
@@ -73,7 +73,7 @@ export default {
       return { ...state, videoInfo: payload };
     },
     SAVE_video_search(state, { payload }) {
-      return { ...state, videSearch: payload };
+      return { ...state, videoSearch: payload };
     },
   },
 

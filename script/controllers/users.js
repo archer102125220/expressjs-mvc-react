@@ -42,6 +42,7 @@ class Users {
       res.status(200).send(token);
     }
   }
+
   getUserData = async (req, res) => {
     if (req.auth) {
       const userData = await UserService.findUser({ account_Id: req.auth.account_Id }, true);
@@ -62,7 +63,7 @@ class Users {
       if (clear) {
         res.status(200).send('註冊成功！');
       } else {
-        res.status(200).send('帳號或信箱已存在！');
+        res.status(403).send('帳號或信箱已存在！');
       }
     } catch (error) {
       res.status(500).send('請輸入正確資料！');
@@ -76,6 +77,22 @@ class Users {
     res.status(200).json({
       ...payload, avater: req.avater, file: req.file, video: req.video
     });
+  }
+
+  userDetailed = async (req) => {
+    const { id: account_Id } = req.params;
+    const user = await UserService.userDetailed({ account_Id });
+    const { videoLists: videos } = user.dataValues;
+    if (typeof (user?.dataValues?.videoLists) === 'object') delete user.dataValues.videoLists;
+    return { userDetailed: user.dataValues, videoSearch: videos };
+  }
+  userDetailedAPI = async (req, res) => {
+    const user = await this.userDetailed(req, res);
+    res.status(200).json(user);
+  }
+  userDetailedPage = async (req, res) => {
+    const user = await this.userDetailed(req, res);
+    res.render('Users_id', user);
   }
 
   // usersListSocket = async (packet, next) => {

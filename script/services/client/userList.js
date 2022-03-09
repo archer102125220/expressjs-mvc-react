@@ -24,3 +24,12 @@ export function POST_userRegistered(payload = {}) {
 export function POST_userLogin(payload = {}) {
   return fetch('POST', '/users/login', payload);// , { withCredentials: true }
 }
+
+export function GET_userDetailed(payload = {}, token) {
+  return fetch('GET', `/users/detailed/${payload}`, null, {
+    headers: {
+      // eslint-disable-next-line no-useless-escape
+      Authorization: token.replace(/\"/g, '')
+    }
+  });
+}

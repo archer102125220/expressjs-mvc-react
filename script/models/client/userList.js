@@ -1,4 +1,4 @@
-import { GET_userList, POST_userRegistered, POST_userLogin, GET_userData } from '@services/client/userList';
+import { GET_userList, POST_userRegistered, POST_userLogin, GET_userData, GET_userDetailed } from '@services/client/userList';
 
 export default {
 
@@ -7,14 +7,15 @@ export default {
   state: {
     userToken: '',
     userList: [],
-    userData: {}
+    userData: {},
+    userDetailed: {}
   },
 
   effects: {
     *POST_UserLogin({ payload, callback }, { call, put, select }) {
       try {
         const { account, password, rememberMe } = payload;
-        const token = yield call(POST_userLogin, { account, password });
+        const token = yield call(POST_userLogin, { account, password, rememberMe });
         if (token !== '查無資料') {
           yield put({ type: 'SAVE_user_token', payload: token });
           yield put({ type: 'system/message_success', payload: '登入成功!' });
@@ -72,6 +73,17 @@ export default {
         console.log('get user data error');
       }
     },
+    *GET_UserDetailed({ payload }, { call, put, select }) {
+      try {
+        const token = yield select(state => state.userList?.userToken || '');
+        const user = yield call(GET_userDetailed, payload, token);
+        yield put({ type: 'SAVE_user_detailed', payload: user.userDetailed });
+        yield put({ type: 'videoList/SAVE_video_search', payload: user.videoSearch });
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') console.log(error);
+        console.log('get user data error');
+      }
+    },
   },
 
   reducers: {
@@ -84,6 +96,9 @@ export default {
     },
     SAVE_user_data(state, { payload }) {
       return { ...state, userData: payload };
+    },
+    SAVE_user_detailed(state, { payload }) {
+      return { ...state, userDetailed: payload };
     },
   },
 
