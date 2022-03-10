@@ -47,7 +47,15 @@ class Root extends Component {
       ||
       paramsRoute
         .filter((page) => {
-          if (page.exact === true && page.path.length !== location.pathname.length) return false;
+          // console.log(page.path);
+          // console.log(location.pathname);
+          // console.log(page.exact === true && page.path.length !== location.pathname.length);
+          if (page.exact === true) {
+            const pathExact = page.path.split('/');
+            const locationPathnameExact = location.pathname.split('/');
+            if (pathExact.length !== locationPathnameExact.length) return false;
+          }
+          // if (page.exact === true && page.path.length !== location.pathname.length) return false;
           const path = page.path.split('/');
           const match = path.filter((element, key) => {
             return element.includes(':') || element === pathname[key];
@@ -57,6 +65,7 @@ class Root extends Component {
       ||
       {}
     );
+    console.log({ Page });
     const PageComponent = Page?.component;
     if (typeof (PageComponent?.getInitialProps) === 'function') {
       try {
