@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listRootClassName }) {
+function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listRootClassName, userName }) {
   const classes = useStyles();
 
   return (
@@ -46,7 +46,6 @@ function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listR
           const extname = videoNameArray[videoNameArray.length - 1];
           const fileName = video.videoName.replace(new RegExp(`.${extname}$`), '');
           const videoName = fileName.split('_-_')[1];
-          const userName = video.userList?.account;
 
           return (
             (typeof (video) === 'object' && video !== null) &&
@@ -56,7 +55,7 @@ function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listR
                   <img src={video.videoScreenshot} alt={videoName} />
                   <ImageListItemBar
                     title={videoName}
-                    subtitle={<span>by: {userName || ''}</span>}
+                    subtitle={<span>by: {video.userList?.account || userName || ''}</span>}
                   // actionIcon={
                   //   <IconButton aria-label={`info about ${ videoName }`} className={classes.icon}>
                   //     <InfoIcon />
@@ -79,6 +78,7 @@ VideoList.propTypes = {
   isMobile: PropTypes.bool,
   imageListClassName: PropTypes.string,
   listRootClassName: PropTypes.string,
+  userName: PropTypes.string,
 };
 
 export default VideoList;

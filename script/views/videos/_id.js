@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import VideoPlayer from '@utils/components/VideoPlayer';
@@ -128,7 +129,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                 />
               </div>
           }
-          <p className={classes.owner}>擁有者：{videoInfo?.userList?.account || ''}</p>
+          <p className={classes.owner}>
+            擁有者：<Link to={`/users/${videoInfo?.userList?.account_Id}`}>{videoInfo?.userList?.account}</Link>
+          </p>
         </div>
       );
     }

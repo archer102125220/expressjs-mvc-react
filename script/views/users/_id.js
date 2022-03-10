@@ -54,7 +54,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       return (
         <div>
           {userDetailed.account}
-          <VideoList videoList={videoSearch} />
+          <VideoList videoList={videoSearch} userName={userDetailed.account} />
         </div>
       );
     }
