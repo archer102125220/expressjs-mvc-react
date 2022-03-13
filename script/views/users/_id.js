@@ -2,9 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import VideoList from '@views/components/VideoList';
 
+const avatarStyle = {
+  width: '2.5em',
+  height: '2.5em'
+};
+
 const styles = {
+  titleBlock: {
+    padding: '0em 0.6250em',
+    lineHeight: avatarStyle.height,
+    display: 'inline-flex'
+  },
+  avatar: avatarStyle,
+  title: {
+    display: 'inline-flex',
+    alignItems: 'center'
+  },
   listRootClassName: {
     width: '90%',
     margin: 'auto'
@@ -49,12 +65,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoSearch, userDetailed } = this.props;
+      const { videoSearch, userDetailed, classes } = this.props;
 
       return (
         <div>
-          {userDetailed.account}
-          <VideoList videoList={videoSearch} userName={userDetailed.account} />
+          <div className={classes.titleBlock}>
+            <Avatar alt={userDetailed.account} src={userDetailed.avater} className={classes.avatar} />
+            <p className={classes.title}>{userDetailed.account}</p>
+          </div>
+          <VideoList videoList={videoSearch} userName={userDetailed.account} listRootClassName={classes.listRootClassName} imageListClassName={classes.imageListClassName} />
         </div>
       );
     }

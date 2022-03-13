@@ -18,6 +18,10 @@ class Index {
   homePageRedirect = (req, res) => {
     res.redirect('/');
   }
+  logout = (req, res) => {
+    res.cookie('token', '', { httpOnly: true });
+    res.redirect('/');
+  }
 }
 
 export default new Index();

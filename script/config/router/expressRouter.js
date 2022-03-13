@@ -67,6 +67,13 @@ class ExpressRouterConstructor {
         #swagger.tags = ['web', 'users']
       */
       usersController.userDetailedPage);
+
+    routesWeb.get('/logout',
+      /*
+        #swagger.tags = ['web']
+      */
+      indexController.logout);
+
     this.routesWeb = routesWeb;
   }
   createRoutesApi = () => {

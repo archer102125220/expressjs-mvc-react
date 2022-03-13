@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Divider from '@material-ui/core/Divider';
+import MaterialLink from '@material-ui/core/Link';
 import SearchBar from '@views/components/SearchBar';
 import VideoList from '@views/components/VideoList';
 
@@ -11,7 +12,7 @@ const styles = {
   Header: {
     height: '10vh',
     display: 'grid',
-    gridTemplateColumns: '10.813em calc(100vw - 10.813em)',
+    gridTemplateColumns: '10.813em calc(100vw - 12em)',
     alignItems: 'center'
   },
   HeaderMobile: {
@@ -84,6 +85,11 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
     }
     setDrawerOpen(!drawerOpen);
   };
+
+  const logOut = () => {
+    localStorage.setItem('token', '');
+  };
+
   return (
     <header className={[className || classes.Header, isMobile ? classes.HeaderMobile : ''].join(' ')}>
       <Link to='/' >
@@ -96,6 +102,9 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
       {
         videoList.length > 0 && (
           <SwipeableDrawer anchor='right' open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
+            <MaterialLink href='/logout' onClick={logOut} >
+              登出
+            </MaterialLink>
             <Divider />
             <VideoList isMobile={isMobile} videoList={videoList} onLinkClick={toggleDrawer} />
           </SwipeableDrawer>

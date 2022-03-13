@@ -19,10 +19,11 @@ export default {
         if (token !== '查無資料') {
           yield put({ type: 'SAVE_user_token', payload: token });
           yield put({ type: 'system/message_success', payload: '登入成功!' });
-          localStorage.setItem('rememberMe', rememberMe);
-          if (rememberMe === true) {
-            localStorage.setItem('token', token);
-          }
+          localStorage.setItem('token', token);
+          // localStorage.setItem('rememberMe', rememberMe);
+          // if (rememberMe === true) {
+          //   localStorage.setItem('token', token);
+          // }
           const videoList = yield select(state => state.videoList?.videoList) || [];
           if (videoList.length <= 0) yield put({ type: 'videoList/GET_VideoList', payload: token });
           if (typeof (callback) === 'function') { callback(); }
