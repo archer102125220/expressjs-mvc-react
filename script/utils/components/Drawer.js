@@ -60,8 +60,10 @@ const styles = {
     width: '100vw',
     overflowX: 'auto',
     top: '30vh',
-    left: '25vw',
-    display: 'flex'
+    left: 0,
+    '& > *': {
+      display: '-webkit-box',
+    }
   },
   drawerTopBlock: {
     ...position,
