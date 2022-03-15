@@ -70,6 +70,7 @@ export default {
       } catch (error) {
         localStorage.setItem('token', '');
         yield put({ type: 'SAVE_user_token', payload: '' });
+        yield put({ type: 'SAVE_user_detailed', payload: {} });
         if (process.env.NODE_ENV !== 'production') console.log(error);
         console.log('get user data error');
       }

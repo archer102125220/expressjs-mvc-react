@@ -38,6 +38,13 @@ export default withStyles(styles)(
         loop: false
       };
     }
+    componentWillUnmount = () => {
+      this.player.destroy();
+      // try {
+      //   this.player.destroy();
+      // } catch (error) {
+      // }
+    }
 
     componentDidMount = () => {
       const { props } = this;
@@ -74,7 +81,7 @@ export default withStyles(styles)(
         controls: Array.from(new Set(controls)),
       });
 
-      console.log(this.player);
+      // console.log(this.player);
       this.player.on('error', this.onPlayerError);
       this.player.on('timeupdate', this.onTimeupdate);
     }

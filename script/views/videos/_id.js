@@ -65,6 +65,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   GET_VideoInfo: (payload, callback, loading) => dispatch({ type: 'videoList/GET_VideoInfo', payload, callback, loading }),
+  SAVE_VideoInfo: (payload, callback, loading) => dispatch({ type: 'videoList/SAVE_video_info', payload, callback, loading }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
@@ -73,6 +74,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       super(props);
       this.state = {
       };
+    }
+
+    componentWillUnmount = () => {
+      this.props.SAVE_VideoInfo({});
     }
 
     static getInitialProps({ serverData, isServer, reduxStore, match }) {
@@ -141,7 +146,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
       videoInfo: PropTypes.object,
       match: PropTypes.object,
       isMobile: PropTypes.bool,
-      userData: PropTypes.object
+      userData: PropTypes.object,
+      SAVE_VideoInfo: PropTypes.func
     };
 
     static defaultProps = {

@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import MaterialLink from '@material-ui/core/Link';
 import SearchBar from '@views/components/SearchBar';
 import VideoList from '@views/components/VideoList';
+import Drawer from '@utils/components/Drawer';
 
 const styles = {
   Header: {
@@ -67,6 +68,16 @@ const styles = {
     '-ms-transform': 'rotate(30deg)',
     '-o-transform': 'rotate(30deg)',
     transform: 'rotate(30deg)'
+  },
+  logOut: {
+    textAlign: 'right',
+    padding: '0 0.625em'
+  },
+  videoListRootClassName: {
+    width: '90vw'
+  },
+  imageListClassName: {
+    width: 'auto'
   }
 };
 
@@ -90,6 +101,16 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
     localStorage.setItem('token', '');
   };
 
+  const renderMenu = () => {
+    return (
+      <p className={classes.logOut}>
+        <MaterialLink href='/logout' onClick={logOut} color={isMobile ? 'primary' : 'inherit'} >
+          登出
+        </MaterialLink>
+      </p>
+    );
+  };
+
   return (
     <header className={[className || classes.Header, isMobile ? classes.HeaderMobile : ''].join(' ')}>
       <Link to='/' >
@@ -100,15 +121,21 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
         {videoList.length > 0 && <div className={[classes.MenuTrigger, isMobile ? classes.MenuTriggerMobile : ''].join(' ')} onClick={toggleDrawer} />}
       </div>
       {
-        videoList.length > 0 && (
+
+        videoList.length > 0 &&
+          isMobile ? (
           <SwipeableDrawer anchor='right' open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
-            <MaterialLink href='/logout' onClick={logOut} >
-              登出
-            </MaterialLink>
+            {renderMenu()}
             <Divider />
-            <VideoList isMobile={isMobile} videoList={videoList} onLinkClick={toggleDrawer} />
+            <VideoList rowHeight={isMobile === false ? 180 : 100} listRootClassName={isMobile === true ? classes.videoListRootClassName : ''} imageListClassName={isMobile === true ? classes.imageListClassName : ''} videoList={videoList} onLinkClick={toggleDrawer} />
           </SwipeableDrawer>
         )
+          :
+          (
+            <Drawer topBlock={renderMenu()} open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
+              <VideoList rowHeight={isMobile === false ? 180 : 100}  scaleUpCenter={true} listRootClassName={isMobile === true ? classes.videoListRootClassName : ''} imageListClassName={isMobile === true ? classes.imageListClassName : ''} videoList={videoList} onLinkClick={toggleDrawer} />
+            </Drawer>
+          )
       }
     </header >
   );

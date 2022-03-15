@@ -65,7 +65,7 @@ class Root extends Component {
       ||
       {}
     );
-    console.log({ Page });
+    // console.log({ Page });
     const PageComponent = Page?.component;
     if (typeof (PageComponent?.getInitialProps) === 'function') {
       try {

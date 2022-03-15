@@ -47,11 +47,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
     }
 
     render() {
-      const { videoSearch, classes, isMobile } = this.props;
+      const { videoSearch, classes } = this.props;
 
       return (
         <div>
-          <VideoList isMobile={isMobile} videoList={videoSearch} listRootClassName={classes.listRootClassName} imageListClassName={classes.imageListClassName} />
+          <VideoList videoList={videoSearch} listRootClassName={classes.listRootClassName} imageListClassName={classes.imageListClassName} />
         </div>
       );
     }

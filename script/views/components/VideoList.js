@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listRootClassName, userName }) {
+function VideoList({ videoList, onLinkClick, scaleUpCenter, imageListClassName, listRootClassName, userName, rowHeight }) {
   const classes = useStyles();
 
   return (
@@ -49,7 +49,7 @@ function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listR
 
           return (
             (typeof (video) === 'object' && video !== null) &&
-            <ImageList rowHeight={180} className={[classes.imageList, isMobile ? 'scale-up-center' : '', imageListClassName].join(' ')} key={fileName}>
+            <ImageList rowHeight={rowHeight} className={[classes.imageList, scaleUpCenter ? 'scale-up-center' : '', imageListClassName].join(' ')} key={fileName}>
               <Link to={`/videos/player/${video.id}`} className={classes.item} onClick={onLinkClick}>
                 <ImageListItem className={classes.item}>
                   <img src={video.videoScreenshot} alt={videoName} />
@@ -75,10 +75,17 @@ function VideoList({ videoList, onLinkClick, isMobile, imageListClassName, listR
 VideoList.propTypes = {
   videoList: PropTypes.array,
   onLinkClick: PropTypes.func,
-  isMobile: PropTypes.bool,
+  scaleUpCenter: PropTypes.bool,
   imageListClassName: PropTypes.string,
   listRootClassName: PropTypes.string,
   userName: PropTypes.string,
+  rowHeight: PropTypes.number,
 };
+
+VideoList.defaultProps = {
+  rowHeight: 180,
+  scaleUpCenter: false
+};
+
 
 export default VideoList;

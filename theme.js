@@ -6,5 +6,8 @@ module.exports = {
     secondary: {
       main: '#f44336',
     },
+    inherit: {
+      main: '#ffffff',
+    },
   },
 };
