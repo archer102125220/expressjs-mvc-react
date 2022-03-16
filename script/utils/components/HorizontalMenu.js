@@ -12,13 +12,13 @@ const position = {
 };
 
 const styles = {
-  drawerBlock: {
+  horizontalMenuBlock: {
     position: 'fixed',
     zIndex: 1300,
     inset: '0',
     outline: 0,
   },
-  drawerBackground: {
+  horizontalMenuBackground: {
     top: 0,
     left: 0,
     right: 0,
@@ -28,11 +28,11 @@ const styles = {
     position: 'fixed',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgb(255 255 255 / 50%)',
     '-webkit-tap-highlight-color': 'transparent',
     outline: 0,
   },
-  drawerTopBackground: {
+  horizontalMenuTopBackground: {
     ...position,
     display: 'flex',
     top: -100,
@@ -43,7 +43,7 @@ const styles = {
     borderWidth: '0 268px 268px 0',
     borderColor: 'transparent #cfbcd6 transparent transparent'
   },
-  drawerBottomBackground: {
+  horizontalMenuBottomBackground: {
     ...position,
     display: 'flex',
     bottom: -100,
@@ -54,24 +54,24 @@ const styles = {
     borderWidth: '268px 0 0 268px',
     borderColor: 'transparent transparent transparent #cfbcd6'
   },
-  drawer: {
+  horizontalMenu: {
     ...position,
     display: 'flex',
     width: '100vw',
     overflowX: 'auto',
-    top: '30vh',
+    top: '35vh',
     left: 0,
     '& > *': {
       display: '-webkit-box',
     }
   },
-  drawerTopBlock: {
+  horizontalMenuTopBlock: {
     ...position,
     height: '100%',
     top: 0,
     right: 0
   },
-  drawerBottomBlock: {
+  horizontalMenuBottomBlock: {
     ...position,
     height: '100%',
     bottom: 0,
@@ -81,7 +81,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Drawer({ children, topBlock, BottomBlock, open: propOpen, onOpen, onClose }) {
+export default function HorizontalMenu({ children, topBlock, BottomBlock, open: propOpen, onOpen, onClose }) {
   const classes = useStyles();
   const [open, setOpen] = useState(propOpen);
   useEffect(() => {
@@ -93,7 +93,6 @@ export default function Drawer({ children, topBlock, BottomBlock, open: propOpen
     setOpen(propOpen);
   }, [propOpen]);
   const toggleDrawer = (...arg) => {
-    console.log('toggleDrawer');
     if (open === false) {
       document.querySelector('body').style.overflow = 'hidden';
     } else {
@@ -109,24 +108,24 @@ export default function Drawer({ children, topBlock, BottomBlock, open: propOpen
   };
   if (open === false) return '';
   return (
-    <div className={classes.drawerBlock} onClick={toggleDrawer} onKeyDown={toggleDrawer} tabIndex='0'>
-      <div className={classes.drawerBackground} />
-      <div className={[classes.drawerTopBackground, 'slide-bl'].join(' ')} />
-      <div className={classes.drawerTopBlock} >
+    <div className={classes.horizontalMenuBlock} onClick={toggleDrawer} onKeyDown={toggleDrawer} tabIndex='0'>
+      <div className={classes.horizontalMenuBackground} />
+      <div className={[classes.horizontalMenuTopBackground, 'slide-bl'].join(' ')} />
+      <div className={classes.horizontalMenuTopBlock} >
         {topBlock}
       </div>
-      <div className={[classes.drawerBottomBackground, 'slide-tr'].join(' ')} />
-      <div className={classes.drawerBottomBlock} >
+      <div className={[classes.horizontalMenuBottomBackground, 'slide-tr'].join(' ')} />
+      <div className={classes.horizontalMenuBottomBlock} >
         {BottomBlock}
       </div>
-      <div className={classes.drawer} >
+      <div className={classes.horizontalMenu} >
         {children}
       </div>
     </div>
   );
 }
 
-Drawer.propTypes = {
+HorizontalMenu.propTypes = {
   children: PropTypes.node,
   topBlock: PropTypes.node,
   BottomBlock: PropTypes.node,
@@ -135,6 +134,6 @@ Drawer.propTypes = {
   onClose: PropTypes.func
 };
 
-Drawer.defaultProps = {
+HorizontalMenu.defaultProps = {
   open: false
 };

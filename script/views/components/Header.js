@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import MaterialLink from '@material-ui/core/Link';
 import SearchBar from '@views/components/SearchBar';
 import VideoList from '@views/components/VideoList';
-import Drawer from '@utils/components/Drawer';
+import HorizontalMenu from '@utils/components/HorizontalMenu';
 
 const styles = {
   Header: {
@@ -132,9 +132,9 @@ function Header({ className, logoClassName, contxtClassNameHeader, searchSubmit,
         )
           :
           (
-            <Drawer topBlock={renderMenu()} open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
+            <HorizontalMenu topBlock={renderMenu()} open={drawerOpen} onClose={(event, ...arg) => toggleDrawer(event, false, ...arg)} onOpen={(event, ...arg) => toggleDrawer(event, true, ...arg)}>
               <VideoList rowHeight={isMobile === false ? 180 : 100}  scaleUpCenter={true} listRootClassName={isMobile === true ? classes.videoListRootClassName : ''} imageListClassName={isMobile === true ? classes.imageListClassName : ''} videoList={videoList} onLinkClick={toggleDrawer} />
-            </Drawer>
+            </HorizontalMenu>
           )
       }
     </header >
