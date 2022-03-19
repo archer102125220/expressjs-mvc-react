@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -9,6 +9,22 @@ const position = {
   position: 'fixed',
   flexDirection: 'column',
   '-webkit-overflow-scrolling': 'touch',
+  '&::-webkit-scrollbar': {
+    height: '7px',
+    borderRadius: '10px'
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },/* the new scrollbar will have a flat appearance with the set background color */
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },/* this will style the thumb, ignoring the track */
+  '&::-webkit-scrollbar-button': {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  }, /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+  '&::-webkit-scrollbar-corner': {
+    backgroundColor: 'black',
+  } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
 };
 
 const styles = {
@@ -56,13 +72,13 @@ const styles = {
   },
   horizontalMenu: {
     ...position,
-    display: 'flex',
     width: '100vw',
     overflowX: 'auto',
     top: '35vh',
     left: 0,
     '& > *': {
-      display: '-webkit-box',
+      // display: '-webkit-box',
+      display: 'inline-flex',
     }
   },
   horizontalMenuTopBlock: {
@@ -84,6 +100,7 @@ const useStyles = makeStyles(styles);
 export default function HorizontalMenu({ children, topBlock, BottomBlock, open: propOpen, onOpen, onClose }) {
   const classes = useStyles();
   const [open, setOpen] = useState(propOpen);
+  const horizontalMenu = useRef(null);
   useEffect(() => {
     if (propOpen === true) {
       document.querySelector('body').style.overflow = 'hidden';
@@ -92,6 +109,7 @@ export default function HorizontalMenu({ children, topBlock, BottomBlock, open: 
     }
     setOpen(propOpen);
   }, [propOpen]);
+
   const toggleDrawer = (...arg) => {
     if (open === false) {
       document.querySelector('body').style.overflow = 'hidden';
@@ -106,6 +124,20 @@ export default function HorizontalMenu({ children, topBlock, BottomBlock, open: 
       setOpen(!open);
     }
   };
+  const mouseWheel = (e) => {
+    // https://codepen.io/RayPan/pen/aEPNaM
+    const menu = horizontalMenu.current;
+    const move = menu.scrollWidth / 30;
+    // console.log({ move });
+    if (e.deltaY > 0) {
+      // console.log(menu.scrollLeft);
+      if (menu.scrollLeft <= menu.scrollWidth) menu.scrollLeft += move > 0 ? move : 100;
+    } else {
+      if (menu.scrollLeft >= 0) menu.scrollLeft -= move > 0 ? move : 100;
+      // console.log(menu.scrollWidth);
+    }
+  };
+
   if (open === false) return '';
   return (
     <div className={classes.horizontalMenuBlock} onClick={toggleDrawer} onKeyDown={toggleDrawer} tabIndex='0'>
@@ -118,7 +150,7 @@ export default function HorizontalMenu({ children, topBlock, BottomBlock, open: 
       <div className={classes.horizontalMenuBottomBlock} >
         {BottomBlock}
       </div>
-      <div className={classes.horizontalMenu} >
+      <div className={classes.horizontalMenu} onWheel={mouseWheel} ref={horizontalMenu} >
         {children}
       </div>
     </div>
