@@ -33,12 +33,18 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
+  empty: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    textAlign: 'center',
+    alignItems: 'center'
+  }
 }));
 
-function VideoList({ videoList, onLinkClick, scaleUpCenter, imageListClassName, listRootClassName, userName, rowHeight }) {
+function VideoList({ videoList, onLinkClick, scaleUpCenter, imageListClassName, listRootClassName, userName, rowHeight, emptyLabel }) {
   const classes = useStyles();
 
-  return (
+  return videoList.length <= 0 ? <div className={classes.empty}>{emptyLabel}</div> : (
     <List className={[listRootClassName].join(' ')}>
       {
         videoList.map((video) => {
@@ -80,11 +86,16 @@ VideoList.propTypes = {
   listRootClassName: PropTypes.string,
   userName: PropTypes.string,
   rowHeight: PropTypes.number,
+  emptyLabel: PropTypes.node
 };
 
 VideoList.defaultProps = {
   rowHeight: 180,
-  scaleUpCenter: false
+  scaleUpCenter: false,
+  videoList: [],
+  listRootClassName: '',
+  imageListClassName: '',
+  emptyLabel: <div>還沒有任何影片喔</div>
 };
 
 

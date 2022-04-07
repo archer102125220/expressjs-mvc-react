@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import VideoList from '@views/components/VideoList';
+import Head from '@utils/components/Head';
 
 const avatarStyle = {
   width: '2.5em',
@@ -69,6 +70,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 
       return (
         <div>
+        <Head><title>{userDetailed.account}</title></Head>
           <div className={classes.titleBlock}>
             <Avatar alt={userDetailed.account} src={userDetailed.avater} className={classes.avatar} />
             <p className={classes.title}>{userDetailed.account}</p>

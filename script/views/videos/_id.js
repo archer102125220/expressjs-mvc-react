@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import VideoPlayer from '@utils/components/VideoPlayer';
 import Head from '@utils/components/Head';
+import Button from '@utils/components/Button';
+import VideoList from '@views/components/VideoList';
 
 const mobileVideoStyle = {
   width: '100vw',
@@ -53,7 +57,21 @@ const styles = {
   },
   itemMobileClassName: mobileVideoStyle,
   owner: {
-    padding: '0.625em'
+    padding: '0.625em',
+    display: 'inline-flex',
+    width: 'calc(100% - 1.25em)',
+    justifyContent: 'space-between'
+  },
+  playList: {
+    paddingLeft: '0.625em'
+  },
+  ownerLable: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  playListTitle: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
@@ -134,9 +152,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
                 />
               </div>
           }
-          <p className={classes.owner}>
-            擁有者：<Link to={`/users/${videoInfo?.userList?.account_Id}`}>{videoInfo?.userList?.account}</Link>
-          </p>
+          <div className={classes.owner}>
+            <div className={classes.ownerLable}>擁有者：<Link to={`/users/${videoInfo?.userList?.account_Id}`}>{videoInfo?.userList?.account}</Link></div>
+            <div><Button>加好友</Button></div>
+          </div>
+          <div className={classes.playList}>
+            <div className={classes.playListTitle}><span>我的播放清單</span><IconButton size='small'><AddIcon /></IconButton></div>
+            <VideoList emptyLabel='尚未建立任何撥放清單' />
+          </div>
         </div>
       );
     }
