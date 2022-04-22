@@ -89,21 +89,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render() {
       return (
         <div className='App'>
-          <Head><title>私人YouTube</title></Head>
+          <Head><title>{this.props.title}</title></Head>
           <header className='App-header'>
             <Logo className='App-logo' alt='logo' />
             <h1>{this.props.title}</h1>
             <p>Welcome to {this.props.title}</p>
-            <a
-              className='App-link'
-              href='https://reactjs.org'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Learn React
-            </a>
             <Link to='/login' className='App-link'>登入/註冊</Link>
-            <VideoUploader getUploadVideo={this.getUploadVideo} getVideoOptionList={this.getVideoOptionList} getUploadSubtitleList={this.getUploadSubtitleList} uploaded={this.state.uploaded} onUploaded={() => this.setState({ uploaded: false })} >上傳影片</VideoUploader>
+            <VideoUploader
+              getUploadVideo={this.getUploadVideo}
+              getVideoOptionList={this.getVideoOptionList}
+              getUploadSubtitleList={this.getUploadSubtitleList}
+              uploaded={this.state.uploaded}
+              onUploaded={() => this.setState({ uploaded: false })}
+              disabled={this.state.loading}
+            >
+              上傳影片
+            </VideoUploader>
             <Button onClick={this.handleUpload} disabled={this.state.loading}>確認上傳</Button>
           </header>
         </div>);

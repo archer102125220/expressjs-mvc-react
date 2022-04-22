@@ -3,7 +3,7 @@
 
 class Index {
   homePageData = () => {
-    return { title: 'Express MVC-React' };
+    return { title: '私人YouTube' };
   }
   homePage = /*async */(req, res) => {
     // Socket.io.emit('testEvent', await userService.allUsers());

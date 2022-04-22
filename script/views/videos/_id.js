@@ -62,14 +62,14 @@ const styles = {
     width: 'calc(100% - 1.25em)',
     justifyContent: 'space-between'
   },
-  playList: {
+  seriesList: {
     paddingLeft: '0.625em'
   },
   ownerLable: {
     display: 'flex',
     alignItems: 'center'
   },
-  playListTitle: {
+  seriesListTitle: {
     display: 'flex',
     alignItems: 'center'
   }
@@ -156,9 +156,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
             <div className={classes.ownerLable}>擁有者：<Link to={`/users/${videoInfo?.userList?.account_Id}`}>{videoInfo?.userList?.account}</Link></div>
             <div><Button>加好友</Button></div>
           </div>
-          <div className={classes.playList}>
-            <div className={classes.playListTitle}><span>我的播放清單</span><IconButton size='small'><AddIcon /></IconButton></div>
-            <VideoList emptyLabel='尚未建立任何撥放清單' />
+          <div className={classes.seriesList}>
+            <div className={classes.seriesListTitle}>
+              <span>同系列：</span>
+              {
+                videoInfo?.userList?.account === userData?.account ?
+                  <IconButton size='small'><AddIcon /></IconButton> :
+                  ''
+              }
+            </div>
+            <VideoList emptyLabel='尚無同系列' />
           </div>
         </div>
       );
