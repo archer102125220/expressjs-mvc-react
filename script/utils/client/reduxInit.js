@@ -38,7 +38,13 @@ export default function reduxInit(pluginModels, serverReduxStore = {}) {
       reducers[`${namespace}/${reducersKey}`] = reducers[reducersKey];
     });
     if (typeof (effects) === 'object') {
-      Object.keys(effects).map((effectsKey) => {
+      Object.keys(effects).forEach((effectsKey) => {
+        if (effectsKey.includes('/')) {
+          const key = effectsKey.split('/');
+          if (`${key[0]}/${key[1]}` === effectsKey && key[0] === namespace) {
+            return;
+          }
+        }
         effects[`${namespace}/${effectsKey}`] = function* (args) {
           yield effects[effectsKey](args, reduxSagaEffects);
         };

@@ -9,7 +9,6 @@ import Button from '@utils/components/Button';
 import Head from '@utils/components/Head';
 // https://stackoverflow.com/questions/57012780/adding-css-to-react-ssr-components
 
-
 const mapStateToProps = (state) => ({
   pageInfo: state.system?.pageInfo || {},
   title: state.system?.title,
