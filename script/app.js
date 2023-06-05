@@ -36,6 +36,7 @@ class App extends Express {
     JWTMiddleware.unless({
       path: [
         '/',
+        '/.well-known/apple-developer-merchantid-domain-association',
         '/login',
         /^\/assets\/.*/,
         /^.*\.js/,
